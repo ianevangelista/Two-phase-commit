@@ -20,12 +20,6 @@ class KlientTraad extends Thread {
     @SuppressWarnings("deprecation")
     public void run() {
         try {
-            is = new DataInputStream(klientSocket.getInputStream());
-            os = new PrintStream(klientSocket.getOutputStream());
-            os.println("Skriv inn navnet ditt: ");
-            navn = is.readLine();
-            klientIdentitet = navn;
-            os.println("Velkommen " + navn + " til denne 2-fase applikasjonen.\nDu vil motta en VOTE_REQUEST...");
             // Simulerer avgjørelse
             if (tjener.traadListe.size() == 1) {
                 tjener.tjenerNavnGammel = tjener.tjenerNavn;
@@ -35,6 +29,12 @@ class KlientTraad extends Thread {
                     tjener.tjenerNavn = "Ola"; // dette skjedde egt før
                 }
             }
+            is = new DataInputStream(klientSocket.getInputStream());
+            os = new PrintStream(klientSocket.getOutputStream());
+            os.println("Skriv inn navnet ditt: ");
+            navn = is.readLine();
+            klientIdentitet = navn;
+            os.println("Velkommen " + navn + " til denne 2-fase applikasjonen.\nDu vil motta en VOTE_REQUEST...");
             os.println("Tjenerens navn er endret til " + tjener.tjenerNavn + ". Beholde endringen?");
             os.println("VOTE_REQUEST\nVennligst skriv inn COMMIT eller ABORT: ");
             for (int i = 0; i < (tjener.traadListe).size(); i++) {
@@ -50,13 +50,12 @@ class KlientTraad extends Thread {
                     tjener.tjenerNavn = tjener.tjenerNavnGammel;
                     System.out.println("\nAborted....Navnet mitt er fortsatt " + tjener.tjenerNavn);
 
-                    for (int i = 0; i < (tjener.traadListe).size(); i++) {
-                        ((tjener.traadListe).get(i)).os.println("GLOBAL_ABORT");
-                        ((tjener.traadListe).get(i)).os.close();
-                        ((tjener.traadListe).get(i)).is.close();
-                        tjener.data.remove(tjener.traadListe.indexOf(tjener.traadListe.get(i)));
-                        tjener.traadListe.remove(i);
-
+                    while(tjener.traadListe.size() > 0) {
+                        ((tjener.traadListe).get(0)).os.println("ABORT");
+                        ((tjener.traadListe).get(0)).os.close();
+                        ((tjener.traadListe).get(0)).is.close();
+                        tjener.data.remove(tjener.traadListe.indexOf(tjener.traadListe.get(0)));
+                        tjener.traadListe.remove(0);
                     }
                     break;
                 }
@@ -77,12 +76,12 @@ class KlientTraad extends Thread {
                         if (tjener.inputFraAlle) {
                             tjener.tjenerNavnGammel = tjener.tjenerNavn;
                             System.out.println("\n\nCommited.... Navnet mitt er naa " + tjener.tjenerNavn);
-                            for (int i = 0; i < (tjener.traadListe).size(); i++) {
-                                ((tjener.traadListe).get(i)).os.println("GLOBAL_COMMIT");
-                                ((tjener.traadListe).get(i)).os.close();
-                                ((tjener.traadListe).get(i)).is.close();
-                                tjener.data.remove(tjener.traadListe.indexOf(tjener.traadListe.get(i)));
-                                tjener.traadListe.remove(i);
+                            while(tjener.traadListe.size() > 0) {
+                                ((tjener.traadListe).get(0)).os.println("GLOBAL_COMMIT");
+                                ((tjener.traadListe).get(0)).os.close();
+                                ((tjener.traadListe).get(0)).is.close();
+                                tjener.data.remove(tjener.traadListe.indexOf(tjener.traadListe.get(0)));
+                                tjener.traadListe.remove(0);
                             }
                             break;
                         }
