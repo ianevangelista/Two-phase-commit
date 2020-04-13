@@ -137,7 +137,7 @@ Hvis den andre klienten også stemmer for commit, har alle klientene stemt for c
 | --- | --- |
 |![Image description](https://i.imgur.com/n6t2m1V.png)|![Image description](https://i.imgur.com/uTgNbvd.png)|
 
-** Rollback **
+**Rollback**  
 Om vi kjører samme eksempel, men denne gangen har vi tre klienter. Jens og Erna svarer fortsatt COMMIT, mens den nye Sylvi stemmer for ABORT. Da vil alle klientene få beskjed om en global abort og tjeneren beholder navnet sitt. Transaksjonen blir dermed ikke utført. 
 | Server | Klient |
 | --- | --- |
