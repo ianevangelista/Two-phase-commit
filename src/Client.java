@@ -5,32 +5,32 @@ import java.net.*;
 
 public class Client implements Runnable
 {
-    static Socket clientSocket = null;
+    static Socket klientSocket = null;
     static PrintStream os = null;
     static DataInputStream is = null;
-    static BufferedReader inputLine = null;
-    static boolean closed = false;
+    static BufferedReader inputLinje = null;
+    static boolean lukket = false;
     public static void main(String[] args) {
-        int port_number=1111;
+        int port=1111;
         String host="localhost";
         try {
-            clientSocket = new Socket(host, port_number);
-            inputLine = new BufferedReader(new InputStreamReader(System.in));
-            os = new PrintStream(clientSocket.getOutputStream());
-            is = new DataInputStream(clientSocket.getInputStream());
+            klientSocket = new Socket(host, port);
+            inputLinje = new BufferedReader(new InputStreamReader(System.in));
+            os = new PrintStream(klientSocket.getOutputStream());
+            is = new DataInputStream(klientSocket.getInputStream());
         } catch (Exception e) {
             System.out.println("Exception occurred : " + e.getMessage());
         }
 
-        if (clientSocket != null && os != null && is != null) {
+        if (klientSocket != null && os != null && is != null) {
             try {
                 new Thread(new Client()).start();
-                while (!closed) {
-                    os.println(inputLine.readLine());
+                while (!lukket) {
+                    os.println(inputLinje.readLine());
                 }
                 os.close();
                 is.close();
-                clientSocket.close();
+                klientSocket.close();
             } catch (IOException e) {
                 System.err.println("IOException:  " + e);
             }
@@ -38,15 +38,15 @@ public class Client implements Runnable
     }
     @SuppressWarnings("deprecation")
     public void run() {
-        String responseLine;
+        String responseLinje;
         try {
-            while ((responseLine = is.readLine()) != null) {
-                System.out.println("\n"+responseLine);
-                if (responseLine.equalsIgnoreCase("GLOBAL_COMMIT")==true || responseLine.equalsIgnoreCase("GLOBAL_ABORT")==true ) {
+            while ((responseLinje = is.readLine()) != null) {
+                System.out.println("\n"+responseLinje);
+                if (responseLinje.equalsIgnoreCase("GLOBAL_COMMIT")==true || responseLinje.equalsIgnoreCase("GLOBAL_ABORT")==true ) {
                     break;
                 }
             }
-            closed=true;
+            lukket=true;
         }
         catch (IOException e) {
             System.err.println("IOException:  " + e);
