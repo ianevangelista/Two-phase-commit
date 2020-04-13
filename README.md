@@ -105,6 +105,12 @@ try {
 ```
 <a name="diskusjon"></a>
 ## Diskusjon
+Først og fremst har vi valgt å programmere løsningen i Java. 
+Hovedgrunnen til dette er at gruppen hadde god kjennskap til det, 
+men også fordi flere av relevante øvinger tilknyttet til dette prosjektet ble skrevet i Java.
+Til inspirasjon har vi tatt i bruk mye av den samme implementasjonen som vi innførte i øving 4. 
+Vi har valgt å ta i bruk socketer for mottak og sending av data.
+###
 En beskrivelse og diskusjon/argumentasjon (denne delen en veldig viktig ved evaluering) av hvilke teknologi- og arkitektur-/designvalg dere har stått ovenfor (når dere skulle løse oppgaven), hva dere hadde å velge mellom og hvorfor dere har valgt det dere har valgt. Når det gjelder teknologivalg så kan denne delen begrenses til «pensum i faget».
 
 <a name="teknologier"></a>
