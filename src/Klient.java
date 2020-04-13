@@ -3,13 +3,13 @@
 import java.io.*;
 import java.net.*;
 
-public class Klient implements Runnable
-{
+public class Klient implements Runnable {
     static Socket klientSocket = null;
     static PrintStream os = null;
     static DataInputStream is = null;
     static BufferedReader inputLinje = null;
     static boolean lukket = false;
+
     public static void main(String[] args) {
         int port=1111;
         String host="localhost";
@@ -42,7 +42,7 @@ public class Klient implements Runnable
         try {
             while ((responseLinje = is.readLine()) != null) {
                 System.out.println("\n"+responseLinje);
-                if (responseLinje.equalsIgnoreCase("GLOBAL_COMMIT")==true || responseLinje.equalsIgnoreCase("GLOBAL_ABORT")==true ) {
+                if (responseLinje.equalsIgnoreCase("GLOBAL_COMMIT") || responseLinje.equalsIgnoreCase("GLOBAL_ABORT")) {
                     break;
                 }
             }

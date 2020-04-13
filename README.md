@@ -43,7 +43,7 @@ begrenses av andre klienters tilkobling til serveren.
 
 Videre bruker vi sockets for å lytte etter tilkoblinger
 fra klient. I Java bruker vi ServerSocket for å lytte på
-port 1111 etter klienter:
+port 1111 ettr klienter:
 ```java
 int port_nummer = 1111;
 ServerSocket tjenerSocket = null;
@@ -70,7 +70,39 @@ while (!tjener.lukket) {
 
 <a name="funksjonalitet_klient"></a>
 ### Klient
-
+I klient klassen opprettes også en socket på port 1111. 
+Deretter oppretter vi lese og skrive forbindelse til
+serveren ved hjelp av PrintStream(os) og 
+DataInputStream(is) i form av output- og inputstream:
+```java
+int port=1111;
+String host="localhost";
+try {
+    klientSocket = new Socket(host, port);
+    inputLinje = new BufferedReader(new InputStreamReader(System.in));
+    os = new PrintStream(klientSocket.getOutputStream());
+    is = new DataInputStream(klientSocket.getInputStream());
+} catch (Exception e) {
+    System.out.println("Exception occurred : " + e.getMessage());
+}
+```
+Ved nye hendelser fra server sørger en run-metode
+i klient for å plukke opp meldinger fra server i en loop
+som kjøres så lenge ikke alle tilkoblede klienter har 
+stemt:
+```java
+try {
+    while ((responseLinje = is.readLine()) != null) {
+        System.out.println("\n"+responseLinje);
+        if (responseLinje.equalsIgnoreCase("GLOBAL_COMMIT") || responseLinje.equalsIgnoreCase("GLOBAL_ABORT")) {
+            break;
+        }
+    }
+    lukket=true;
+} catch (IOException e) {
+    System.err.println("IOException:  " + e);
+}
+```
 <a name="diskusjon"></a>
 ## Diskusjon
 En beskrivelse og diskusjon/argumentasjon (denne delen en veldig viktig ved evaluering) av hvilke teknologi- og arkitektur-/designvalg dere har stått ovenfor (når dere skulle løse oppgaven), hva dere hadde å velge mellom og hvorfor dere har valgt det dere har valgt. Når det gjelder teknologivalg så kan denne delen begrenses til «pensum i faget».
