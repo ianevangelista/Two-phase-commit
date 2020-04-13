@@ -150,14 +150,14 @@ Om en klient stemmer for ABORT vil tjeneren initialisere en global abort uansett
 ### Server
 For å installere serveren på en linux server:
 1. Clone prosjektet til din linux maskin
-2. Kjør "apt-get install default-jdk" for å installere java
-3. Kjør "javac Tjener.java"
-4. Kjør "java Tjener"
+2. Kjør *apt-get install default-jdk* for å installere java
+3. Kjør *javac Tjener.java*
+4. Kjør *java Tjener*
 
 ### Klient
 For å kjøre klienten trenger du java installert
 på din maskin. Deretter kan du feks. følge trinn 3-4
-over i samme mappe som filen, eller bruke en IDEA for å kjøre koden. 
+over i samme mappe som filen(og med Klient i stedet for Tjener), eller bruke en IDEA for å kjøre koden. 
 
 <a name="testing"></a>
 ## Hvordan man kan teste løsningen
