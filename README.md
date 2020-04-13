@@ -45,10 +45,10 @@ Videre bruker vi sockets for å lytte etter tilkoblinger
 fra klient. I Java bruker vi ServerSocket for å lytte på
 port 1111 etter klienter:
 ```java
-int port_number = 1111;
-ServerSocket serverSocket = null;
+int port_nummer = 1111;
+ServerSocket tjenerSocket = null;
 try {
-    serverSocket = new ServerSocket(port_number);
+    tjenerSocket = new ServerSocket(port_nummer);
 } catch(IOException e) {
     System.out.println(e);
 }
@@ -57,11 +57,11 @@ Serveren kjører så i loop og oppretter egne tråder
 for hver klient som kobler seg til, gitt at serverSocket
 aksepterer forbindelsen uten å kaste exceptions:
 ```java
-while (!server.closed) {
+while (!tjener.lukket) {
     try {
-        clientSocket = serverSocket.accept();
-        ClientThread clientThread = new ClientThread(server, clientSocket);
-        clientThread.start();
+        klientSocket = tjenerSocket.accept();
+        KlientTraad klientTraad = new KlientTraad(tjener, klientSocket);
+        klientTraad.start();
     } catch (IOException e) {
         e.pritStackTrace();
     }
