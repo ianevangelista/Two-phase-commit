@@ -41,6 +41,25 @@ tråder slik at hver tilkobling til server kjører på
 en egen tråd. Dermed sikrer vi at klienter ikke
 begrenses av andre klienters tilkobling til serveren.
 
+Videre bruker vi sockets for å lytte etter tilkoblinger
+fra klient. I Java bruker vi ServerSocket for å lytte på
+port 1111:
+```java
+import java.io.*;
+import java.net.*;
+
+public class Server {
+    public static void main(String args[]) {
+        int port_number = 1111;
+        ServerSocket serverSocket = null;
+        try{
+            serverSocket = new ServerSocket(port_number);
+        } catch(IOException e) {
+            System.out.println(e);
+        } 
+    }
+}
+```
 
 <a name="funksjonalitet_klient"></a>
 ### Klient
