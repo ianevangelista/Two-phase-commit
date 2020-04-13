@@ -1,4 +1,4 @@
-//Two Phase Commit Protocol SERVER
+//Two Phase Commit Protocol TJENER
 import java.io.*;
 import java.net.*;
 import java.util.*;

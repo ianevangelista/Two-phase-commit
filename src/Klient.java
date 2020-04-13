@@ -1,9 +1,9 @@
-//Two Phase Commit Protocol CLIENT
+//Two Phase Commit Protocol KLIENT
 
 import java.io.*;
 import java.net.*;
 
-public class Client implements Runnable
+public class Klient implements Runnable
 {
     static Socket klientSocket = null;
     static PrintStream os = null;
@@ -24,7 +24,7 @@ public class Client implements Runnable
 
         if (klientSocket != null && os != null && is != null) {
             try {
-                new Thread(new Client()).start();
+                new Thread(new Klient()).start();
                 while (!lukket) {
                     os.println(inputLinje.readLine());
                 }
@@ -52,4 +52,4 @@ public class Client implements Runnable
             System.err.println("IOException:  " + e);
         }
     }
-} //end client
+} //end klient
