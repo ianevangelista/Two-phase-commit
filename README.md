@@ -116,6 +116,26 @@ Hva hadde vi å velge mellom, hvorfor valgte vi som vi gjorde?
 
 <a name="eksempler"></a>
 ## Eksempler som viser bruken av løsningen
+Når man kjører Tjeneren får man beskjed om navnet til tjeneren er Per
+![Image description](https://i.imgur.com/bdPlgIQ.png)
+
+Når man kjører en klient får man følgende beskjed om å skrive inn navnet sitt. Når klienten gjør dette, får den informasjon om transaksjonen og får med en gang beskjed om en "vote request". Hos klient 1:
+![Image description](https://i.imgur.com/NjhpKg9.png)
+
+Om man kobler til en klient til vil både den første klienten og tjeneren få beskjed:
+| Server | Klient |
+| --- | --- |
+|![Image description](https://i.imgur.com/d2GpKzC.png)|![Image description](https://i.imgur.com/zCPrrR3.png)|
+   
+Om en av klientene stemmer for å commite vil kun tjeneren se denne beskjeden:
+| Server | Klient |
+| --- | --- |
+|![Image description](https://i.imgur.com/S5TUGIA.png)|![Image description](https://i.imgur.com/5yu1MAV.png)|
+
+Hvis den andre klienten også stemmer for commit, har alle klientene stemt for commit, og transaksjonen gjennomføres. Klientene får beskjed om at det er blitt gjennomført en global commit. Tjeneren gir så tilbakemelding på at den har byttet navn, og heter nå Ola.
+| Server | Klient |
+| --- | --- |
+|![Image description](https://i.imgur.com/n6t2m1V.png)|![Image description](https://i.imgur.com/uTgNbvd.png)|
 
 <a name="installasjon"></a>
 ## Installasjonsinstruksjoner
