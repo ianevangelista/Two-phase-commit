@@ -3,8 +3,7 @@
 import java.io.*;
 import java.net.*;
 
-public class Client implements Runnable
-{
+public class Client implements Runnable {
     static Socket clientSocket = null;
     static PrintStream os = null;
     static DataInputStream is = null;
