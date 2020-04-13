@@ -38,7 +38,6 @@ public class Server {
             } catch (IOException e) { }
         }
         try {
-
             serverSocket.close();
         } catch (Exception e1) { }
     } // end main
