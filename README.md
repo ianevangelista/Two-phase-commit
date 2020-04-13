@@ -3,6 +3,8 @@
 * [Biblioteker og CI](#biblioteker)
 * [Introduksjon](#introduksjon)
 * [Implementert funksjonalitet](#funksjonalitet)
+    * [Server](#funksjonalitet_server)
+    * [Klient](#funksjonalitet_klient)
 * [Diskusjon](#diskusjon)
 * [Teknologier](#teknologier)
 * [Forbedringer](#forbedringer)
@@ -19,10 +21,29 @@ Insert CI link her
 
 <a name="introduksjon"></a>
 ## Introduksjon
-I dette prosjektet lager vi en two-phase commit løsning. Denne fungerer ved at alle tilkoblede klienter må "stemme" over valg som gjøres. I dette prosjektet bruker vi serverens navn som et eksempel. Navet endres og alle tilkoblede parter må være enige om å beholde det nye navnet. Dersom én er uenig ruller vi tilbake til det gamle servernavnet (rollback). Alle parter må stemme før et valg er avgjort.
+I dette prosjektet lager vi en two-phase commit løsning.
+Denne fungerer ved at alle tilkoblede klienter må "stemme" over valg som gjøres.
+I dette prosjektet bruker vi serverens navn som et eksempel.
+Navet endres og alle tilkoblede parter må være enige om å beholde det nye navnet.
+Dersom én er uenig ruller vi tilbake til det gamle servernavnet (rollback).
+Alle parter må stemme før et valg er avgjort.
 
 <a name="funksjonalitet"></a>
 ## Implementert funksjonalitet
+Siden prosjektet er inndelt i server og klient,
+to deler i et distibuert system, ser vi også på
+funksjonaliteten for disse hver for seg.
+
+<a name="funksjonalitet_server"></a>
+### Server
+På serversiden har vi først og fremst implementert
+tråder slik at hver tilkobling til server kjører på
+en egen tråd. Dermed sikrer vi at klienter ikke
+begrenses av andre klienters tilkobling til serveren.
+
+
+<a name="funksjonalitet_klient"></a>
+### Klient
 
 <a name="diskusjon"></a>
 ## Diskusjon
