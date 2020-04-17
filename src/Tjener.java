@@ -7,8 +7,6 @@ public class Tjener {
     boolean lukket = false, inputFraAlle = false;
     List<KlientTraad> traadListe;
     List<String> data;
-    String tjenerNavn = "Per";
-    String tjenerNavnGammel = "";
 
     Tjener() {
         traadListe = new ArrayList<KlientTraad>();
@@ -22,7 +20,6 @@ public class Tjener {
         Tjener tjener = new Tjener();
         try {
             tjenerSocket = new ServerSocket(port_number);
-            System.out.println("Navnet mitt er " + tjener.tjenerNavn);
         } catch (IOException e) {
             System.out.println(e);
         }

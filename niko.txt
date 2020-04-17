@@ -1,0 +1,3 @@
+dato,saldoFor,transaksjon,saldoEtter
+
+Fri Apr 17 18:18:36 CEST 2020,10,-5,5

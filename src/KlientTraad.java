@@ -6,11 +6,11 @@ import java.net.Socket;
 class KlientTraad extends Thread {
     DataInputStream is = null;
     String linje;
-    String navn;
     PrintStream os = null;
     Socket klientSocket = null;
     String klientIdentitet;
     Tjener tjener;
+    int saldo = 0;
 
     public KlientTraad(Tjener tjener, Socket klientSocket) {
         this.klientSocket = klientSocket;
@@ -21,34 +21,26 @@ class KlientTraad extends Thread {
     public void run() {
         try {
             // Simulerer avgjørelse
-            if (tjener.traadListe.size() == 1) {
-                tjener.tjenerNavnGammel = tjener.tjenerNavn;
-                if (tjener.tjenerNavn.equals("Ola")) {
-                    tjener.tjenerNavn = "Per"; // dette skjedde egt før
-                } else {
-                    tjener.tjenerNavn = "Ola"; // dette skjedde egt før
-                }
-            }
             is = new DataInputStream(klientSocket.getInputStream());
             os = new PrintStream(klientSocket.getOutputStream());
             os.println("Skriv inn navnet ditt: ");
-            navn = is.readLine();
-            klientIdentitet = navn;
-            os.println("Velkommen " + navn + " til denne 2-fase applikasjonen.\nDu vil motta en VOTE_REQUEST...");
-            os.println("Tjenerens navn er endret til " + tjener.tjenerNavn + ". Beholde endringen?");
-            os.println("VOTE_REQUEST\nVennligst skriv inn COMMIT eller ABORT: ");
+            klientIdentitet = is.readLine();
+            os.println("Hva er din saldo? (Dette er for eksemplets betyding, ikke slik i virkeligheten)");
+            saldo = Integer.parseInt(is.readLine());
+            os.println("Velkommen " + klientIdentitet + " til denne 2-fase applikasjonen.\nDu vil motta en VOTE_REQUEST...");
+            os.println("VOTE_REQUEST:\nTrekker fra 5kr om du har råd. Skriv ok om du vil gå videre");
+            is.readLine();
             for (int i = 0; i < (tjener.traadListe).size(); i++) {
                 if ((tjener.traadListe).get(i) != this) {
-                    ((tjener.traadListe).get(i)).os.println("---En ny bruker ved navn " + navn + " har blitt med i applikasjonen---");
+                    ((tjener.traadListe).get(i)).os.println("---En ny bruker ved navn " + klientIdentitet + " har blitt med i applikasjonen---");
                 }
             }
             while (true) {
-                linje = is.readLine();
+                linje = saldo >= 5 ? "COMMIT":"ABORT";
                 if (linje.equalsIgnoreCase("ABORT")) {
                     System.out.println("\nFra '" + klientIdentitet
                             + "' : ABORT\n\nSiden det ble skrevet ABORT, vil vi ikke vente paa flere input fra andre klienter.");
-                    tjener.tjenerNavn = tjener.tjenerNavnGammel;
-                    System.out.println("\nAborted....Navnet mitt er fortsatt " + tjener.tjenerNavn);
+                    System.out.println("\nAborted...");
 
                     while(tjener.traadListe.size() > 0) {
                         ((tjener.traadListe).get(0)).os.println("ABORT");
@@ -60,6 +52,7 @@ class KlientTraad extends Thread {
                     break;
                 }
                 if (linje.equalsIgnoreCase("COMMIT")) {
+                    // Loggfører saldo før transaksjon, transaksjon, ny saldo
                     System.out.println("\nFra '" + klientIdentitet + "' : COMMIT");
                     if ((tjener.traadListe).contains(this)) {
                         (tjener.data).set((tjener.traadListe).indexOf(this), "COMMIT");
@@ -74,8 +67,7 @@ class KlientTraad extends Thread {
                             }
                         }
                         if (tjener.inputFraAlle) {
-                            tjener.tjenerNavnGammel = tjener.tjenerNavn;
-                            System.out.println("\n\nCommited.... Navnet mitt er naa " + tjener.tjenerNavn);
+                            System.out.println("\n\nCommited....");
                             while(tjener.traadListe.size() > 0) {
                                 ((tjener.traadListe).get(0)).os.println("GLOBAL_COMMIT");
                                 ((tjener.traadListe).get(0)).os.close();
