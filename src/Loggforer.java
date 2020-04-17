@@ -1,7 +1,6 @@
 import java.io.*;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Scanner;
 
 public class Loggforer {
     private File loggFil;
@@ -73,7 +72,5 @@ public class Loggforer {
         logg.loggfor(10, -5);
         System.out.println(logg.getRollbackSaldo());
         logg.close();
-        // System.out.println(log.test());
-
     }
 }

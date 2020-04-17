@@ -11,6 +11,7 @@ class KlientTraad extends Thread {
     String klientIdentitet;
     Tjener tjener;
     int saldo = 0;
+    Loggforer logg;
 
     public KlientTraad(Tjener tjener, Socket klientSocket) {
         this.klientSocket = klientSocket;
@@ -25,6 +26,7 @@ class KlientTraad extends Thread {
             os = new PrintStream(klientSocket.getOutputStream());
             os.println("Skriv inn navnet ditt: ");
             klientIdentitet = is.readLine();
+            this.logg = new Loggforer(klientIdentitet);
             os.println("Hva er din saldo? (Dette er for eksemplets betyding, ikke slik i virkeligheten)");
             saldo = Integer.parseInt(is.readLine());
             os.println("Velkommen " + klientIdentitet + " til denne 2-fase applikasjonen.\nDu vil motta en VOTE_REQUEST...");
@@ -53,6 +55,8 @@ class KlientTraad extends Thread {
                 }
                 if (linje.equalsIgnoreCase("COMMIT")) {
                     // Loggfører saldo før transaksjon, transaksjon, ny saldo
+                    // logg.loggfor(saldo, -5);
+                    // saldo -= 5;
                     System.out.println("\nFra '" + klientIdentitet + "' : COMMIT");
                     if ((tjener.traadListe).contains(this)) {
                         (tjener.data).set((tjener.traadListe).indexOf(this), "COMMIT");
