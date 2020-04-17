@@ -105,6 +105,12 @@ try {
 ```
 <a name="diskusjon"></a>
 ## Diskusjon
+Først og fremst har vi valgt å programmere løsningen i Java. 
+Hovedgrunnen til dette er at gruppen hadde god kjennskap til det, 
+men også fordi flere av relevante øvinger tilknyttet til dette prosjektet ble skrevet i Java.
+Til inspirasjon har vi tatt i bruk mye av den samme implementasjonen som vi innførte i øving 4. 
+Vi har valgt å ta i bruk socketer for mottak og sending av data.
+###
 En beskrivelse og diskusjon/argumentasjon (denne delen en veldig viktig ved evaluering) av hvilke teknologi- og arkitektur-/designvalg dere har stått ovenfor (når dere skulle løse oppgaven), hva dere hadde å velge mellom og hvorfor dere har valgt det dere har valgt. Når det gjelder teknologivalg så kan denne delen begrenses til «pensum i faget».
 
 <a name="teknologier"></a>
@@ -150,14 +156,14 @@ Om en klient stemmer for ABORT vil tjeneren initialisere en global abort uansett
 ### Server
 For å installere serveren på en linux server:
 1. Clone prosjektet til din linux maskin
-2. Kjør "apt-get install default-jdk" for å installere java
-3. Kjør "javac Tjener.java"
-4. Kjør "java Tjener"
+2. Kjør *apt-get install default-jdk* for å installere java
+3. Kjør *javac Tjener.java*
+4. Kjør *java Tjener*
 
 ### Klient
 For å kjøre klienten trenger du java installert
 på din maskin. Deretter kan du feks. følge trinn 3-4
-over i samme mappe som filen, eller bruke en IDEA for å kjøre koden. 
+over i samme mappe som filen(og med Klient i stedet for Tjener), eller bruke en IDEA for å kjøre koden. 
 
 <a name="testing"></a>
 ## Hvordan man kan teste løsningen
