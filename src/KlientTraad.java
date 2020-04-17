@@ -30,7 +30,7 @@ class KlientTraad extends Thread {
             os.println("Hva er din saldo? (Dette er for eksemplets betyding, ikke slik i virkeligheten)");
             saldo = Integer.parseInt(is.readLine());
             os.println("Velkommen " + klientIdentitet + " til denne 2-fase applikasjonen.\nDu vil motta en VOTE_REQUEST...");
-            os.println("VOTE_REQUEST:\nTrekker fra 5kr om du har råd. Skriv ok om du vil gå videre");
+            os.println("VOTE_REQUEST:\nTrekker fra 5kr om du har raad. Skriv ok om du vil gå videre");
             is.readLine();
             for (int i = 0; i < (tjener.traadListe).size(); i++) {
                 if ((tjener.traadListe).get(i) != this) {
@@ -39,6 +39,7 @@ class KlientTraad extends Thread {
             }
             while (true) {
                 linje = saldo >= 5 ? "COMMIT":"ABORT";
+
                 if (linje.equalsIgnoreCase("ABORT")) {
                     System.out.println("\nFra '" + klientIdentitet
                             + "' : ABORT\n\nSiden det ble skrevet ABORT, vil vi ikke vente paa flere input fra andre klienter.");
@@ -54,9 +55,9 @@ class KlientTraad extends Thread {
                     break;
                 }
                 if (linje.equalsIgnoreCase("COMMIT")) {
-                    // Loggfører saldo før transaksjon, transaksjon, ny saldo
-                    // logg.loggfor(saldo, -5);
-                    // saldo -= 5;
+                    logg.loggfor(saldo, this.tjener.belop);
+                    saldo += this.tjener.belop;
+
                     System.out.println("\nFra '" + klientIdentitet + "' : COMMIT");
                     if ((tjener.traadListe).contains(this)) {
                         (tjener.data).set((tjener.traadListe).indexOf(this), "COMMIT");
@@ -71,16 +72,33 @@ class KlientTraad extends Thread {
                             }
                         }
                         if (tjener.inputFraAlle) {
-                            System.out.println("\n\nCommited....");
-                            while(tjener.traadListe.size() > 0) {
-                                ((tjener.traadListe).get(0)).os.println("GLOBAL_COMMIT");
-                                ((tjener.traadListe).get(0)).os.close();
-                                ((tjener.traadListe).get(0)).is.close();
+                            System.out.println("\n\nSending GLOBAL_COMMIT to all....");
+                            for(int i = 0; i < tjener.traadListe.size(); i++) {
+                                ((tjener.traadListe).get(i)).os.println("GLOBAL_COMMIT");
+                                ((tjener.traadListe).get(i)).os.close();
+                                ((tjener.traadListe).get(i)).is.close();
                                 tjener.data.remove(tjener.traadListe.indexOf(tjener.traadListe.get(0)));
-                                tjener.traadListe.remove(0);
+                                //tjener.traadListe.remove(0); //fjerner senere etter ack
+                            }
+
+                            (tjener.ack).set((tjener.traadListe).indexOf(this), "ACKNOWLEDGEMENT");
+                            for (int j = 0; j < (tjener.ack).size(); j++) {
+                                if (!(((tjener.ack).get(j)).equalsIgnoreCase("NOT_SENT"))) {
+                                    tjener.ackFraAlle = true;
+                                    continue;
+                                } else {
+                                    tjener.ackFraAlle = false;
+                                    System.out.println("\nVenter paa acknowledgement fra andre klienter.");
+                                    break;
+                                }
+                            }
+
+                            if (tjener.ackFraAlle) {
+                                System.out.println("\nFra '" + klientIdentitet + "' : ACKNOWLEDGEMENT");
                             }
                             break;
                         }
+                        break;
                     } // if traadListe.contains
                 } // commit
             } // while

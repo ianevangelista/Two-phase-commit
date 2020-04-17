@@ -4,13 +4,16 @@ import java.net.*;
 import java.util.*;
 
 public class Tjener {
-    boolean lukket = false, inputFraAlle = false;
+    boolean lukket = false, inputFraAlle = false, ackFraAlle = false;
     List<KlientTraad> traadListe;
-    List<String> data;
+    List<String> data, ack;
+    int belop;
 
     Tjener() {
         traadListe = new ArrayList<KlientTraad>();
         data = new ArrayList<String>();
+        ack = new ArrayList<String>();
+        belop = -5;
     }
 
     public static void main(String args[]) {
@@ -31,6 +34,7 @@ public class Tjener {
                 System.out.println("\nAntall klienter er oppdatert til: " + (tjener.traadListe).size());
 
                 (tjener.data).add("NOT_SENT");
+                (tjener.ack).add("NOT_SENT");
                 klientTraad.start();
             } catch (IOException e) { }
         }

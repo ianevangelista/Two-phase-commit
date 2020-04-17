@@ -42,7 +42,7 @@ public class Klient implements Runnable {
         try {
             while ((responseLinje = is.readLine()) != null) {
                 System.out.println("\n"+responseLinje);
-                if (responseLinje.equalsIgnoreCase("GLOBAL_COMMIT") || responseLinje.equalsIgnoreCase("GLOBAL_ABORT")) {
+                if (responseLinje.equalsIgnoreCase("ACKNOWLEDGEMENT") || responseLinje.equalsIgnoreCase("GLOBAL_ABORTED")) {
                     break;
                 }
             }
