@@ -23,12 +23,12 @@ public class Loggforer {
         }
     }
 
-    public boolean loggfor(int saldoFor, int belop) {
+    public boolean loggfor(String loggforing) {
         Calendar kalender = Calendar.getInstance();
         Date dato = kalender.getTime();
         try {
             skriveForbindelse = new BufferedWriter(new FileWriter(filnavn, true));
-            skriveForbindelse.write(dato + "," + saldoFor + "," + belop + "," + (saldoFor+belop) + "\n");
+            skriveForbindelse.write(dato + "," + loggforing + "\n");
             skriveForbindelse.close();
             return true;
         } catch(IOException e) {
@@ -69,7 +69,7 @@ public class Loggforer {
 
     public static void main(String[] args) {
         Loggforer logg = new Loggforer("niko");
-        logg.loggfor(10, -5);
+        logg.loggfor("10,-5,5");
         System.out.println(logg.getRollbackSaldo());
         logg.close();
     }
