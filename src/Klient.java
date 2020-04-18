@@ -31,7 +31,7 @@ public class Klient implements Runnable {
             try {
                 new Thread(new Klient()).start();
                 while (!lukket) {
-                    os.println(inputLinje.readLine());
+                 //    os.println(inputLinje.readLine());
                 }
                 os.close();
                 is.close();
@@ -44,21 +44,23 @@ public class Klient implements Runnable {
     @SuppressWarnings("deprecation")
     public void run() {
         String responseLinje;
-        Scanner leser = new Scanner(System.in);
         int belop = 0;
         try {
             System.out.println("Hva er navnet ditt?");
-            klientIdentitet = leser.nextLine();
-            System.out.println("navn " + klientIdentitet);
+            klientIdentitet = inputLinje.readLine();
+            os.println(klientIdentitet);
             System.out.println("Hva er din saldo? (For eksempels skyld)");
-            saldo = Integer.parseInt(leser.nextLine());
+            saldo = Integer.parseInt(inputLinje.readLine());
             logg = new Loggforer(klientIdentitet);
             logg.loggfor(klientIdentitet + " er tilkoblet. Saldo er: " + saldo + "kr.");
             System.out.println("Velkommen " + klientIdentitet + " til denne 2-fase applikasjonen.\nDu vil motta en VOTE_REQUEST...");
+            System.out.println("Skriv ok om du vil fortsette. (Nå er tiden til å kjøre flere klienter)");
+            inputLinje.readLine();
             while ((responseLinje = is.readLine()) != null) {
                 System.out.println("\n"+responseLinje);
                 if (responseLinje.indexOf("VOTE_REQUEST") != -1) {
-                    belop = Integer.parseInt(responseLinje.split("\n")[1].split(":")[1]);
+                    belop = Integer.parseInt(responseLinje.split(":")[2]);
+                    System.out.println(belop);
                     logg.loggfor("Fikk voterequest om å trekke " + belop + "kr.");
                     if (saldo >= belop) {
                         os.println("COMMIT");

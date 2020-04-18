@@ -24,7 +24,8 @@ class KlientTraad extends Thread {
         try {
             is = new DataInputStream(klientSocket.getInputStream());
             os = new PrintStream(klientSocket.getOutputStream());
-            os.println("VOTE_REQUEST:\nBer om trekke fra følgende beløp(kr): 5");
+            klientIdentitet = is.readLine();
+            os.println("VOTE_REQUEST: Ber om trekke fra følgende beløp(kr):5");
             for (int i = 0; i < (tjener.traadListe).size(); i++) {
                 if ((tjener.traadListe).get(i) != this) {
                     ((tjener.traadListe).get(i)).os.println("---En ny bruker ved navn " + klientIdentitet + " har blitt med i applikasjonen---");
@@ -32,6 +33,8 @@ class KlientTraad extends Thread {
             }
             while (true) {
                 linje = is.readLine();
+                if (linje.indexOf("NAME") != -1) {
+                }
                 if (linje.equalsIgnoreCase("ABORT")) {
                     logg.loggfor("Sender ABORT til tjener, har ikke raad.");
                     System.out.println("\nFra '" + klientIdentitet
