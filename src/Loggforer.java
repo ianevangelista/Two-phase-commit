@@ -40,14 +40,13 @@ public class Loggforer {
     public int getRollbackSaldo() {
         try {
             leseForbindelse = new BufferedReader(new FileReader(filnavn));
-            String sCurrentLine;
-            String lastLine = "";
-            while ((sCurrentLine = leseForbindelse.readLine()) != null) {
-                lastLine = sCurrentLine;
+            String currentLine;
+            String lagretSaldo = "";
+            while ((currentLine = leseForbindelse.readLine()) != null) {
+                if (currentLine.indexOf("SAVE") != -1) lagretSaldo = currentLine;
             }
-            String[] data = lastLine.split(",");
             leseForbindelse.close();
-            return Integer.parseInt(data[1]);
+            return Integer.parseInt(lagretSaldo.split(":")[2]);
         } catch(IOException e) {
             e.printStackTrace();
         }
