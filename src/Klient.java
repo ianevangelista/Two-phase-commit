@@ -61,7 +61,7 @@ public class Klient implements Runnable {
                     System.out.println("Skriv ok om du vil fortsette. (Nå er tiden til å kjøre flere klienter)");
                     inputLinje.readLine();
                     belop = Integer.parseInt(responseLinje.split(":")[2]);
-                    logg.loggfor("Fikk voterequest om aa trekke " + belop + "kr.");
+                    logg.loggfor("Fikk VOTE_REQUEST om å trekke " + belop + "kr.");
                     if (saldo >= belop) {
                         os.println("COMMIT");
                         logg.loggfor("SAVE: Lagrer gammel saldo(kr): " + saldo);
@@ -82,8 +82,8 @@ public class Klient implements Runnable {
                     break;
                 }
                 if (responseLinje.equalsIgnoreCase("GLOBAL_COMMIT")) {
-                    logg.loggfor("Fikk klarsignal(GLOBAL_COMMIT) fra tjener. Loggfører transaksjon:");
-                    logg.loggfor("Utførte transaksjon: [" + (saldo+belop) + "," + belop + "," + saldo + "]");
+                    logg.loggfor("Fikk klarsignal(GLOBAL_COMMIT) fra tjener.");
+                    logg.loggfor("Utførte transaksjon: [Opprinnelig beløp: " + (saldo+belop) + ", Transaksjonsbeløp: " + belop + ", Nytt beløp: " + saldo + "]");
                     System.out.println("Skriv ok om du vil acknowledge.");
                     inputLinje.readLine();
                     os.println("ACKNOWLEDGEMENT");
@@ -91,10 +91,11 @@ public class Klient implements Runnable {
                     break;
                 }
             }
-            logg.loggfor("Klienten er nå frakoblet\n");
+            logg.loggfor("Klienten er nå frakoblet.\n");
             System.out.println("Two phase commit er nå ferdig. Ha det bra");
             lukket=true;
             logg.close();
+            System.exit(0);
         }
         catch (IOException e) {
             System.err.println("IOException:  " + e);

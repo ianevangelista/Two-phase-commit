@@ -9,16 +9,12 @@ public class Loggforer {
     private BufferedWriter skriveForbindelse;
 
     public Loggforer(String navn) {
-        this.filnavn = navn.toLowerCase() + ".txt";
+        this.filnavn = "logger/" + navn.toLowerCase() + ".txt";
         String attributter = "dato,saldoFor,transaksjon,saldoEtter\n";
         try {
             this.loggFil = new File(filnavn);
-            if (this.loggFil.createNewFile()) {
-                this.skriveForbindelse = new BufferedWriter(new FileWriter(filnavn));
-                this.skriveForbindelse.write(attributter);
-                this.skriveForbindelse.close();
-            }
-        } catch(IOException e) {
+            this.loggFil.createNewFile();
+            } catch(IOException e) {
             e.printStackTrace();
         }
     }
