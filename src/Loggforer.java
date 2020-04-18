@@ -46,7 +46,7 @@ public class Loggforer {
                 if (currentLine.indexOf("SAVE") != -1) lagretSaldo = currentLine;
             }
             leseForbindelse.close();
-            return Integer.parseInt(lagretSaldo.split(":")[2]);
+            return Integer.parseInt(lagretSaldo.split(":")[4].trim());
         } catch(IOException e) {
             e.printStackTrace();
         }

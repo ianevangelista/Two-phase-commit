@@ -53,41 +53,48 @@ public class Klient implements Runnable {
             saldo = Integer.parseInt(inputLinje.readLine());
             logg = new Loggforer(klientIdentitet);
             logg.loggfor(klientIdentitet + " er tilkoblet. Saldo er: " + saldo + "kr.");
-            System.out.println("Velkommen " + klientIdentitet + " til denne 2-fase applikasjonen.\nDu vil motta en VOTE_REQUEST...");
-            System.out.println("Skriv ok om du vil fortsette. (Nå er tiden til å kjøre flere klienter)");
-            inputLinje.readLine();
-            while ((responseLinje = is.readLine()) != null) {
+            System.out.println("Velkommen " + klientIdentitet + " til denne 2-fase applikasjonen.");
+
+            while ((responseLinje = is.readLine()) != null && !lukket) {
                 System.out.println("\n"+responseLinje);
                 if (responseLinje.indexOf("VOTE_REQUEST") != -1) {
+                    System.out.println("Skriv ok om du vil fortsette. (Nå er tiden til å kjøre flere klienter)");
+                    inputLinje.readLine();
                     belop = Integer.parseInt(responseLinje.split(":")[2]);
-                    System.out.println(belop);
-                    logg.loggfor("Fikk voterequest om å trekke " + belop + "kr.");
+                    logg.loggfor("Fikk voterequest om aa trekke " + belop + "kr.");
                     if (saldo >= belop) {
                         os.println("COMMIT");
                         logg.loggfor("SAVE: Lagrer gammel saldo(kr): " + saldo);
                         logg.loggfor("Sender COMMIT til tjener.");
-                        saldo += belop;
+                        saldo -= belop;
                         gjordeEndringer = true;
                     } else {
-                        os.print("ABORT");
+                        os.println("ABORT");
+                        logg.loggfor("Sender ABORT til tjener, har ikke raad.");
                     }
                 }
-                if (responseLinje.equalsIgnoreCase("GLOBAL_ABORTED")) {
+                if (responseLinje.equalsIgnoreCase("GLOBAL_ABORT")) {
                     logg.loggfor("Fikk beskjed om ABORT fra tjener");
                     if (gjordeEndringer) {
-                        logg.loggfor("Rollback. Saldo er nå " + logg.getRollbackSaldo() + "kr");
+                        saldo = logg.getRollbackSaldo();
+                        logg.loggfor("Rollback. Saldo er nå " + saldo + "kr");
                     }
                     break;
                 }
                 if (responseLinje.equalsIgnoreCase("GLOBAL_COMMIT")) {
-                    logg.loggfor("Fikk klarsignal(GLOBAL_COMMIT) fra tjener. Loggører transaksjon:");
-                    logg.loggfor("Utførte transaksjon: [" + (saldo-belop) + "," + belop + "," + saldo + "]");
+                    logg.loggfor("Fikk klarsignal(GLOBAL_COMMIT) fra tjener. Loggfører transaksjon:");
+                    logg.loggfor("Utførte transaksjon: [" + (saldo+belop) + "," + belop + "," + saldo + "]");
+                    System.out.println("Skriv ok om du vil acknowledge.");
+                    inputLinje.readLine();
                     os.println("ACKNOWLEDGEMENT");
-                    logg.loggfor("Sendte ACKNOWLEDGE til tjener. Klienten er nå frakoblet\n");
+                    logg.loggfor("Sendte ACKNOWLEDGE til tjener.");
                     break;
                 }
             }
+            logg.loggfor("Klienten er nå frakoblet\n");
+            System.out.println("Two phase commit er nå ferdig. Ha det bra");
             lukket=true;
+            logg.close();
         }
         catch (IOException e) {
             System.err.println("IOException:  " + e);

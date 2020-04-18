@@ -33,18 +33,13 @@ class KlientTraad extends Thread {
             }
             while (true) {
                 linje = is.readLine();
-                if (linje.indexOf("NAME") != -1) {
-                }
                 if (linje.equalsIgnoreCase("ABORT")) {
-                    logg.loggfor("Sender ABORT til tjener, har ikke raad.");
                     System.out.println("\nFra '" + klientIdentitet
                             + "' : ABORT\n\nSiden det ble skrevet ABORT, vil vi ikke vente paa flere input fra andre klienter.");
                     System.out.println("\nAborted...");
 
                     while(tjener.traadListe.size() > 0) {
                         ((tjener.traadListe).get(0)).os.println("GLOBAL_ABORT");
-                        ((tjener.traadListe).get(0)).os.close();
-                        ((tjener.traadListe).get(0)).is.close();
                         tjener.data.remove(tjener.traadListe.indexOf(tjener.traadListe.get(0)));
                         tjener.traadListe.remove(0);
                     }
@@ -64,16 +59,20 @@ class KlientTraad extends Thread {
                                 break;
                             }
                         }
-                        if (linje.equalsIgnoreCase("ACKNOWLEDGEMENT")) antallAck++;
+
                         if (tjener.inputFraAlle) {
                             System.out.println("\n\nSending GLOBAL_COMMIT to all....");
-                            for(int i = 0; i < tjener.traadListe.size(); i++) {
-                                ((tjener.traadListe).get(i)).os.println("GLOBAL_COMMIT");
-                                ((tjener.traadListe).get(i)).os.close();
-                                ((tjener.traadListe).get(i)).is.close();
-                                // tjener.data.remove(tjener.traadListe.indexOf(tjener.traadListe.get(0)));
-                                // tjener.traadListe.remove(0); //fjerner senere etter ack
+                            while(tjener.traadListe.size() > 0) {
+                                ((tjener.traadListe).get(0)).os.println("GLOBAL_COMMIT");
+                                tjener.data.remove(tjener.traadListe.indexOf(tjener.traadListe.get(0)));
+                                tjener.traadListe.remove(0); //fjerner senere etter ack
                             }
+                            linje = is.readLine();
+                            for (int i = 0; i < tjener.traadListe.size(); i++){
+                                if (linje.equalsIgnoreCase("ACKNOWLEDGEMENT")) antallAck++;
+                                System.out.println(antallAck);
+                            }
+
                             if (antallAck == tjener.traadListe.size()) {
                                 System.out.println("MOTTAT ACK FRA ALLE KLIENTER, TWO PHASE COMMIT ER NAA OVER");
                                 tjener.data = new ArrayList<String>();
@@ -84,11 +83,12 @@ class KlientTraad extends Thread {
                             }
                             break;
                         }
-                        break;
                     } // if traadListe.contains
                 } // commit
             } // while
             // tjener.lukket = true;
+            is.close();
+            os.close();
             klientSocket.close();
         } catch (IOException e) {
             e.printStackTrace();

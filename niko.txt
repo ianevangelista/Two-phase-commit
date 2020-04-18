@@ -59,3 +59,56 @@ Sat Apr 18 13:00:57 CEST 2020,Fikk klarsignal(GLOBAL_COMMIT) fra tjener. Loggør
 Sat Apr 18 13:00:57 CEST 2020,Utførte transaksjon: [6,5,11]
 Sat Apr 18 13:00:57 CEST 2020,Sendte ACKNOWLEDGE til tjener. Klienten er nå frakoblet
 
+Sat Apr 18 14:49:36 CEST 2020,niko er tilkoblet. Saldo er: 10kr.
+Sat Apr 18 14:49:38 CEST 2020,Fikk voterequest om aa trekke 5kr.
+Sat Apr 18 14:49:38 CEST 2020,SAVE: Lagrer gammel saldo(kr): 10
+Sat Apr 18 14:49:38 CEST 2020,Sender COMMIT til tjener.
+Sat Apr 18 14:49:41 CEST 2020,Fikk klarsignal(GLOBAL_COMMIT) fra tjener. Loggører transaksjon:
+Sat Apr 18 14:49:41 CEST 2020,Utførte transaksjon: [10,5,5]
+Sat Apr 18 14:49:48 CEST 2020,Sendte ACKNOWLEDGE til tjener. Klienten er nå frakoblet
+
+Sat Apr 18 14:59:10 CEST 2020,niko er tilkoblet. Saldo er: 0kr.
+Sat Apr 18 14:59:28 CEST 2020,Fikk voterequest om aa trekke 5kr.
+Sat Apr 18 14:59:28 CEST 2020,Sender ABORT til tjener, har ikke raad.
+Sat Apr 18 14:59:28 CEST 2020,Fikk beskjed om ABORT fra tjener
+Sat Apr 18 14:59:28 CEST 2020,Klienten er nå frakoblet
+
+Sat Apr 18 15:00:50 CEST 2020,niko er tilkoblet. Saldo er: 0kr.
+Sat Apr 18 15:00:51 CEST 2020,Fikk voterequest om aa trekke 5kr.
+Sat Apr 18 15:00:51 CEST 2020,Sender ABORT til tjener, har ikke raad.
+Sat Apr 18 15:00:51 CEST 2020,Fikk beskjed om ABORT fra tjener
+Sat Apr 18 15:00:51 CEST 2020,Klienten er nå frakoblet
+
+Sat Apr 18 15:03:27 CEST 2020,niko er tilkoblet. Saldo er: 0kr.
+Sat Apr 18 15:03:36 CEST 2020,Fikk voterequest om aa trekke 5kr.
+Sat Apr 18 15:03:36 CEST 2020,Sender ABORT til tjener, har ikke raad.
+Sat Apr 18 15:03:36 CEST 2020,Fikk beskjed om ABORT fra tjener
+Sat Apr 18 15:03:36 CEST 2020,Klienten er nå frakoblet
+
+Sat Apr 18 15:08:28 CEST 2020,niko er tilkoblet. Saldo er: 10kr.
+Sat Apr 18 15:08:29 CEST 2020,Fikk voterequest om aa trekke 5kr.
+Sat Apr 18 15:08:29 CEST 2020,SAVE: Lagrer gammel saldo(kr): 10
+Sat Apr 18 15:08:29 CEST 2020,Sender COMMIT til tjener.
+Sat Apr 18 15:08:32 CEST 2020,Fikk klarsignal(GLOBAL_COMMIT) fra tjener. Loggører transaksjon:
+Sat Apr 18 15:08:32 CEST 2020,Utførte transaksjon: [10,5,5]
+Sat Apr 18 15:08:42 CEST 2020,Sendte ACKNOWLEDGE til tjener.
+Sat Apr 18 15:08:42 CEST 2020,Klienten er nå frakoblet
+
+Sat Apr 18 15:11:49 CEST 2020,niko er tilkoblet. Saldo er: 10kr.
+Sat Apr 18 15:11:50 CEST 2020,Fikk voterequest om aa trekke 5kr.
+Sat Apr 18 15:11:50 CEST 2020,SAVE: Lagrer gammel saldo(kr): 10
+Sat Apr 18 15:11:50 CEST 2020,Sender COMMIT til tjener.
+Sat Apr 18 15:12:01 CEST 2020,Fikk klarsignal(GLOBAL_COMMIT) fra tjener. Loggører transaksjon:
+Sat Apr 18 15:12:01 CEST 2020,Utførte transaksjon: [10,5,5]
+Sat Apr 18 15:12:11 CEST 2020,Sendte ACKNOWLEDGE til tjener.
+Sat Apr 18 15:12:11 CEST 2020,Klienten er nå frakoblet
+
+Sat Apr 18 15:14:19 CEST 2020,niko er tilkoblet. Saldo er: 10kr.
+Sat Apr 18 15:14:21 CEST 2020,Fikk voterequest om aa trekke 5kr.
+Sat Apr 18 15:14:21 CEST 2020,SAVE: Lagrer gammel saldo(kr): 10
+Sat Apr 18 15:14:21 CEST 2020,Sender COMMIT til tjener.
+Sat Apr 18 15:14:21 CEST 2020,Fikk klarsignal(GLOBAL_COMMIT) fra tjener. Loggører transaksjon:
+Sat Apr 18 15:14:21 CEST 2020,Utførte transaksjon: [10,5,5]
+Sat Apr 18 15:14:22 CEST 2020,Sendte ACKNOWLEDGE til tjener.
+Sat Apr 18 15:14:22 CEST 2020,Klienten er nå frakoblet
+
