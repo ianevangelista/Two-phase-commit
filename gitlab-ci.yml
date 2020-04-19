@@ -1,0 +1,23 @@
+stages:
+  - deploy # Jobs placed in build-stage will run last after test-jobs
+
+install:
+  stage: build
+  script:
+    - javac src/Tjener.java
+
+
+deploy:
+  stage: deploy
+  script:
+    - mkdir ~/.ssh
+    - echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+    - touch ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa # Required permission by ssh
+    - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+    - apt-get update
+    - apt-get install --assume-yes rsync
+    - rsync --archive --delete --exclude='.git' --exclude='node_modules' . twoPhase@129.241.96.153:prosjekt
+    - ssh twoPhase@129.241.96.153 systemctl --user restart app
+  only:
+    - master
