@@ -1,13 +1,5 @@
 stages:
-  - build
   - deploy # Jobs placed in build-stage will run last after test-jobs
-
-install:
-  stage: build
-  script:
-    - apt-get install default-jdk
-    - javac src/Tjener.java
-
 
 deploy:
   stage: deploy
