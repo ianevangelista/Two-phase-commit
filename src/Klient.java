@@ -50,7 +50,18 @@ public class Klient implements Runnable {
             klientIdentitet = inputLinje.readLine();
             os.println(klientIdentitet);
             System.out.println("Hva er din saldo? (For eksempels skyld)");
-            saldo = Integer.parseInt(inputLinje.readLine());
+            boolean ugyldigSaldo = true;
+            while(ugyldigSaldo){
+                try
+                {
+                    saldo = Integer.parseInt(inputLinje.readLine());
+                    ugyldigSaldo = false;
+                }
+                catch (NumberFormatException e)
+                {
+                    System.out.println("Saldo er ugyldig. Vennligst skriv inn et gyldig postivt heltall");
+                }
+            }
             logg = new Loggforer(klientIdentitet);
             logg.loggfor(klientIdentitet + " er tilkoblet. Saldo er: " + saldo + "kr.");
             System.out.println("Velkommen " + klientIdentitet + " til denne 2-fase applikasjonen.");
