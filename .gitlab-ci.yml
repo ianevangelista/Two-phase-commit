@@ -5,6 +5,7 @@ stages:
 install:
   stage: build
   script:
+    - apt-get install default-jdk
     - javac src/Tjener.java
 
 
