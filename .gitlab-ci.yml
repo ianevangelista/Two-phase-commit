@@ -12,8 +12,11 @@ deploy:
     - chmod 600 ~/.ssh/id_rsa # Required permission by ssh
     - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
     - apt-get update
-    - apt-get install --assume-yes rsync
-    - rsync --archive --delete --exclude='.git' --exclude='node_modules' . twoPhase@129.241.96.153:prosjekt
-    - ssh twoPhase@129.241.96.153 systemctl --user restart app
+    - ssh twoPhase@129.241.96.153
+    - screen -X -S server quit
+    - cd prosjekt
+    - cd src
+    - javac *.java
+    - screen -S server java Tjener
   only:
     - master
