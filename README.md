@@ -115,6 +115,12 @@ strømmingssocket eller en tilkoblingsorientert socket. Med TCP kan man koble fl
 TCP-tjener. For å gjøre dette må man opprette en barnprosess for hver enkelt klient og deretter opprette en 
 TCP-kobling mellom tilhørende prosess og klient. I dette prosjektet brukte vi tråder for å gjennomføre dette
 og det opprettes socketer for hver tilkobling.
+
+###
+En annen protokoll som vi kunne ha brukt i stedet for TCP er U​ser D​atagram P​rotocol (UDP).
+Dette er en av de vanligste protokollene som brukes på internett.  UDP sender pakker raskt mellom maskiner som er 
+tilkoblet på samme nettverk med minst mulig overhead. 
+Dette er fordi UDP ikke gir noen garanti om at pakker kommer fram.
 Sammenliknet med TCP er at UDP har en fordel ved at hver pakke er mye mindre enn en TCP-pakke. 
 UDP har ikke noe kvalitetssikring som sørger for at man slipper ekstra trafikk for å sjekke om at alt er riktig overført.
 Likevel er UDP er en upålitelig protokoll og man kan derfor ikke være sikre på at overføringen av data er feilfri. 
@@ -122,11 +128,8 @@ Her ønsker man gjerne at pakkene skal komme frem korrekt og i riktig rekkefølg
 Tjeneren skiller heller ikke mellom forskjellige klienter, 
 så hvis flere sender meldinger til tjeneren samtidig kan det fort bli rot.
 ###
-En annen protokoll som vi kunne ha brukt i stedet for TCP er U​ser D​atagram P​rotocol (UDP).
-Dette er en av de vanligste protokollene som brukes på internett.  UDP sender pakker raskt mellom maskiner som er 
-tilkoblet på samme nettverk med minst mulig overhead. 
-Dette er fordi UDP ikke gir noen garanti om at pakker kommer fram.
-
+Når det kommer til arkitektur/design-valg har vi som tidligere nevnt, en tjener, klient, klientTraad og en 
+loggforer-klasse. 
 ###
 En beskrivelse og diskusjon/argumentasjon (denne delen en veldig viktig ved evaluering) av hvilke teknologi- og arkitektur-/designvalg dere har stått ovenfor (når dere skulle løse oppgaven), hva dere hadde å velge mellom og hvorfor dere har valgt det dere har valgt. Når det gjelder teknologivalg så kan denne delen begrenses til «pensum i faget».
 
