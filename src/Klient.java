@@ -55,7 +55,8 @@ public class Klient implements Runnable {
                 try
                 {
                     saldo = Integer.parseInt(inputLinje.readLine());
-                    ugyldigSaldo = false;
+                    if(saldo < 0)System.out.println("Saldo er ugyldig. Vennligst skriv inn et gyldig postivt heltall");
+                    else ugyldigSaldo = false;
                 }
                 catch (NumberFormatException e)
                 {
@@ -69,7 +70,7 @@ public class Klient implements Runnable {
             while ((responseLinje = is.readLine()) != null && !lukket) {
                 System.out.println("\n"+responseLinje);
                 if (responseLinje.indexOf("VOTE_REQUEST") != -1) {
-                    System.out.println("Skriv ok om du vil fortsette. (Nå er tiden til å kjøre flere klienter)");
+                    System.out.println("Trykk enter om du vil fortsette. (Nå er tiden til å kjøre flere klienter)");
                     inputLinje.readLine();
                     belop = Integer.parseInt(responseLinje.split(":")[2]);
                     logg.loggfor("Fikk VOTE_REQUEST om å trekke " + belop + "kr.");
@@ -95,7 +96,7 @@ public class Klient implements Runnable {
                 if (responseLinje.equalsIgnoreCase("GLOBAL_COMMIT")) {
                     logg.loggfor("Fikk klarsignal(GLOBAL_COMMIT) fra tjener.");
                     logg.loggfor("Utførte transaksjon: [Opprinnelig beløp: " + (saldo+belop) + ", Transaksjonsbeløp: " + belop + ", Nytt beløp: " + saldo + "]");
-                    System.out.println("Skriv ok om du vil acknowledge.");
+                    System.out.println("Trykk enter om du vil acknowledge.");
                     inputLinje.readLine();
                     os.println("ACKNOWLEDGEMENT");
                     logg.loggfor("Sendte ACKNOWLEDGE til tjener.");

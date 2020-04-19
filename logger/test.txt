@@ -25,3 +25,12 @@ Sat Apr 18 15:44:18 CEST 2020,Utførte transaksjon: [Opprinnelig beløp: 20, Tra
 Sat Apr 18 15:44:19 CEST 2020,Sendte ACKNOWLEDGE til tjener.
 Sat Apr 18 15:44:19 CEST 2020,Klienten er nå frakoblet.
 
+Sun Apr 19 14:15:28 CEST 2020,test er tilkoblet. Saldo er: 10kr.
+Sun Apr 19 14:15:31 CEST 2020,Fikk VOTE_REQUEST om å trekke 5kr.
+Sun Apr 19 14:15:31 CEST 2020,SAVE: Lagrer gammel saldo(kr): 10
+Sun Apr 19 14:15:31 CEST 2020,Sender COMMIT til tjener.
+Sun Apr 19 14:15:31 CEST 2020,Fikk klarsignal(GLOBAL_COMMIT) fra tjener.
+Sun Apr 19 14:15:31 CEST 2020,Utførte transaksjon: [Opprinnelig beløp: 10, Transaksjonsbeløp: 5, Nytt beløp: 5]
+Sun Apr 19 14:15:32 CEST 2020,Sendte ACKNOWLEDGE til tjener.
+Sun Apr 19 14:15:32 CEST 2020,Klienten er nå frakoblet.
+
