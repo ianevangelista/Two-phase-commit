@@ -25,3 +25,9 @@ Sun Apr 19 14:15:58 CEST 2020,Utførte transaksjon: [Opprinnelig beløp: 10, Tra
 Sun Apr 19 14:15:59 CEST 2020,Sendte ACKNOWLEDGE til tjener.
 Sun Apr 19 14:15:59 CEST 2020,Klienten er nå frakoblet.
 
+Mon Apr 20 16:37:13 CEST 2020,ian er tilkoblet. Saldo er: 0kr.
+Mon Apr 20 16:37:14 CEST 2020,Fikk VOTE_REQUEST om å trekke 5kr.
+Mon Apr 20 16:37:14 CEST 2020,Sender ABORT til tjener, har ikke raad.
+Mon Apr 20 16:37:14 CEST 2020,Fikk beskjed om ABORT fra tjener
+Mon Apr 20 16:37:14 CEST 2020,Klienten er nå frakoblet.
+

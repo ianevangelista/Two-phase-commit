@@ -136,7 +136,7 @@ Når det kommer til arkitektur/design-valg har vi som tidligere nevnt, en tjener
 loggforer-klasse. TCP opererer på klient-tjener-arkitekturen og forbindelsen må gå begge veier. 
 Det er derfor logisk at vi har et designmønsteret og arkitekturen klient-tjener på grunn av bruken av TCP. 
 En deltaker i two phase commit vil i klient-tjener modellen være en klient, og koordinatoren vil derfor bli tjeneren. 
-
+Det er klienten/deltakeren som initierer kommunikasjon med tjeneren som venter på inngående forespørsler.
 ###
 En beskrivelse og diskusjon/argumentasjon (denne delen en veldig viktig ved evaluering) av hvilke teknologi- og arkitektur-/designvalg dere har stått ovenfor (når dere skulle løse oppgaven), hva dere hadde å velge mellom og hvorfor dere har valgt det dere har valgt. Når det gjelder teknologivalg så kan denne delen begrenses til «pensum i faget».
 
@@ -144,7 +144,7 @@ En beskrivelse og diskusjon/argumentasjon (denne delen en veldig viktig ved eval
 ## Hvilke teknologier har vi brukt og hvorfor?
 Hva hadde vi å velge mellom, hvorfor valgte vi som vi gjorde?
 
-**Socets**
+**Sockets**
 
 Den typen socket som bruker TCP kalles en strømmingssocket eller en tilkoblingsorientert socket. Med TCP kan man koble flere klienter opp mot samme
 TCP-tjener. For å gjøre dette må man opprette en barnprosess for hver enkelt klient og deretter opprette en 
@@ -172,6 +172,10 @@ PrintStream og DataInputStream pakker inn outputStream og inputStream fra Socket
 
 <a name="forbedringer"></a>
 ## Fremtidig arbeid med oversikt over mangler og mulige forbedringer
+Det finnes flere ting som kan implementeres for å få en mer fullverdig implementasjon av
+two-phase commit:
+- GLOBAL_ABORT hvis en av klientene aldri svarer med den er klar med COMMIT
+- GLOBAL_ABORT hvis en av klientene feiler eller termineres før ACKNOWLEDGEMENT
 
 <a name="eksempler"></a>
 ## Eksempler som viser bruken av løsningen
@@ -232,6 +236,45 @@ over i samme mappe som filen(og med Klient i stedet for Tjener), eller bruke en 
 
 <a name="testing"></a>
 ## Hvordan man kan teste løsningen
+Det finnes flere måter å teste koden og løsningen på. Her er et par scenarier som du kan prøve
+og teste:
+- Opprette en tjener og en klient
+- Opprette en tjener og en klient der en feil forekommer
+- Opprette en tjener og to klienter der ingen feil forekommer
+- Opprette en tjener og to klienter der en feil forekommer
+### Opprette en tjener og en klient
+- Her opprettes en tjener og en klient.
+- Klienten skriver inn navnet og saldo større enn beløpet som skal trekkes (5kr).
+- Klienten trykker enter for å si at den er klart til å "committe".
+- Klienten vil motta GLOBAL_COMMIT.
+- Klienten trykker enter for å si at den har "committed" og "acknowledeger" til tjeneren.
+- Klienten mottar en melding om at two phase er gjennomført.
+- Alt av handlinger loggføres i en logg i navnet til klienten.
+- Forbindelsen termineres.
 
+### Opprette en tjener og en klient der en feil forekommer
+- Her opprettes en tjener og en klient.
+- Klienten skriver inn navnet og saldo mindre enn beløpet som skal trekkes (5kr).
+- Klienten trykker enter for å si at den er klart til å "committe".
+- Klienten vil motta GLOBAL_ABORT.
+- Klienten mottar en melding om at two phase er gjennomført.
+- Alt av handlinger loggføres i en logg i navnet til klienten.
+- Forbindelsen termineres.
+
+### Opprette en tjener og to klienter der ingen en feil forekommer
+- Her opprettes en tjener og to klienter.
+- Klient_1 skriver inn navn og saldo større enn beløpet som skal trekkes (5kr).
+- Klient_1 trykker enter for å si at den er klart til å "committe".
+- Klient_2 skriver inn navn og saldo større enn beløpet som skal trekkes (5kr).
+- Klient_2 trykker enter for å si at den er klart til å "committe".
+- Klient_1 vil motta GLOBAL_COMMIT.
+- Klient_2 vil motta GLOBAL_COMMIT.
+- Klient_1 trykker enter for å si at den har "committed" og "acknowledeger" til tjeneren.
+- Klient_2 trykker enter for å si at den har "committed" og "acknowledeger" til tjeneren.
+- Begge klientene mottar en melding om at two phase er gjennomført.
+- Alt av handlinger loggføres i en logg i navnet til klienten.
+- Forbindelsen termineres.
+
+### Opprette en tjener og to klienter der en feil forekommer
 <a name="api"></a>
 ## Eventuell lenke til API dokumentasjon
