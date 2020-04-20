@@ -276,5 +276,17 @@ og teste:
 - Forbindelsen termineres.
 
 ### Opprette en tjener og to klienter der en feil forekommer
+### Opprette en tjener og to klienter der ingen en feil forekommer
+- Her opprettes en tjener og to klienter.
+- Klient_1 skriver inn navn og saldo større enn beløpet som skal trekkes (5kr).
+- Klient_1 trykker enter for å si at den er klart til å "committe".
+- Klient_2 skriver inn navn og saldo mindre enn beløpet som skal trekkes (5kr).
+- Klient_2 trykker enter for å si at den er klart til å "committe".
+- Klient_1 vil motta GLOBAL_ABORT.
+- Klient_1 vil rulle tilbake (rollback) og hente sin lagrede saldo.
+- Klient_2 vil motta GLOBAL_ABORT.
+- Begge klientene mottar en melding om at two phase er gjennomført.
+- Alt av handlinger loggføres i en logg i navnet til klienten.
+- Forbindelsen termineres.
 <a name="api"></a>
 ## Eventuell lenke til API dokumentasjon
