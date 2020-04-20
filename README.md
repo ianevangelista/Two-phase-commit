@@ -108,8 +108,28 @@ try {
 Først og fremst har vi valgt å programmere løsningen i Java. 
 Hovedgrunnen til dette er at gruppen hadde god kjennskap til det, 
 men også fordi flere av relevante øvinger tilknyttet til dette prosjektet ble skrevet i Java.
-Til inspirasjon har vi tatt i bruk mye av den samme implementasjonen som vi innførte i øving 4. 
-Vi har valgt å ta i bruk socketer for mottak og sending av data.
+Til inspirasjon har vi tatt i bruk litt av den samme implementasjonen som vi innførte i øving 4. 
+Vi har valgt å ta i bruk socketer for mottak og sending av data. Vi bruker derfor også en-til-en-koblings
+protokollen Transmission Control Protocol (TCP). Den typen socket som bruker TCP kalles en 
+strømmingssocket eller en tilkoblingsorientert socket. Med TCP kan man koble flere klienter opp mot samme
+TCP-tjener. For å gjøre dette må man opprette en barnprosess for hver enkelt klient og deretter opprette en 
+TCP-kobling mellom tilhørende prosess og klient. I dette prosjektet brukte vi tråder for å gjennomføre dette
+og det opprettes socketer for hver tilkobling.
+
+###
+En annen protokoll som vi kunne ha brukt i stedet for TCP er U​ser D​atagram P​rotocol (UDP).
+Dette er en av de vanligste protokollene som brukes på internett.  UDP sender pakker raskt mellom maskiner som er 
+tilkoblet på samme nettverk med minst mulig overhead. 
+Dette er fordi UDP ikke gir noen garanti om at pakker kommer fram.
+Sammenliknet med TCP er at UDP har en fordel ved at hver pakke er mye mindre enn en TCP-pakke. 
+UDP har ikke noe kvalitetssikring som sørger for at man slipper ekstra trafikk for å sjekke om at alt er riktig overført.
+Likevel er UDP er en upålitelig protokoll og man kan derfor ikke være sikre på at overføringen av data er feilfri. 
+Her ønsker man gjerne at pakkene skal komme frem korrekt og i riktig rekkefølge, noe UDP ikke kan garantere. 
+Tjeneren skiller heller ikke mellom forskjellige klienter, 
+så hvis flere sender meldinger til tjeneren samtidig kan det fort bli rot.
+###
+Når det kommer til arkitektur/design-valg har vi som tidligere nevnt, en tjener, klient, klientTraad og en 
+loggforer-klasse. 
 ###
 En beskrivelse og diskusjon/argumentasjon (denne delen en veldig viktig ved evaluering) av hvilke teknologi- og arkitektur-/designvalg dere har stått ovenfor (når dere skulle løse oppgaven), hva dere hadde å velge mellom og hvorfor dere har valgt det dere har valgt. Når det gjelder teknologivalg så kan denne delen begrenses til «pensum i faget».
 
@@ -123,28 +143,40 @@ Hva hadde vi å velge mellom, hvorfor valgte vi som vi gjorde?
 <a name="eksempler"></a>
 ## Eksempler som viser bruken av løsningen
 Når man kjører Tjeneren får man beskjed om navnet til tjeneren er Per
+
+
 ![Image description](https://i.imgur.com/bdPlgIQ.png)
 
 Når man kjører en klient får man følgende beskjed om å skrive inn navnet sitt. Når klienten gjør dette, får den informasjon om transaksjonen og får med en gang beskjed om en "vote request". Hos klient 1:
+
+
 ![Image description](https://i.imgur.com/NjhpKg9.png)
 
 Om man kobler til en klient til vil både den første klienten og tjeneren få beskjed:
+
+
 | Server | Klient |
 | --- | --- |
-|![Image description](https://i.imgur.com/d2GpKzC.png)|![Image description](https://i.imgur.com/zCPrrR3.png)|
+|![alt text](https://i.imgur.com/d2GpKzC.png "Bilde vel")|![Image description](https://i.imgur.com/zCPrrR3.png "Enda et bilde")|
    
 Om en av klientene stemmer for å commite vil kun tjeneren se denne beskjeden:
+
+
 | Server | Klient |
 | --- | --- |
 |![Image description](https://i.imgur.com/S5TUGIA.png)|![Image description](https://i.imgur.com/5yu1MAV.png)|
 
 Hvis den andre klienten også stemmer for commit, har alle klientene stemt for commit, og transaksjonen gjennomføres. Klientene får beskjed om at det er blitt gjennomført en global commit. Tjeneren gir så tilbakemelding på at den har byttet navn, og heter nå Ola.
+
+
 | Server | Klient |
 | --- | --- |
 |![Image description](https://i.imgur.com/n6t2m1V.png)|![Image description](https://i.imgur.com/uTgNbvd.png)|
 
 **Rollback**  
 Om vi kjører samme eksempel, men denne gangen har vi tre klienter. Jens og Erna svarer fortsatt COMMIT, mens den nye Sylvi stemmer for ABORT. Da vil alle klientene få beskjed om en global abort og tjeneren beholder navnet sitt. Transaksjonen blir dermed ikke utført. 
+
+
 | Server | Klient |
 | --- | --- |
 |![Image description](https://i.imgur.com/cDpZ40d.png)|![Image description](https://i.imgur.com/Dax8u2V.png)|

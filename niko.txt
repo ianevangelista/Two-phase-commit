@@ -1,6 +1,0 @@
-dato,saldoFor,transaksjon,saldoEtter
-Sat Apr 18 08:04:44 CEST 2020,niko er tilkoblet. Saldo er: 7kr.
-Sat Apr 18 08:04:44 CEST 2020,Fikk voterequest om å trekke -5kr.
-Sat Apr 18 08:04:55 CEST 2020,Lagrer gammel saldo: 7kr. Sender COMMIT beskjed til tjener.
-Sat Apr 18 08:05:00 CEST 2020,Mottok GLOBAL_COMMIT fra tjener
-Sat Apr 18 08:05:00 CEST 2020,Committer transaksjon: 6,-5,1
