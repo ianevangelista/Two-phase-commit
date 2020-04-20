@@ -276,7 +276,6 @@ og teste:
 - Forbindelsen termineres.
 
 ### Opprette en tjener og to klienter der en feil forekommer
-### Opprette en tjener og to klienter der ingen en feil forekommer
 - Her opprettes en tjener og to klienter.
 - Klient_1 skriver inn navn og saldo større enn beløpet som skal trekkes (5kr).
 - Klient_1 trykker enter for å si at den er klart til å "committe".
