@@ -264,7 +264,16 @@ I vår applikasjon så loggføres det:
 
 
 Her ser vi loggene fra kjøringen:
+Den første er Erna sin logg etter at transaksjonen ble gjennomført og alt gikk som det skulle:
 
+
+![Image description](https://i.imgur.com/NiImQFZ.png "Loggen til Erna")
+
+
+Dette er loggen til Sylvi etter at transaksjonen ble avbrutt fordi hun ikke hadde råd:
+
+
+![Image description](https://i.imgur.com/NPi1Xkm.png "Loggen til Sylvi")|
 
 
 <a name="installasjon"></a>
