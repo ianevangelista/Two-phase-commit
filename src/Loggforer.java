@@ -2,15 +2,25 @@ import java.io.*;
 import java.util.Calendar;
 import java.util.Date;
 
+/**
+ * Loggforer-klasse som logger alt klienten foretar seg.
+ * Logger klientens navn, saldo, transaksjoner, COMMIT og ABORT.
+ * @author Nikolai Dokken
+ * @author Ian Evangelista
+ * @author Kasper Gundersen
+ */
 public class Loggforer {
     private File loggFil;
     private String filnavn;
     private BufferedReader leseForbindelse;
     private BufferedWriter skriveForbindelse;
 
+    /**
+     * Oppretter en txt-fil i klientens navn.
+     * @param navn navnet til klienten. Loggen lagres som navnet til klienten som en txt-fil
+     */
     public Loggforer(String navn) {
         this.filnavn = "logger/" + navn.toLowerCase() + ".txt";
-        String attributter = "dato,saldoFor,transaksjon,saldoEtter\n";
         try {
             this.loggFil = new File(filnavn);
             this.loggFil.createNewFile();
@@ -19,6 +29,11 @@ public class Loggforer {
         }
     }
 
+    /**
+     * Skriver til fil.
+     * @param loggforing tekst som sendes inn og skrives til fil.
+     * @return true hvis den får skrevet til fil, false ellers.
+     */
     public boolean loggfor(String loggforing) {
         Calendar kalender = Calendar.getInstance();
         Date dato = kalender.getTime();
@@ -32,7 +47,11 @@ public class Loggforer {
         }
         return false;
     }
-
+    /**
+     * Rollback-metode som gjør at man kan finne tilbake til tidligere saldo hvis man allerede har gjort endringer.
+     * Leter etter siste linje med SAVE for å finne saldoen.
+     * @return heltall hvis den finner den tidligere saldoen. Returnerer -1 hvis den ikke finner.
+     */
     public int getRollbackSaldo() {
         try {
             leseForbindelse = new BufferedReader(new FileReader(filnavn));
@@ -48,7 +67,9 @@ public class Loggforer {
         }
         return -1;
     }
-
+    /**
+     * Lukker skrive-og-leseforbindelsen.
+     */
     public void close() {
         try {
             if (skriveForbindelse != null) {
@@ -60,12 +81,5 @@ public class Loggforer {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public static void main(String[] args) {
-        Loggforer logg = new Loggforer("niko");
-        logg.loggfor("10,-5,5");
-        System.out.println(logg.getRollbackSaldo());
-        logg.close();
     }
 }

@@ -4,6 +4,13 @@ import java.io.PrintStream;
 import java.net.Socket;
 import java.util.ArrayList;
 
+/**
+ * KlienTraad fungerer som en trådklasse knyttet til en klient eller en deltaker i two-phase commit.
+ * Klassen leser responsen den får fra Klient-klassen og sender informasjon til både klient og tjener.
+ * @author Nikolai Dokken
+ * @author Ian Evangelista
+ * @author Kasper Gundersen
+ */
 class KlientTraad extends Thread {
     DataInputStream is = null;
     PrintStream os = null;
@@ -18,7 +25,16 @@ class KlientTraad extends Thread {
         this.klientSocket = klientSocket;
         this.tjener = tjener;
     }
-
+    /**
+     * Run-metode som fungerer som en trådklasse knyttet til en klient eller en deltaker i two-phase commit.
+     * Klassen leser responsen den får fra Klient-klassen og sender informasjon til både klient og tjener.
+     * Sender en melding til hver klient hver gang en ny klient kobler seg til tjeneren.
+     * Sender en VOTE_REQUEST til klient.
+     * Leser responsen fra klient. Hvis det er ABORT, vil den sende GLOBAL_ABORT til alle. Hvis det er COMMIT, vil den sende GLOBAL_COMMIT til alle
+     * Vil hele tiden vente på alle klienter så langt en klient ikke sender ABORT.
+     * Hvis alle klienter svarer ACKNOWLEDGEMENT etter at dem svarte med COMMIT, vil two-phase commit være over.
+     * Forbindelsen mellom tjener og klient avsluttes.
+     */
     @SuppressWarnings("deprecation")
     public void run() {
         try {
