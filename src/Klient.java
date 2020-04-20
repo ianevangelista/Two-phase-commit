@@ -99,14 +99,14 @@ public class Klient implements Runnable {
                     belop = Integer.parseInt(responseLinje.split(":")[2]);
                     logg.loggfor("Fikk VOTE_REQUEST om å trekke " + belop + "kr.");
                     if (saldo >= belop) {
-                        System.out.println("Du har nok saldo. Sender klar for COMMIT til tjener");
+                        System.out.println("Du har nok på konto. Sender klarsignal til tjener. Om alle er klare gjennomføres COMMIT.");
                         os.println("COMMIT");
                         logg.loggfor("SAVE: Lagrer gammel saldo(kr): " + saldo);
                         logg.loggfor("Sender COMMIT til tjener.");
                         saldo -= belop;
                         gjordeEndringer = true;
                     } else {
-                        System.out.println("Du har ikke nok saldo. Sender ABORT til tjener");
+                        System.out.println("Saldoen din er for lav. Sender ABORT til tjener");
                         os.println("ABORT");
                         logg.loggfor("Sender ABORT til tjener, har ikke raad.");
                     }

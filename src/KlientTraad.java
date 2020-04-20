@@ -40,11 +40,7 @@ public class KlientTraad extends Thread {
             os = new PrintStream(klientSocket.getOutputStream());
             klientIdentitet = is.readLine();
             os.println("VOTE_REQUEST: Ber om trekke fra folgende belop(kr):5");
-            for (int i = 0; i < (tjener.traadListe).size(); i++) {
-                if ((tjener.traadListe).get(i) != this) {
-                    ((tjener.traadListe).get(i)).os.println("---En ny bruker ved navn " + klientIdentitet + " har blitt med i applikasjonen---");
-                }
-            }
+
             while (true) {
                 linje = is.readLine();
                 if (linje == null) linje="";
@@ -80,7 +76,6 @@ public class KlientTraad extends Thread {
                             System.out.println("\n\nSending GLOBAL_COMMIT to all....");
                             for(int i = 0; i < tjener.traadListe.size(); i++) {
                                 ((tjener.traadListe).get(i)).os.println("GLOBAL_COMMIT");
-                                tjener.data.remove(i);
                             }
                             //break;
                         }
@@ -88,40 +83,17 @@ public class KlientTraad extends Thread {
                 }
                 if (linje.equalsIgnoreCase("ACKNOWLEDGEMENT")) {
                     tjener.traadListe.remove(tjener.traadListe.indexOf(this));
-                    /*
-                    (tjener.data).set((tjener.traadListe).indexOf(this), "ACKNOWLEDGEMENT");
-                    for (int j = 0; j < (tjener.data).size(); j++) {
-                        if ((((tjener.data).get(j)).equalsIgnoreCase("ACKNOWLEDGEMENT"))) {
-                            tjener.ackFraAlle = true;
-                            continue;
-                        } else {
-                            tjener.ackFraAlle = false;
-                            System.out.println("\nVenter paa ACK fra andre klienter.");
-                            break;
-                        }
-                    }
-                    */
+
+                    // Dersom alle har sendt acknoweledge og koblet fra
                     if (tjener.traadListe.size() == 0) {
                         System.out.println("MOTTAT ACK FRA ALLE KLIENTER, TWO PHASE COMMIT ER NAA OVER");
-                        break;
-                    } else {
-                        System.out.println("\nVenter paa acknowledgement fra andre klienter.");
-                        break;
-                    }
-                    /*
-                    if (tjener.ackFraAlle) {
-                        System.out.println("MOTTAT ACK FRA ALLE KLIENTER, TWO PHASE COMMIT ER NAA OVER");
-                        while (tjener.traadListe.size() > 0){
-                            tjener.traadListe.remove(0);
-                            tjener.data.remove(0);
-                        }
                         tjener.data = new ArrayList<String>();
                         tjener.traadListe = new ArrayList<KlientTraad>();
                         break;
                     } else {
                         System.out.println("\nVenter paa acknowledgement fra andre klienter.");
+                        break;
                     }
-                    */
                 }
             } // while
             is.close();

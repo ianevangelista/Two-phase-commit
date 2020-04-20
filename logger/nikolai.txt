@@ -1,0 +1,8 @@
+Mon Apr 20 22:48:57 CEST 2020,nikolai er tilkoblet. Saldo er: 10kr.
+Mon Apr 20 22:49:15 CEST 2020,Fikk VOTE_REQUEST om å trekke 5kr.
+Mon Apr 20 22:49:15 CEST 2020,SAVE: Lagrer gammel saldo(kr): 10
+Mon Apr 20 22:49:15 CEST 2020,Sender COMMIT til tjener.
+Mon Apr 20 22:49:15 CEST 2020,Fikk beskjed om ABORT fra tjener
+Mon Apr 20 22:49:15 CEST 2020,Rollback. Saldo er nå 10kr
+Mon Apr 20 22:49:15 CEST 2020,Klienten er nå frakoblet.
+

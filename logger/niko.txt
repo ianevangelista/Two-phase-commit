@@ -219,3 +219,69 @@ Mon Apr 20 21:47:59 CEST 2020,Utførte transaksjon: [Opprinnelig beløp: 10, Tra
 Mon Apr 20 21:47:59 CEST 2020,Sendte ACKNOWLEDGE til tjener.
 Mon Apr 20 21:47:59 CEST 2020,Klienten er nå frakoblet.
 
+Mon Apr 20 22:36:47 CEST 2020,niko er tilkoblet. Saldo er: 10kr.
+Mon Apr 20 22:36:51 CEST 2020,Niko er tilkoblet. Saldo er: 10kr.
+Mon Apr 20 22:36:59 CEST 2020,Fikk VOTE_REQUEST om å trekke 5kr.
+Mon Apr 20 22:36:59 CEST 2020,SAVE: Lagrer gammel saldo(kr): 10
+Mon Apr 20 22:36:59 CEST 2020,Sender COMMIT til tjener.
+Mon Apr 20 22:37:11 CEST 2020,Fikk VOTE_REQUEST om å trekke 5kr.
+Mon Apr 20 22:37:11 CEST 2020,SAVE: Lagrer gammel saldo(kr): 10
+Mon Apr 20 22:37:11 CEST 2020,Sender COMMIT til tjener.
+Mon Apr 20 22:37:11 CEST 2020,Fikk klarsignal(GLOBAL_COMMIT) fra tjener.
+Mon Apr 20 22:37:11 CEST 2020,Utførte transaksjon: [Opprinnelig beløp: 10, Transaksjonsbeløp: 5, Nytt beløp: 5]
+Mon Apr 20 22:37:11 CEST 2020,Sendte ACKNOWLEDGE til tjener.
+Mon Apr 20 22:37:11 CEST 2020,Fikk klarsignal(GLOBAL_COMMIT) fra tjener.
+Mon Apr 20 22:37:11 CEST 2020,Utførte transaksjon: [Opprinnelig beløp: 10, Transaksjonsbeløp: 5, Nytt beløp: 5]
+Mon Apr 20 22:37:11 CEST 2020,Klienten er nå frakoblet.
+
+Mon Apr 20 22:37:11 CEST 2020,Sendte ACKNOWLEDGE til tjener.
+Mon Apr 20 22:37:11 CEST 2020,Klienten er nå frakoblet.
+
+Mon Apr 20 22:38:22 CEST 2020,niko er tilkoblet. Saldo er: 10kr.
+Mon Apr 20 22:39:33 CEST 2020,Fikk VOTE_REQUEST om å trekke 5kr.
+Mon Apr 20 22:39:33 CEST 2020,SAVE: Lagrer gammel saldo(kr): 10
+Mon Apr 20 22:39:33 CEST 2020,Sender COMMIT til tjener.
+Mon Apr 20 22:40:47 CEST 2020,Fikk klarsignal(GLOBAL_COMMIT) fra tjener.
+Mon Apr 20 22:40:47 CEST 2020,Utførte transaksjon: [Opprinnelig beløp: 10, Transaksjonsbeløp: 5, Nytt beløp: 5]
+Mon Apr 20 22:40:47 CEST 2020,Sendte ACKNOWLEDGE til tjener.
+Mon Apr 20 22:40:47 CEST 2020,Klienten er nå frakoblet.
+
+Mon Apr 20 22:41:46 CEST 2020,niko er tilkoblet. Saldo er: 10kr.
+Mon Apr 20 22:41:48 CEST 2020,Fikk VOTE_REQUEST om å trekke 5kr.
+Mon Apr 20 22:41:48 CEST 2020,SAVE: Lagrer gammel saldo(kr): 10
+Mon Apr 20 22:41:48 CEST 2020,Sender COMMIT til tjener.
+Mon Apr 20 22:41:51 CEST 2020,Fikk klarsignal(GLOBAL_COMMIT) fra tjener.
+Mon Apr 20 22:41:51 CEST 2020,Utførte transaksjon: [Opprinnelig beløp: 10, Transaksjonsbeløp: 5, Nytt beløp: 5]
+Mon Apr 20 22:41:51 CEST 2020,Sendte ACKNOWLEDGE til tjener.
+Mon Apr 20 22:41:51 CEST 2020,Klienten er nå frakoblet.
+
+Mon Apr 20 22:42:52 CEST 2020,niko er tilkoblet. Saldo er: 10kr.
+Mon Apr 20 22:42:53 CEST 2020,Fikk VOTE_REQUEST om å trekke 5kr.
+Mon Apr 20 22:42:53 CEST 2020,SAVE: Lagrer gammel saldo(kr): 10
+Mon Apr 20 22:42:53 CEST 2020,Sender COMMIT til tjener.
+Mon Apr 20 22:43:46 CEST 2020,Klienten er nå frakoblet.
+
+Mon Apr 20 22:44:01 CEST 2020,niko er tilkoblet. Saldo er: 10kr.
+Mon Apr 20 22:44:17 CEST 2020,Fikk VOTE_REQUEST om å trekke 5kr.
+Mon Apr 20 22:44:17 CEST 2020,SAVE: Lagrer gammel saldo(kr): 10
+Mon Apr 20 22:44:17 CEST 2020,Sender COMMIT til tjener.
+Mon Apr 20 22:44:17 CEST 2020,Fikk klarsignal(GLOBAL_COMMIT) fra tjener.
+Mon Apr 20 22:44:17 CEST 2020,Utførte transaksjon: [Opprinnelig beløp: 10, Transaksjonsbeløp: 5, Nytt beløp: 5]
+Mon Apr 20 22:44:17 CEST 2020,Sendte ACKNOWLEDGE til tjener.
+Mon Apr 20 22:44:17 CEST 2020,Klienten er nå frakoblet.
+
+Mon Apr 20 22:45:18 CEST 2020,niko er tilkoblet. Saldo er: 10kr.
+Mon Apr 20 22:45:19 CEST 2020,Fikk VOTE_REQUEST om å trekke 5kr.
+Mon Apr 20 22:45:19 CEST 2020,SAVE: Lagrer gammel saldo(kr): 10
+Mon Apr 20 22:45:19 CEST 2020,Sender COMMIT til tjener.
+Mon Apr 20 22:45:24 CEST 2020,Fikk klarsignal(GLOBAL_COMMIT) fra tjener.
+Mon Apr 20 22:45:24 CEST 2020,Utførte transaksjon: [Opprinnelig beløp: 10, Transaksjonsbeløp: 5, Nytt beløp: 5]
+Mon Apr 20 22:45:24 CEST 2020,Sendte ACKNOWLEDGE til tjener.
+Mon Apr 20 22:45:24 CEST 2020,Klienten er nå frakoblet.
+
+Mon Apr 20 22:47:57 CEST 2020,niko er tilkoblet. Saldo er: 4kr.
+Mon Apr 20 22:48:05 CEST 2020,Fikk VOTE_REQUEST om å trekke 5kr.
+Mon Apr 20 22:48:05 CEST 2020,Sender ABORT til tjener, har ikke raad.
+Mon Apr 20 22:48:05 CEST 2020,Fikk beskjed om ABORT fra tjener
+Mon Apr 20 22:48:05 CEST 2020,Klienten er nå frakoblet.
+

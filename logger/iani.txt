@@ -1,0 +1,6 @@
+Mon Apr 20 22:49:03 CEST 2020,iani er tilkoblet. Saldo er: 4kr.
+Mon Apr 20 22:49:05 CEST 2020,Fikk VOTE_REQUEST om å trekke 5kr.
+Mon Apr 20 22:49:05 CEST 2020,Sender ABORT til tjener, har ikke raad.
+Mon Apr 20 22:49:05 CEST 2020,Fikk beskjed om ABORT fra tjener
+Mon Apr 20 22:49:05 CEST 2020,Klienten er nå frakoblet.
+
