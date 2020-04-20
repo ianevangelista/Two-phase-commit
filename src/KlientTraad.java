@@ -89,13 +89,13 @@ public class KlientTraad extends Thread {
 
                             if (antallAck == tjener.traadListe.size()) {
                                 System.out.println("MOTTAT ACK FRA ALLE KLIENTER, TWO PHASE COMMIT ER NAA OVER");
-                                tjener.data = new ArrayList<String>();
-                                tjener.traadListe = new ArrayList<KlientTraad>();
                                 while (tjener.traadListe.size() > 0){
+                                    tjener.traadListe.get(0).os.println("TERMINATE");
                                     tjener.traadListe.remove(0);
                                     tjener.data.remove(0);
                                 }
-                                break;
+                                 tjener.data = new ArrayList<String>();
+                                 tjener.traadListe = new ArrayList<KlientTraad>(); break;
                             } else {
                                 System.out.println("\nVenter paa acknowledgement fra andre klienter.");
                             }

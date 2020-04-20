@@ -123,13 +123,15 @@ public class Klient implements Runnable {
                     inputLinje.readLine();
                     os.println("ACKNOWLEDGEMENT");
                     logg.loggfor("Sendte ACKNOWLEDGE til tjener.");
-                    break;
+                }
+                if(responseLinje.equalsIgnoreCase("TERMINATE")) {
+                    logg.loggfor("Klienten er nå frakoblet.\n");
+                    System.out.println("Two phase commit er nå ferdig. Ha det bra");
+                    logg.close();
+                    //System.exit(0);
                 }
             }
-            logg.loggfor("Klienten er nå frakoblet.\n");
-            System.out.println("Two phase commit er nå ferdig. Ha det bra");
-            logg.close();
-            //System.exit(0);
+
         }
         catch (IOException e) {
             System.err.println("IOException:  " + e);
