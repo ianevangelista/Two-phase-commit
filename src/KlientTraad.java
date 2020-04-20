@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * @author Ian Evangelista
  * @author Kasper Gundersen
  */
-class KlientTraad extends Thread {
+public class KlientTraad extends Thread {
     DataInputStream is = null;
     PrintStream os = null;
     String linje;
