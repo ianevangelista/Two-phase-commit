@@ -3,6 +3,14 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
+/**
+ * Tjener-klasse som fungerer som koordinator i two-phase commit.
+ * Flere klienter kan koble seg opp til samme tjener. Tjeneren spør om alle er klare til å committe.
+ * Tjeneren sender GLOBAL_COMMIT eller GLOBAL_ABORT avhengig av hva klientene svarer.
+ * @author Nikolai Dokken
+ * @author Ian Evangelista
+ * @author Kasper Gundersen
+ */
 public class Tjener {
     boolean lukket = false, inputFraAlle = false, ackFraAlle = false;
     List<KlientTraad> traadListe;
@@ -12,9 +20,13 @@ public class Tjener {
     Tjener() {
         traadListe = new ArrayList<KlientTraad>();
         data = new ArrayList<String>();
-        ack = new ArrayList<String>();
         belop = -5;
     }
+    /**
+     * Main-metoden lager en tjener som kjører så lenge objektvariabelen lukket er false.
+     * Åpner en serverSocket på for en gitt port, slik at klienter kan koble seg opp.
+     * Den legger til klienter i traadListe når dem kobler seg opp mot tjeneren.
+     */
 
     public static void main(String args[]) {
         Socket klientSocket = null;
@@ -34,7 +46,6 @@ public class Tjener {
                 System.out.println("\nAntall klienter er oppdatert til: " + (tjener.traadListe).size());
 
                 (tjener.data).add("NOT_SENT");
-                (tjener.ack).add("NOT_SENT");
                 klientTraad.start();
             } catch (IOException e) { }
         }

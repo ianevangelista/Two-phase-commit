@@ -2,8 +2,16 @@
 
 import java.io.*;
 import java.net.*;
-import java.util.Scanner;
 
+/**
+ * Klient-klasse som fungerer som en deltaker i two-phase commit.
+ * Klienten  kobler seg opp til en tjener. Klienten må enten si at den er klar til å "committe" eller "aborte".
+ * Hvis klienten er klar til å "committe" får den klarsignal av tjeneren, og klienten "committer".
+ * Avslutter forbindelse hvis den "aborter", eller hvis "committen" ble gjennomført.
+ * @author Nikolai Dokken
+ * @author Ian Evangelista
+ * @author Kasper Gundersen
+ */
 public class Klient implements Runnable {
     static Socket klientSocket = null;
     static PrintStream os = null;
@@ -15,6 +23,10 @@ public class Klient implements Runnable {
     private Loggforer logg;
     private boolean gjordeEndringer = false;
 
+    /**
+     * Main-metode som lager en socket for hver klient.
+     * Kjører så lenge forbindelsen til tjeneren ikke avsluttes.
+     */
     public static void main(String[] args) {
         int port=1111;
         String host="localhost";
@@ -41,6 +53,17 @@ public class Klient implements Runnable {
             }
         }
     }
+    /**
+     * Run-metode som tar seg av forespørsler fra tjeneren.
+     * Håndterer når data skal loggføres og responsen den får fra tjeneren.
+     * Her skrives navnet til klienten og saldo.
+     * Loggfører navn og saldo
+     * Saldoen bestemmer om man kan si at man er klart til å "committe" eller ikke.
+     * Håndterer hva som skjer når responsen er GLOBAL_COMMIT eller GLOBAL_ABORT.
+     * Hvis klienten får GLOBAL_COMMIT, vil den loggføre dette og utføre transaksjonen for så å loggføre den og deretter sender ACKNOWLEDGEMENT til tjeneren.
+     * Hvis klienten får GLOBAL_ABORT, vil den loggføre dette og hvis den allerede har gjort endringer, vil den finne i loggen sin og starte en rollback.
+     * Avslutter forbindelsen til tjener hvis den fikk GLOBAL_ABORT eller hvis den utførte transaksjonen etter GLOBAL_COMMIT.
+     */
     @SuppressWarnings("deprecation")
     public void run() {
         String responseLinje;
