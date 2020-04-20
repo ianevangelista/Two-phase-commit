@@ -1,0 +1,27 @@
+Sun Apr 19 14:11:04 CEST 2020,ian er tilkoblet. Saldo er: 10kr.
+Sun Apr 19 14:11:08 CEST 2020,Fikk VOTE_REQUEST om å trekke 5kr.
+Sun Apr 19 14:11:08 CEST 2020,SAVE: Lagrer gammel saldo(kr): 10
+Sun Apr 19 14:11:08 CEST 2020,Sender COMMIT til tjener.
+Sun Apr 19 14:11:08 CEST 2020,Fikk klarsignal(GLOBAL_COMMIT) fra tjener.
+Sun Apr 19 14:11:08 CEST 2020,Utførte transaksjon: [Opprinnelig beløp: 10, Transaksjonsbeløp: 5, Nytt beløp: 5]
+Sun Apr 19 14:11:15 CEST 2020,Sendte ACKNOWLEDGE til tjener.
+Sun Apr 19 14:11:15 CEST 2020,Klienten er nå frakoblet.
+
+Sun Apr 19 14:14:11 CEST 2020,ian er tilkoblet. Saldo er: 20kr.
+Sun Apr 19 14:14:12 CEST 2020,Fikk VOTE_REQUEST om å trekke 5kr.
+Sun Apr 19 14:14:12 CEST 2020,SAVE: Lagrer gammel saldo(kr): 20
+Sun Apr 19 14:14:12 CEST 2020,Sender COMMIT til tjener.
+Sun Apr 19 14:14:12 CEST 2020,Fikk klarsignal(GLOBAL_COMMIT) fra tjener.
+Sun Apr 19 14:14:12 CEST 2020,Utførte transaksjon: [Opprinnelig beløp: 20, Transaksjonsbeløp: 5, Nytt beløp: 15]
+Sun Apr 19 14:14:14 CEST 2020,Sendte ACKNOWLEDGE til tjener.
+Sun Apr 19 14:14:14 CEST 2020,Klienten er nå frakoblet.
+
+Sun Apr 19 14:15:57 CEST 2020,ian er tilkoblet. Saldo er: 10kr.
+Sun Apr 19 14:15:58 CEST 2020,Fikk VOTE_REQUEST om å trekke 5kr.
+Sun Apr 19 14:15:58 CEST 2020,SAVE: Lagrer gammel saldo(kr): 10
+Sun Apr 19 14:15:58 CEST 2020,Sender COMMIT til tjener.
+Sun Apr 19 14:15:58 CEST 2020,Fikk klarsignal(GLOBAL_COMMIT) fra tjener.
+Sun Apr 19 14:15:58 CEST 2020,Utførte transaksjon: [Opprinnelig beløp: 10, Transaksjonsbeløp: 5, Nytt beløp: 5]
+Sun Apr 19 14:15:59 CEST 2020,Sendte ACKNOWLEDGE til tjener.
+Sun Apr 19 14:15:59 CEST 2020,Klienten er nå frakoblet.
+

@@ -1,0 +1,10 @@
+dato,saldoFor,transaksjon,saldoEtter
+Sat Apr 18 15:34:27 CEST 2020,yoA er tilkoblet. Saldo er: 10kr.
+Sat Apr 18 15:34:42 CEST 2020,Fikk voterequest om aa trekke 5kr.
+Sat Apr 18 15:34:42 CEST 2020,SAVE: Lagrer gammel saldo(kr): 10
+Sat Apr 18 15:34:42 CEST 2020,Sender COMMIT til tjener.
+Sat Apr 18 15:34:42 CEST 2020,Fikk klarsignal(GLOBAL_COMMIT) fra tjener. Loggfører transaksjon:
+Sat Apr 18 15:34:42 CEST 2020,Utførte transaksjon: [10,5,5]
+Sat Apr 18 15:34:45 CEST 2020,Sendte ACKNOWLEDGE til tjener.
+Sat Apr 18 15:34:45 CEST 2020,Klienten er nå frakoblet
+

@@ -9,16 +9,12 @@ public class Loggforer {
     private BufferedWriter skriveForbindelse;
 
     public Loggforer(String navn) {
-        this.filnavn = navn.toLowerCase() + ".txt";
+        this.filnavn = "logger/" + navn.toLowerCase() + ".txt";
         String attributter = "dato,saldoFor,transaksjon,saldoEtter\n";
         try {
             this.loggFil = new File(filnavn);
-            if (this.loggFil.createNewFile()) {
-                this.skriveForbindelse = new BufferedWriter(new FileWriter(filnavn));
-                this.skriveForbindelse.write(attributter);
-                this.skriveForbindelse.close();
-            }
-        } catch(IOException e) {
+            this.loggFil.createNewFile();
+            } catch(IOException e) {
             e.printStackTrace();
         }
     }
@@ -40,14 +36,13 @@ public class Loggforer {
     public int getRollbackSaldo() {
         try {
             leseForbindelse = new BufferedReader(new FileReader(filnavn));
-            String sCurrentLine;
-            String lastLine = "";
-            while ((sCurrentLine = leseForbindelse.readLine()) != null) {
-                lastLine = sCurrentLine;
+            String currentLine;
+            String lagretSaldo = "";
+            while ((currentLine = leseForbindelse.readLine()) != null) {
+                if (currentLine.indexOf("SAVE") != -1) lagretSaldo = currentLine;
             }
-            String[] data = lastLine.split(",");
             leseForbindelse.close();
-            return Integer.parseInt(data[1]);
+            return Integer.parseInt(lagretSaldo.split(":")[4].trim());
         } catch(IOException e) {
             e.printStackTrace();
         }

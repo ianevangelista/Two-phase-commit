@@ -1,0 +1,5 @@
+dato,saldoFor,transaksjon,saldoEtter
+Sat Apr 18 13:00:50 CEST 2020,kasp er tilkoblet. Saldo er: 5kr.
+Sat Apr 18 13:00:52 CEST 2020,Fikk voterequest om å trekke 5kr.
+Sat Apr 18 13:00:52 CEST 2020,SAVE: Lagrer gammel saldo(kr): 5
+Sat Apr 18 13:00:52 CEST 2020,Sender COMMIT til tjener.
