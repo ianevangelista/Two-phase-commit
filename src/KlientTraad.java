@@ -47,7 +47,6 @@ public class KlientTraad extends Thread {
             }
             while (true) {
                 linje = is.readLine();
-                if (linje == null) linje = "";
                 if (linje.equalsIgnoreCase("ABORT")) {
                     System.out.println("\nFra '" + klientIdentitet
                             + "' : ABORT\n\nSiden det ble skrevet ABORT, vil vi ikke vente paa flere input fra andre klienter.");
@@ -80,13 +79,11 @@ public class KlientTraad extends Thread {
                             for(int i = 0; i < tjener.traadListe.size(); i++) {
                                 ((tjener.traadListe).get(i)).os.println("GLOBAL_COMMIT");
                             }
-                            break;
-                            // continue;
+                            //break;
                         }
                     } // if traadListe.contains
                 }
                 if (linje.equalsIgnoreCase("ACKNOWLEDGEMENT")) {
-                    System.out.println("fikk ACK");
                     tjener.traadListe.remove(tjener.traadListe.indexOf(this));
                     /*
                     (tjener.data).set((tjener.traadListe).indexOf(this), "ACKNOWLEDGEMENT");
@@ -101,7 +98,6 @@ public class KlientTraad extends Thread {
                         }
                     }
                     */
-                    System.out.println("antKlienter: " + tjener.traadListe.size());
                     if (tjener.traadListe.size() == 0) {
                         System.out.println("MOTTAT ACK FRA ALLE KLIENTER, TWO PHASE COMMIT ER NAA OVER");
                         break;

@@ -99,12 +99,14 @@ public class Klient implements Runnable {
                     belop = Integer.parseInt(responseLinje.split(":")[2]);
                     logg.loggfor("Fikk VOTE_REQUEST om å trekke " + belop + "kr.");
                     if (saldo >= belop) {
+                        System.out.println("Du har nok saldo. Sender klar for COMMIT til tjener");
                         os.println("COMMIT");
                         logg.loggfor("SAVE: Lagrer gammel saldo(kr): " + saldo);
                         logg.loggfor("Sender COMMIT til tjener.");
                         saldo -= belop;
                         gjordeEndringer = true;
                     } else {
+                        System.out.println("Du har ikke nok saldo. Sender ABORT til tjener");
                         os.println("ABORT");
                         logg.loggfor("Sender ABORT til tjener, har ikke raad.");
                     }
@@ -120,8 +122,7 @@ public class Klient implements Runnable {
                 if (responseLinje.equalsIgnoreCase("GLOBAL_COMMIT")) {
                     logg.loggfor("Fikk klarsignal(GLOBAL_COMMIT) fra tjener.");
                     logg.loggfor("Utførte transaksjon: [Opprinnelig beløp: " + (saldo+belop) + ", Transaksjonsbeløp: " + belop + ", Nytt beløp: " + saldo + "]");
-                    // System.out.println("Trykk enter om du vil acknowledge.");
-                    // inputLinje.readLine();
+                    System.out.println("Fikk GLOBAL_COMMIT: sender ACKNOWLEDGE til tjener.");
                     os.println("ACKNOWLEDGEMENT");
                     logg.loggfor("Sendte ACKNOWLEDGE til tjener.");
                     break;
