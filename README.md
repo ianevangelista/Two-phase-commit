@@ -23,7 +23,7 @@ Insert CI link her
 ## Introduksjon
 I dette prosjektet lager vi en two-phase commit løsning.
 Denne fungerer ved at alle tilkoblede klienter må "stemme" over valg som gjøres.
-I dette prosjektet bruker vi tjenerens navn som et eksempel.
+I dette prosjektet bruker vi serverens navn som et eksempel.
 Navet endres og alle tilkoblede parter må være enige om å beholde det nye navnet.
 Dersom én er uenig ruller vi tilbake til det gamle servernavnet (rollback).
 Alle parter må stemme før et valg er avgjort.
@@ -114,7 +114,7 @@ protokollen Transmission Control Protocol (TCP). Den typen socket som bruker TCP
 strømmingssocket eller en tilkoblingsorientert socket. Med TCP kan man koble flere klienter opp mot samme
 TCP-tjener. For å gjøre dette må man opprette en barnprosess for hver enkelt klient og deretter opprette en 
 TCP-kobling mellom tilhørende prosess og klient. I dette prosjektet brukte vi tråder for å gjennomføre dette
-og det opprettes socketer for hver tilkobling.
+og det opprettes en socket for hver tilkobling.
 
 ###
 En annen protokoll som vi kunne ha brukt i stedet for TCP er U​ser D​atagram P​rotocol (UDP).
@@ -127,9 +127,16 @@ Likevel er UDP er en upålitelig protokoll og man kan derfor ikke være sikre p�
 Her ønsker man gjerne at pakkene skal komme frem korrekt og i riktig rekkefølge, noe UDP ikke kan garantere. 
 Tjeneren skiller heller ikke mellom forskjellige klienter, 
 så hvis flere sender meldinger til tjeneren samtidig kan det fort bli rot.
+Benytter man seg av TCP vil man derimot kunne få informasjon om pakkene som sendes mellom sender og mottaker. 
+Underveis vil man kunne få status angående pakkene, og TCP vil kunne ordne opp dersom dataene er blitt ødelagte 
+underveis og det vil sørge for at pakkene når mottakeren. 
+Med andre ord er TCP et grensesnitt som sørger for en pålitelig overføring sammenlignet med UDP.
 ###
 Når det kommer til arkitektur/design-valg har vi som tidligere nevnt, en tjener, klient, klientTraad og en 
-loggforer-klasse. 
+loggforer-klasse. TCP opererer på klient-tjener-arkitekturen og forbindelsen må gå begge veier. 
+Det er derfor logisk at vi har et designmønsteret og arkitekturen klient-tjener på grunn av bruken av TCP. 
+En deltaker i two phase commit vil i klient-tjener modellen være en klient, og koordinatoren vil derfor bli tjeneren. 
+Det er klienten/deltakeren som initierer kommunikasjon med tjeneren som venter på inngående forespørsler.
 ###
 En beskrivelse og diskusjon/argumentasjon (denne delen en veldig viktig ved evaluering) av hvilke teknologi- og arkitektur-/designvalg dere har stått ovenfor (når dere skulle løse oppgaven), hva dere hadde å velge mellom og hvorfor dere har valgt det dere har valgt. Når det gjelder teknologivalg så kan denne delen begrenses til «pensum i faget».
 
@@ -137,7 +144,7 @@ En beskrivelse og diskusjon/argumentasjon (denne delen en veldig viktig ved eval
 ## Hvilke teknologier har vi brukt og hvorfor?
 Hva hadde vi å velge mellom, hvorfor valgte vi som vi gjorde?
 
-**Socets**
+**Sockets**
 
 Den typen socket som bruker TCP kalles en strømmingssocket eller en tilkoblingsorientert socket. Med TCP kan man koble flere klienter opp mot samme
 TCP-tjener. For å gjøre dette må man opprette en barnprosess for hver enkelt klient og deretter opprette en 
@@ -155,13 +162,20 @@ Klientklassen implementerer Runnable som er en annen måte å spesifisere hvorda
 
 **Filewriter/reader til logging**
 
-Java FileWriter brukes til å skrive bokstavorientert data til en fil. 
+Java FileWriter brukes til å skrive bokstavorientert data til en fil. Fungerer omtrent som FileOutputStream bortsett fra at FOS er bytebasert, mens FileWriter er karakterbasert.
+FileWriter passer seg altså bedre til å skrive ord og tekst. 
+
 
 **Printstream & DataInputStream**
-
+PrintStream og DataInputStream legger til funksjonalitet til andre strømmer, altså input og putputStream fra Socket. På denne måten kan tjeneren lese dataen som har blitt sendt via socketene over nettet til klientene. 
+PrintStream og DataInputStream pakker inn outputStream og inputStream fra Socketen slik at vi kan lese data(tall og bokstaver), i stedet for bytes.
 
 <a name="forbedringer"></a>
 ## Fremtidig arbeid med oversikt over mangler og mulige forbedringer
+Det finnes flere ting som kan implementeres for å få en mer fullverdig implementasjon av
+two-phase commit:
+- GLOBAL_ABORT hvis en av klientene aldri svarer med den er klar med COMMIT
+- GLOBAL_ABORT hvis en av klientene feiler eller termineres før ACKNOWLEDGEMENT
 
 <a name="eksempler"></a>
 ## Eksempler som viser bruken av løsningen
@@ -208,8 +222,8 @@ Om en klient stemmer for ABORT vil tjeneren initialisere en global abort uansett
 
 <a name="installasjon"></a>
 ## Installasjonsinstruksjoner
-### Tjener
-For å installere tjeneren på en linux server:
+### Server
+For å installere serveren på en linux server:
 1. Clone prosjektet til din linux maskin
 2. Kjør *apt-get install default-jdk* for å installere java
 3. Kjør *javac Tjener.java*
@@ -222,6 +236,56 @@ over i samme mappe som filen(og med Klient i stedet for Tjener), eller bruke en 
 
 <a name="testing"></a>
 ## Hvordan man kan teste løsningen
+Det finnes flere måter å teste koden og løsningen på. Her er et par scenarier som du kan prøve
+og teste:
+- Opprette en tjener og en klient
+- Opprette en tjener og en klient der en feil forekommer
+- Opprette en tjener og to klienter der ingen feil forekommer
+- Opprette en tjener og to klienter der en feil forekommer
+### Opprette en tjener og en klient
+- Her opprettes en tjener og en klient.
+- Klienten skriver inn navnet og saldo større enn beløpet som skal trekkes (5kr).
+- Klienten trykker enter for å si at den er klart til å "committe".
+- Klienten vil motta GLOBAL_COMMIT.
+- Klienten trykker enter for å si at den har "committed" og "acknowledeger" til tjeneren.
+- Klienten mottar en melding om at two phase er gjennomført.
+- Alt av handlinger loggføres i en logg i navnet til klienten.
+- Forbindelsen termineres.
 
+### Opprette en tjener og en klient der en feil forekommer
+- Her opprettes en tjener og en klient.
+- Klienten skriver inn navnet og saldo mindre enn beløpet som skal trekkes (5kr).
+- Klienten trykker enter for å si at den er klart til å "committe".
+- Klienten vil motta GLOBAL_ABORT.
+- Klienten mottar en melding om at two phase er gjennomført.
+- Alt av handlinger loggføres i en logg i navnet til klienten.
+- Forbindelsen termineres.
+
+### Opprette en tjener og to klienter der ingen en feil forekommer
+- Her opprettes en tjener og to klienter.
+- Klient_1 skriver inn navn og saldo større enn beløpet som skal trekkes (5kr).
+- Klient_1 trykker enter for å si at den er klart til å "committe".
+- Klient_2 skriver inn navn og saldo større enn beløpet som skal trekkes (5kr).
+- Klient_2 trykker enter for å si at den er klart til å "committe".
+- Klient_1 vil motta GLOBAL_COMMIT.
+- Klient_2 vil motta GLOBAL_COMMIT.
+- Klient_1 trykker enter for å si at den har "committed" og "acknowledeger" til tjeneren.
+- Klient_2 trykker enter for å si at den har "committed" og "acknowledeger" til tjeneren.
+- Begge klientene mottar en melding om at two phase er gjennomført.
+- Alt av handlinger loggføres i en logg i navnet til klienten.
+- Forbindelsen termineres.
+
+### Opprette en tjener og to klienter der en feil forekommer
+- Her opprettes en tjener og to klienter.
+- Klient_1 skriver inn navn og saldo større enn beløpet som skal trekkes (5kr).
+- Klient_1 trykker enter for å si at den er klart til å "committe".
+- Klient_2 skriver inn navn og saldo mindre enn beløpet som skal trekkes (5kr).
+- Klient_2 trykker enter for å si at den er klart til å "committe".
+- Klient_1 vil motta GLOBAL_ABORT.
+- Klient_1 vil rulle tilbake (rollback) og hente sin lagrede saldo.
+- Klient_2 vil motta GLOBAL_ABORT.
+- Begge klientene mottar en melding om at two phase er gjennomført.
+- Alt av handlinger loggføres i en logg i navnet til klienten.
+- Forbindelsen termineres.
 <a name="api"></a>
 ## Eventuell lenke til API dokumentasjon
