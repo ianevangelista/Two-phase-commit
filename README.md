@@ -114,7 +114,7 @@ protokollen Transmission Control Protocol (TCP). Den typen socket som bruker TCP
 strømmingssocket eller en tilkoblingsorientert socket. Med TCP kan man koble flere klienter opp mot samme
 TCP-tjener. For å gjøre dette må man opprette en barnprosess for hver enkelt klient og deretter opprette en 
 TCP-kobling mellom tilhørende prosess og klient. I dette prosjektet brukte vi tråder for å gjennomføre dette
-og det opprettes socketer for hver tilkobling.
+og det opprettes en socket for hver tilkobling.
 
 ###
 En annen protokoll som vi kunne ha brukt i stedet for TCP er U​ser D​atagram P​rotocol (UDP).
@@ -127,9 +127,16 @@ Likevel er UDP er en upålitelig protokoll og man kan derfor ikke være sikre p�
 Her ønsker man gjerne at pakkene skal komme frem korrekt og i riktig rekkefølge, noe UDP ikke kan garantere. 
 Tjeneren skiller heller ikke mellom forskjellige klienter, 
 så hvis flere sender meldinger til tjeneren samtidig kan det fort bli rot.
+Benytter man seg av TCP vil man derimot kunne få informasjon om pakkene som sendes mellom sender og mottaker. 
+Underveis vil man kunne få status angående pakkene, og TCP vil kunne ordne opp dersom dataene er blitt ødelagte 
+underveis og det vil sørge for at pakkene når mottakeren. 
+Med andre ord er TCP et grensesnitt som sørger for en pålitelig overføring sammenlignet med UDP.
 ###
 Når det kommer til arkitektur/design-valg har vi som tidligere nevnt, en tjener, klient, klientTraad og en 
-loggforer-klasse. 
+loggforer-klasse. TCP opererer på klient-tjener-arkitekturen og forbindelsen må gå begge veier. 
+Det er derfor logisk at vi har et designmønsteret og arkitekturen klient-tjener på grunn av bruken av TCP. 
+En deltaker i two phase commit vil i klient-tjener modellen være en klient, og koordinatoren vil derfor bli tjeneren. 
+
 ###
 En beskrivelse og diskusjon/argumentasjon (denne delen en veldig viktig ved evaluering) av hvilke teknologi- og arkitektur-/designvalg dere har stått ovenfor (når dere skulle løse oppgaven), hva dere hadde å velge mellom og hvorfor dere har valgt det dere har valgt. Når det gjelder teknologivalg så kan denne delen begrenses til «pensum i faget».
 
