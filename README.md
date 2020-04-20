@@ -175,10 +175,10 @@ PrintStream og DataInputStream pakker inn outputStream og inputStream fra Socket
 
 <a name="eksempler"></a>
 ## Eksempler som viser bruken av løsningen
-Det første skjer når serveren starter er at man får tilbakemelding om at "Serveren er startet...""
+Det første skjer når serveren starter er at man får tilbakemelding om at "Serveren er startet...". Deretter får man beskjed hver gang en klient kobler seg til.
 
 
-![Image description](https://i.imgur.com/bdPlgIQ.png)
+![Tjeneren start](https://media.giphy.com/media/H3NkJDdphWTUph0NYQ/giphy.gif)
 
 Når man så kjører en klient får man følgende beskjed om å skrive inn navnet sitt. Når klienten gjør dette, får den
 beskjed om å oppgi en saldo. Navnet brukes til å opprette en logg i navnet til klienten, samt en bedre visuell tilbakemelding på tjenersiden.
@@ -196,10 +196,10 @@ Om man kobler til en klient til vil både den første klienten og tjeneren få b
 | --- | --- |
 |![alt text](https://i.imgur.com/d2GpKzC.png "Bilde vel")|![Image description](https://i.imgur.com/zCPrrR3.png "Enda et bilde")|
    
-Vi har nå kommet til første del av *Two-phase commit"-protokollen, der klientene skal stemme om de er klare til å commite. 
+Vi har nå kommet til første del av *Two-phase commit*-protokollen, der klientene skal stemme om de er klare til å commite. 
 Herfår man en velkomstmelding, og et spørsmål om de vil godkjenne at det trekkes 5 fra saldoen sin. 
 Her har vi gjort slik at stemmingen gjøres ved at klientene kun trykker på enter, og så gjør systemet resten. 
-I *Two-phase commit"-protokollen skal klientene stemme **ja** om de har gjort alt klart for å commite dersom alle klientene stemmer commit, og **nei** dersom noe ikke stemmer eller har gått galt.
+I *Two-phase commit*-protokollen skal klientene stemme **ja** om de har gjort alt klart for å commite dersom alle klientene stemmer commit, og **nei** dersom noe ikke stemmer eller har gått galt.
 Siden dette kun er en simulering av en transaksjon har vi gjort slik at systemet avgjør om en klient har klargjort sin del av prosessen. 
 Det eneste som avgjør om en klient har klargjort sin del er om de har en saldo som er større eller lik 5. 
 
@@ -210,7 +210,7 @@ Dersom en av klientene har over 5 i saldo og derfor "stemmer" for å commite vil
 
 | Server | Klient |
 | --- | --- |
-|![Image description](https://i.imgur.com/S5TUGIA.png)|![Image description](https://i.imgur.com/5yu1MAV.png)|
+|![Image description](https://media.giphy.com/media/W3U1apPvHton0F833t/giphy.gif "Tjener får commit")|![Image description](https://i.imgur.com/5yu1MAV.png)|
 
 Hvis de andre klienten også har råd og dermed også "stemmer" for commit, har alle klientene stemt for commit, og transaksjonen er klar til å gjennomføres. 
 Tjeneren sender så en beskjed om *global commit* til alle klientene. Når klientene får denne beskjeden om betyr det at de selv skal commite hver for seg.
@@ -220,12 +220,12 @@ Slik ser det ut for henholdsvis tjener og klient 1:
 
 | Server | Klient |
 | --- | --- |
-|![Image description](https://i.imgur.com/n6t2m1V.png)|![Image description](https://i.imgur.com/uTgNbvd.png)|
+|![Image description](https://media.giphy.com/media/h2CIotR7wSUlcaGoqN/giphy.gif "Tjeneren fullfører transaksjonen")|![Image description](https://i.imgur.com/uTgNbvd.png)|
 
-I *Two-phase commit"-protokollen skal klienten commite og deretter sende en bekreftelse(acknowledgement) tilbake til tjeneren, når den får beskjed om global commit. 
+I *Two-phase commit*-protokollen skal klienten commite og deretter sende en bekreftelse(acknowledgement) tilbake til tjeneren, når den får beskjed om global commit. 
 I vår simulasjon av en transaksjon simuleres denne commiten ved at klienten trykker enter. Når dette gjøres er commiten gjennomført og det sendtes en acknowledgement-beskjed til tjeneren.
 På samme måte som i første fase av protokollen, så må alle klientene sende em slikt bekreftelsesbeskjed til tjeneren for at transaksjonen er fullført. 
-Dette skal forhåpentligvis ikke skjed, men om en klient fjernes eller på en eller annen måte aldri får gjennomført commiten, så vil tjeneren vente en bestemt tid, før den gir beskjed til alle klientene om **abort**.
+Dette skal forhåpentligvis ikke skje, men om en klient fjernes eller på en eller annen måte aldri får gjennomført commiten, så vil tjeneren vente en bestemt tid, før den gir beskjed til alle klientene om **abort**.
 
 /// Her skal fullføringen av transaksjonen være
 
@@ -233,7 +233,7 @@ Dette skal forhåpentligvis ikke skjed, men om en klient fjernes eller på en el
 **Rollback**  
 Om vi kjører samme eksempel, men denne gangen har vi tre klienter. 
 I denne situasjonen så har Jonas og Erna fremdeles råd, og dermed "stemmer" for COMMIT, mens den nye klienten Sylvi har dessverre ikke råd og "stemmer" for ABORT. 
-Når klientene da stemmer, vil systemet finne ut om de stemmer **ja* eller **nei** basert på saldoen deres. Og siden Sylvi ikke har råd vil hennes stemme være nei, som initialiserer en *global abort*.
+Når klientene da stemmer, vil systemet finne ut om de stemmer **ja** eller **nei** basert på saldoen deres. Og siden Sylvi ikke har råd vil hennes stemme være nei, som initialiserer en *global abort*.
 Da vil tjeneren sende *global abort* til alle klientene, og de vil dermed kjøre abort metoden sin.
 Transaksjonen blir dermed ikke utført. 
 

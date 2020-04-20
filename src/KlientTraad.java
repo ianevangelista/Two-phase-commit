@@ -61,7 +61,6 @@ public class KlientTraad extends Thread {
                     if ((tjener.traadListe).contains(this)) {
                         (tjener.data).set((tjener.traadListe).indexOf(this), "COMMIT");
                         for (int j = 0; j < (tjener.data).size(); j++) {
-                            System.out.println(tjener.data.get(j));
                             if (!(((tjener.data).get(j)).equalsIgnoreCase("NOT_SENT"))) {
                                 tjener.inputFraAlle = true;
                                 continue;
@@ -77,6 +76,7 @@ public class KlientTraad extends Thread {
                             for(int i = 0; i < tjener.traadListe.size(); i++) {
                                 ((tjener.traadListe).get(i)).os.println("GLOBAL_COMMIT");
                             }
+                            tjener.data.clear();
                             //break;
                         }
                     } // if traadListe.contains
