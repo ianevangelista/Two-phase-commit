@@ -77,10 +77,10 @@ public class KlientTraad extends Thread {
 
                         if (tjener.inputFraAlle) {
                             System.out.println("\n\nSending GLOBAL_COMMIT to all....");
-                            while(tjener.traadListe.size() > 0) {
+                            while (tjener.traadListe.size() > 0) {
                                 ((tjener.traadListe).get(0)).os.println("GLOBAL_COMMIT");
-                                tjener.data.remove(tjener.traadListe.indexOf(tjener.traadListe.get(0)));
-                                tjener.traadListe.remove(0); //fjerner senere etter ack
+                                // tjener.data.remove(tjener.traadListe.indexOf(tjener.traadListe.get(0)));
+                                // tjener.traadListe.remove(0); //fjerner senere etter ack
                             }
                             linje = is.readLine();
                             for (int i = 0; i < tjener.traadListe.size(); i++){

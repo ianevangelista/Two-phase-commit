@@ -13,3 +13,12 @@ Mon Apr 20 17:33:00 CEST 2020,Sender ABORT til tjener, har ikke raad.
 Mon Apr 20 17:33:00 CEST 2020,Fikk beskjed om ABORT fra tjener
 Mon Apr 20 17:33:00 CEST 2020,Klienten er nå frakoblet.
 
+Mon Apr 20 17:40:42 CEST 2020,niko er tilkoblet. Saldo er: 6kr.
+Mon Apr 20 17:41:44 CEST 2020,Fikk VOTE_REQUEST om å trekke 5kr.
+Mon Apr 20 17:41:44 CEST 2020,SAVE: Lagrer gammel saldo(kr): 6
+Mon Apr 20 17:41:44 CEST 2020,Sender COMMIT til tjener.
+Mon Apr 20 17:41:51 CEST 2020,Fikk klarsignal(GLOBAL_COMMIT) fra tjener.
+Mon Apr 20 17:41:51 CEST 2020,Utførte transaksjon: [Opprinnelig beløp: 6, Transaksjonsbeløp: 5, Nytt beløp: 1]
+Mon Apr 20 17:42:03 CEST 2020,Sendte ACKNOWLEDGE til tjener.
+Mon Apr 20 17:42:03 CEST 2020,Klienten er nå frakoblet.
+

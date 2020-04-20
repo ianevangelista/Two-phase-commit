@@ -29,8 +29,9 @@ public class Klient implements Runnable {
      */
     public static void main(String[] args) {
         int port=1111;
+        String host = "localhost"; // localhost
         try {
-            InetAddress host= InetAddress.getByName("129.241.96.153");
+            // InetAddress host= InetAddress.getByName("129.241.96.153"); // server
             klientSocket = new Socket(host, port);
             inputLinje = new BufferedReader(new InputStreamReader(System.in));
             os = new PrintStream(klientSocket.getOutputStream());
