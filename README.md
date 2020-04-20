@@ -137,6 +137,29 @@ En beskrivelse og diskusjon/argumentasjon (denne delen en veldig viktig ved eval
 ## Hvilke teknologier har vi brukt og hvorfor?
 Hva hadde vi å velge mellom, hvorfor valgte vi som vi gjorde?
 
+**Socets**
+
+Den typen socket som bruker TCP kalles en strømmingssocket eller en tilkoblingsorientert socket. Med TCP kan man koble flere klienter opp mot samme
+TCP-tjener. For å gjøre dette må man opprette en barnprosess for hver enkelt klient og deretter opprette en 
+TCP-kobling mellom tilhørende prosess og klient. 
+
+**Tråder**
+
+I dette prosjektet brukte vi tråder for å opprettes TCP-kobling mellom tjener og socketer for hver klient. 
+Vi bruker Java Thread der klassen KlientTraad, er en underklasse som extender Thread. 
+Der overstyrer vi kjøremetoden som er den første metoden som kjøres når etter vi starter tråden. 
+Fordelen med dette er at en Java tråd oppfører seg som en virtuell CPU slik at hver klient kan kjøre uforstyrret. 
+
+
+Klientklassen implementerer Runnable som er en annen måte å spesifisere hvordan en tråd skal kjøre. Dette grensesnittet har kun en run() metode.
+
+**Filewriter/reader til logging**
+
+Java FileWriter brukes til å skrive bokstavorientert data til en fil. 
+
+**Printstream & DataInputStream**
+
+
 <a name="forbedringer"></a>
 ## Fremtidig arbeid med oversikt over mangler og mulige forbedringer
 
