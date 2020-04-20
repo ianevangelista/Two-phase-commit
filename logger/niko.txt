@@ -1,0 +1,9 @@
+Mon Apr 20 14:27:13 CEST 2020,Niko er tilkoblet. Saldo er: 43kr.
+Mon Apr 20 14:27:19 CEST 2020,Fikk VOTE_REQUEST om å trekke 5kr.
+Mon Apr 20 14:27:19 CEST 2020,SAVE: Lagrer gammel saldo(kr): 43
+Mon Apr 20 14:27:19 CEST 2020,Sender COMMIT til tjener.
+Mon Apr 20 14:27:19 CEST 2020,Fikk klarsignal(GLOBAL_COMMIT) fra tjener.
+Mon Apr 20 14:27:19 CEST 2020,Utførte transaksjon: [Opprinnelig beløp: 43, Transaksjonsbeløp: 5, Nytt beløp: 38]
+Mon Apr 20 14:27:22 CEST 2020,Sendte ACKNOWLEDGE til tjener.
+Mon Apr 20 14:27:22 CEST 2020,Klienten er nå frakoblet.
+
