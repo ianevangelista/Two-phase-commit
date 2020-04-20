@@ -18,7 +18,6 @@ public class KlientTraad extends Thread {
     Socket klientSocket = null;
     String klientIdentitet;
     Tjener tjener;
-    Loggforer logg;
     int antallAck = 0;
 
     public KlientTraad(Tjener tjener, Socket klientSocket) {
