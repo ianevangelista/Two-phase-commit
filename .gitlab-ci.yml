@@ -13,7 +13,7 @@ deploy:
     - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
     - apt-get update
     - apt-get install --assume-yes rsync
-    - rsync --archive --delete --exclude='.git' . app@129.241.96.153:app
-    - ssh app@129.241.96.153 javac prosjekt/src/*.java && jar cvfm prosjekt/src/tjener.jar prosjekt/src/manifest.txt prosjekt/src/*.class && systemctl --user restart app
+    - rsync --archive --delete --exclude='.git' . twoPhase@129.241.96.153:prosjekt
+    - ssh twoPhase@129.241.96.153 javac prosjekt/src/*.java && jar cvfm prosjekt/src/tjener.jar prosjekt/src/manifest.txt prosjekt/src/*.class && systemctl --user restart app
   only:
     - master
