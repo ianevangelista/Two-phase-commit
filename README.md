@@ -3,7 +3,7 @@
 * [Biblioteker og CI](#biblioteker)
 * [Introduksjon](#introduksjon)
 * [Implementert funksjonalitet](#funksjonalitet)
-    * [Tjener](#funksjonalitet_tjener)
+    * [Server](#funksjonalitet_server)
     * [Klient](#funksjonalitet_klient)
 * [Diskusjon](#diskusjon)
 * [Teknologier](#teknologier)
@@ -23,23 +23,23 @@ Insert CI link her
 ## Introduksjon
 I dette prosjektet lager vi en two-phase commit løsning.
 Denne fungerer ved at alle tilkoblede klienter må "stemme" over valg som gjøres.
-I dette prosjektet bruker vi tjenerens navn som et eksempel.
+I dette prosjektet bruker vi serverens navn som et eksempel.
 Navet endres og alle tilkoblede parter må være enige om å beholde det nye navnet.
 Dersom én er uenig ruller vi tilbake til det gamle servernavnet (rollback).
 Alle parter må stemme før et valg er avgjort.
 
 <a name="funksjonalitet"></a>
 ## Implementert funksjonalitet
-Siden prosjektet er inndelt i tjener og klient,
+Siden prosjektet er inndelt i server og klient,
 to deler i et distibuert system, ser vi også på
 funksjonaliteten for disse hver for seg.
 
-<a name="funksjonalitet_tjener"></a>
-### Tjener
-På tjenersiden har vi først og fremst implementert
-tråder slik at hver tilkobling til tjener kjører på
+<a name="funksjonalitet_server"></a>
+### Server
+På serversiden har vi først og fremst implementert
+tråder slik at hver tilkobling til server kjører på
 en egen tråd. Dermed sikrer vi at klienter ikke
-begrenses av andre klienters tilkobling til tjeneren.
+begrenses av andre klienters tilkobling til serveren.
 
 Videre bruker vi sockets for å lytte etter tilkoblinger
 fra klient. I Java bruker vi ServerSocket for å lytte på
@@ -53,7 +53,7 @@ try {
     System.out.println(e);
 }
 ```
-Tjeneren kjører så i loop og oppretter egne tråder
+Serveren kjører så i loop og oppretter egne tråder
 for hver klient som kobler seg til, gitt at serverSocket
 aksepterer forbindelsen uten å kaste exceptions:
 ```java
@@ -72,7 +72,7 @@ while (!tjener.lukket) {
 ### Klient
 I klient klassen opprettes også en socket på port 1111. 
 Deretter oppretter vi lese og skrive forbindelse til
-tjeneren ved hjelp av PrintStream(os) og 
+serveren ved hjelp av PrintStream(os) og 
 DataInputStream(is) i form av output- og inputstream:
 ```java
 int port=1111;
@@ -86,8 +86,8 @@ try {
     System.out.println("Exception occurred : " + e.getMessage());
 }
 ```
-Ved nye hendelser fra tjeneren sørger en run-metode
-i klient for å plukke opp meldinger fra tjeneren i en loop
+Ved nye hendelser fra server sørger en run-metode
+i klient for å plukke opp meldinger fra server i en loop
 som kjøres så lenge ikke alle tilkoblede klienter har 
 stemt:
 ```java
@@ -162,10 +162,13 @@ Klientklassen implementerer Runnable som er en annen måte å spesifisere hvorda
 
 **Filewriter/reader til logging**
 
-Java FileWriter brukes til å skrive bokstavorientert data til en fil. 
+Java FileWriter brukes til å skrive bokstavorientert data til en fil. Fungerer omtrent som FileOutputStream bortsett fra at FOS er bytebasert, mens FileWriter er karakterbasert.
+FileWriter passer seg altså bedre til å skrive ord og tekst. 
+
 
 **Printstream & DataInputStream**
-
+PrintStream og DataInputStream legger til funksjonalitet til andre strømmer, altså input og putputStream fra Socket. På denne måten kan tjeneren lese dataen som har blitt sendt via socketene over nettet til klientene. 
+PrintStream og DataInputStream pakker inn outputStream og inputStream fra Socketen slik at vi kan lese data(tall og bokstaver), i stedet for bytes.
 
 <a name="forbedringer"></a>
 ## Fremtidig arbeid med oversikt over mangler og mulige forbedringer
@@ -215,8 +218,8 @@ Om en klient stemmer for ABORT vil tjeneren initialisere en global abort uansett
 
 <a name="installasjon"></a>
 ## Installasjonsinstruksjoner
-### Tjener
-For å installere tjeneren på en linux server:
+### Server
+For å installere serveren på en linux server:
 1. Clone prosjektet til din linux maskin
 2. Kjør *apt-get install default-jdk* for å installere java
 3. Kjør *javac Tjener.java*
