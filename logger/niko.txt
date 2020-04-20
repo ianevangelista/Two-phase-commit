@@ -171,3 +171,9 @@ Mon Apr 20 21:03:04 CEST 2020,Sender ABORT til tjener, har ikke raad.
 Mon Apr 20 21:03:04 CEST 2020,Fikk beskjed om ABORT fra tjener
 Mon Apr 20 21:03:04 CEST 2020,Klienten er nå frakoblet.
 
+Mon Apr 20 21:07:24 CEST 2020,niko er tilkoblet. Saldo er: 0kr.
+Mon Apr 20 21:07:33 CEST 2020,Fikk VOTE_REQUEST om å trekke 5kr.
+Mon Apr 20 21:07:33 CEST 2020,Sender ABORT til tjener, har ikke raad.
+Mon Apr 20 21:07:33 CEST 2020,Fikk beskjed om ABORT fra tjener
+Mon Apr 20 21:07:33 CEST 2020,Klienten er nå frakoblet.
+

@@ -47,6 +47,7 @@ public class KlientTraad extends Thread {
             }
             while (true) {
                 linje = is.readLine();
+                if (linje == null) linje="";
                 if (linje.equalsIgnoreCase("ABORT")) {
                     System.out.println("\nFra '" + klientIdentitet
                             + "' : ABORT\n\nSiden det ble skrevet ABORT, vil vi ikke vente paa flere input fra andre klienter.");
