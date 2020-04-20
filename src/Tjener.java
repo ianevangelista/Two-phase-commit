@@ -35,6 +35,7 @@ public class Tjener {
         Tjener tjener = new Tjener();
         try {
             tjenerSocket = new ServerSocket(port_number);
+            System.out.println("Serveren er startet...");
         } catch (IOException e) {
             System.out.println(e);
         }
