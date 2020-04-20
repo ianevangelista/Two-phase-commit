@@ -30,8 +30,8 @@ public class Klient implements Runnable {
     public static void main(String[] args) {
         int port=1111;
         try {
-            InetAddress host= InetAddress.getByName("129.241.96.153");
-            klientSocket = new Socket(host, port);
+            //InetAddress host= InetAddress.getByName("129.241.96.153");
+            klientSocket = new Socket("localhost", port);
             inputLinje = new BufferedReader(new InputStreamReader(System.in));
             os = new PrintStream(klientSocket.getOutputStream());
             is = new DataInputStream(klientSocket.getInputStream());
@@ -128,9 +128,8 @@ public class Klient implements Runnable {
             }
             logg.loggfor("Klienten er nå frakoblet.\n");
             System.out.println("Two phase commit er nå ferdig. Ha det bra");
-            lukket=true;
             logg.close();
-            System.exit(0);
+            //System.exit(0);
         }
         catch (IOException e) {
             System.err.println("IOException:  " + e);
