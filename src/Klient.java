@@ -120,19 +120,17 @@ public class Klient implements Runnable {
                 if (responseLinje.equalsIgnoreCase("GLOBAL_COMMIT")) {
                     logg.loggfor("Fikk klarsignal(GLOBAL_COMMIT) fra tjener.");
                     logg.loggfor("Utførte transaksjon: [Opprinnelig beløp: " + (saldo+belop) + ", Transaksjonsbeløp: " + belop + ", Nytt beløp: " + saldo + "]");
-                    System.out.println("Trykk enter om du vil acknowledge.");
-                    inputLinje.readLine();
+                    // System.out.println("Trykk enter om du vil acknowledge.");
+                    // inputLinje.readLine();
                     os.println("ACKNOWLEDGEMENT");
                     logg.loggfor("Sendte ACKNOWLEDGE til tjener.");
+                    break;
                 }
-                if(responseLinje.equalsIgnoreCase("TERMINATE")) {
-                    logg.loggfor("Klienten er nå frakoblet.\n");
-                    System.out.println("Two phase commit er nå ferdig. Ha det bra");
-                    logg.close();
-                    //System.exit(0);
-                }
-            }
-
+            } // While slutt
+            logg.loggfor("Klienten er nå frakoblet.\n");
+            System.out.println("Two phase commit er nå ferdig. Ha det bra");
+            logg.close();
+            System.exit(0);
         }
         catch (IOException e) {
             System.err.println("IOException:  " + e);
