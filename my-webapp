@@ -1,2 +1,4 @@
 #!/bin/sh
+/usr/bin/javac *.java
+/usr/bin/jar cvfm tjener.jar manifest.txt *.class
 /usr/bin/java -jar tjener.jar server config.yml
