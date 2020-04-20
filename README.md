@@ -3,7 +3,7 @@
 * [Biblioteker og CI](#biblioteker)
 * [Introduksjon](#introduksjon)
 * [Implementert funksjonalitet](#funksjonalitet)
-    * [Server](#funksjonalitet_server)
+    * [Tjener](#funksjonalitet_tjener)
     * [Klient](#funksjonalitet_klient)
 * [Diskusjon](#diskusjon)
 * [Teknologier](#teknologier)
@@ -30,16 +30,16 @@ Alle parter må stemme før et valg er avgjort.
 
 <a name="funksjonalitet"></a>
 ## Implementert funksjonalitet
-Siden prosjektet er inndelt i server og klient,
+Siden prosjektet er inndelt i tjener og klient,
 to deler i et distibuert system, ser vi også på
 funksjonaliteten for disse hver for seg.
 
-<a name="funksjonalitet_server"></a>
-### Server
-På serversiden har vi først og fremst implementert
-tråder slik at hver tilkobling til server kjører på
+<a name="funksjonalitet_tjener"></a>
+### Tjener
+På tjenersiden har vi først og fremst implementert
+tråder slik at hver tilkobling til tjener kjører på
 en egen tråd. Dermed sikrer vi at klienter ikke
-begrenses av andre klienters tilkobling til serveren.
+begrenses av andre klienters tilkobling til tjeneren.
 
 Videre bruker vi sockets for å lytte etter tilkoblinger
 fra klient. I Java bruker vi ServerSocket for å lytte på
@@ -53,7 +53,7 @@ try {
     System.out.println(e);
 }
 ```
-Serveren kjører så i loop og oppretter egne tråder
+Tjeneren kjører så i loop og oppretter egne tråder
 for hver klient som kobler seg til, gitt at serverSocket
 aksepterer forbindelsen uten å kaste exceptions:
 ```java
@@ -72,7 +72,7 @@ while (!tjener.lukket) {
 ### Klient
 I klient klassen opprettes også en socket på port 1111. 
 Deretter oppretter vi lese og skrive forbindelse til
-serveren ved hjelp av PrintStream(os) og 
+tjeneren ved hjelp av PrintStream(os) og 
 DataInputStream(is) i form av output- og inputstream:
 ```java
 int port=1111;
@@ -86,8 +86,8 @@ try {
     System.out.println("Exception occurred : " + e.getMessage());
 }
 ```
-Ved nye hendelser fra server sørger en run-metode
-i klient for å plukke opp meldinger fra server i en loop
+Ved nye hendelser fra tjeneren sørger en run-metode
+i klient for å plukke opp meldinger fra tjeneren i en loop
 som kjøres så lenge ikke alle tilkoblede klienter har 
 stemt:
 ```java
