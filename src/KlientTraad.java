@@ -77,22 +77,24 @@ public class KlientTraad extends Thread {
 
                         if (tjener.inputFraAlle) {
                             System.out.println("\n\nSending GLOBAL_COMMIT to all....");
-                            while (tjener.traadListe.size() > 0) {
-                                ((tjener.traadListe).get(0)).os.println("GLOBAL_COMMIT");
-                                // tjener.data.remove(tjener.traadListe.indexOf(tjener.traadListe.get(0)));
-                                // tjener.traadListe.remove(0); //fjerner senere etter ack
+                            for(int i = 0; i < tjener.traadListe.size(); i++) {
+                                ((tjener.traadListe).get(i)).os.println("GLOBAL_COMMIT");
                             }
                             linje = is.readLine();
+                            System.out.println(linje);
                             for (int i = 0; i < tjener.traadListe.size(); i++){
                                 if (linje.equalsIgnoreCase("ACKNOWLEDGEMENT")) antallAck++;
                                 System.out.println(antallAck);
                             }
-
                             if (antallAck == tjener.traadListe.size()) {
                                 System.out.println("MOTTAT ACK FRA ALLE KLIENTER, TWO PHASE COMMIT ER NAA OVER");
-                                tjener.data = new ArrayList<String>();
-                                tjener.traadListe = new ArrayList<KlientTraad>();
-                                break;
+                                while (tjener.traadListe.size() > 0){
+                                    tjener.traadListe.get(0).os.println("TERMINATE");
+                                    tjener.traadListe.remove(0);
+                                    tjener.data.remove(0);
+                                }
+                                 tjener.data = new ArrayList<String>();
+                                 tjener.traadListe = new ArrayList<KlientTraad>(); break;
                             } else {
                                 System.out.println("\nVenter paa acknowledgement fra andre klienter.");
                             }
@@ -101,6 +103,7 @@ public class KlientTraad extends Thread {
                     } // if traadListe.contains
                 }
             } // while
+            antallAck = 0;
             is.close();
             os.close();
             klientSocket.close();
