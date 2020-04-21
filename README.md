@@ -237,7 +237,7 @@ Transaksjonen blir dermed ikke utført.
 
 | Server | Klient |
 | --- | --- |
-|![Image description](https://i.imgur.com/cDpZ40d.png)|![Image description](https://i.imgur.com/Dax8u2V.png)|
+|![Image description](https://media.giphy.com/media/h1tvXrcXm6H7PPtqJZ/giphy.gif)|![Image description](https://media.giphy.com/media/j2GFYeYQwCGhHisM9C/giphy.gif)|
 
 Tjeneren vil vanligvis vente på svar fra alle klientene i den første fasen der det skal stemmes. Dersom en klient stemmer for ABORT vil tjeneren initialisere en global abort uansett. 
 Tjeneren vil da ikke vente på svar fra resten av klientene, for i en two-phase commit protocol er det nok at én klient stemmer for abort. 
@@ -259,18 +259,28 @@ I vår applikasjon så loggføres det:
 - Acknowledgement.
 - Klient er frakoblet.
 
-
-Her ser vi loggene fra kjøringen:
-Den første er Erna sin logg etter at transaksjonen ble gjennomført og alt gikk som det skulle:
+*Første kjøring*
 
 
-![Image description](https://i.imgur.com/NiImQFZ.png "Loggen til Erna")
+Her ser vi loggen fra den første kjøringen:
+Dette er Erna sin logg etter at transaksjonen ble gjennomført og alt gikk som det skulle.
+Her ser vi at det logges både når klienten koblet seg til og fra. Samt kommunikasjonen mellom klienten og tjeneren i tillegg til operasjonene klienten gjorde:
 
 
-Dette er loggen til Sylvi etter at transaksjonen ble avbrutt fordi hun ikke hadde råd:
+![Image description](https://i.imgur.com/aEwlaFT.png "Loggen til Erna etter første kjøring")
+
+*Andre kjøring*
 
 
-![Image description](https://i.imgur.com/NPi1Xkm.png "Loggen til Sylvi")|
+Her ser vi både loggen til Erna og Sylvi etter at transaksjonen ble avbrutt. De er ikke helt like, og det er fordi Erna hadde nok penger og derfor sendte hun klar for commit til tjener. Men da Sylvi ikke hadde råd og tjener ble nødt til å sende *global abort* ser vi at Erna ble nødt til å gjøre et *rollback*.
+Sylvi derimot var den som initialiserte aborten og derfor ble ikke hennes saldo lagret og det er derfor ingen behov for rollback fra hennes side. 
+
+Dette er loggen til Erna og Sylvi etter at transaksjonen ble avbrutt:
+
+| Erna Solberg | Sylvi Listhaug |
+| --- | --- |
+|![Image](https://i.imgur.com/5Z6ibaX.png "Loggen til Erna etter abort") | ![Image](https://i.imgur.com/VA9Gygb.png "Loggen til Sylvi etter abort")|
+
 
 
 <a name="installasjon"></a>
