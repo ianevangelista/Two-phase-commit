@@ -107,6 +107,62 @@ try {
 }
 ```
 ### KlientTraad
+KlientTraad fungerer som bindeleddet mellom tjener og klient. For hver klient så opprettes
+det en egen KlientTraad. Det her man både skriver til klient og leser responsen fra klient.
+Denne kjører i loop så lenge ingen aborter eller hvis two-phase er gjennomført.
+
+
+Under ser man hva som skal skje hvis responsen fra en klient er ABORT:
+```java
+if (linje.equalsIgnoreCase("ABORT")) {                                                                             
+    System.out.println("\nFra '" + klientIdentitet                                                                 
+            + "' : ABORT\n\nSiden det ble skrevet ABORT, vil vi ikke vente paa flere input fra andre klienter.");  
+    System.out.println("\nAborted...");                                                                            
+                                                                                                                   
+    while(tjener.traadListe.size() > 0) {                                                                          
+        ((tjener.traadListe).get(0)).os.println("GLOBAL_ABORT");                                                   
+        tjener.data.remove(tjener.traadListe.indexOf(tjener.traadListe.get(0)));                                   
+        tjener.traadListe.remove(0);                                                                               
+    }                                                                                                              
+    break;                                                                                                         
+}                                                                                                                  
+```
+Her vil den printe ut hvem som skrev ABORT og at man avslutter two-phase.
+Alle trådene klientene mottar en GLOBAL_ABORT-melding og klientene og dataene fjernes fra listen fra listen.
+Deretter avsluttes two-phase commit.
+
+Under ser man hva som skal skje hvis responsen fra en klient er COMMIT:
+```java
+if (linje.equalsIgnoreCase("COMMIT")) {                                               
+    System.out.println("\nFra '" + klientIdentitet + "' : COMMIT");                   
+    if ((tjener.traadListe).contains(this)) {                                         
+        (tjener.data).set((tjener.traadListe).indexOf(this), "COMMIT");               
+        for (int j = 0; j < (tjener.data).size(); j++) {                              
+            if (!(((tjener.data).get(j)).equalsIgnoreCase("NOT_SENT"))) {             
+                tjener.inputFraAlle = true;                                           
+                continue;                                                             
+            } else {                                                                  
+                tjener.inputFraAlle = false;                                          
+                System.out.println("\nVenter paa input fra andre klienter.");         
+                break;                                                                
+            }                                                                         
+        }                                                                             
+                                                                                      
+        if (tjener.inputFraAlle) {                                                    
+            System.out.println("\n\nSending GLOBAL_COMMIT to all....");               
+            for(int i = 0; i < tjener.traadListe.size(); i++) {                       
+                ((tjener.traadListe).get(i)).os.println("GLOBAL_COMMIT");             
+            }                                                                         
+            tjener.data.clear();                                                      
+        }                                                                             
+    } // if traadListe.contains                                                       
+}                                                                                     
+```
+Her vil den printe ut hvem som skrev COMMIT og sjekke om objektet faktisk finnes i listen av tråder.
+Deretter vil man i sette klientens tilhørende element i data-listen fra "NOT_SENT" til "COMMIT".
+Så sjekkes det om alle klienter er klare til å committe. Hvis alle er klare så sendes det
+en GLOBAL_COMMIT til alle klienter.
+
 ### Loggforer
 
 
