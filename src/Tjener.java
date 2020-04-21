@@ -12,9 +12,9 @@ import java.util.*;
  * @author Kasper Gundersen
  */
 public class Tjener {
-    boolean lukket = false, inputFraAlle = false, ackFraAlle = false;
+    boolean lukket = false, inputFraAlle = false;
     List<KlientTraad> traadListe;
-    List<String> data, ack;
+    List<String> data;
     int belop;
 
     Tjener() {
