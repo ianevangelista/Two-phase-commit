@@ -22,6 +22,8 @@ Lenke til oversikt over prosjektets CI:
 https://gitlab.stud.idi.ntnu.no/nikolard/NettproggProsjekt/pipelines
 <a name="introduksjon"></a>
 ## Introduksjon
+
+![Ian](https://i1.wp.com/www.brianreiser1.com/wp-content/uploads/2018/12/two-face.jpg?fit=1600%2C1202&ssl=1)
 I dette prosjektet lager vi en two-phase commit løsning.
 Denne fungerer ved at alle tilkoblede klienter må "stemme" over valg som gjøres.
 I dette prosjektet bruker vi tjenerens navn som et eksempel.
