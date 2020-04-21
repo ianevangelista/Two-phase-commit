@@ -188,7 +188,61 @@ Hvis alle har blitt fjernet vil alle ha sendt ACKNOWLEGDEMENT og two-phase commi
 gjennomført. Hvis ikke vil man fortsette å vente.
 
 ### Loggforer
+Denne klassen brukes når en klient skal loggføre handlingene sine.
+Det opprettes en egen dedikert loggfører for hver klient. Hver logg får sin
+egen fil i sitt oppgitte navn. Filen legges i mappen logger:
+````java
+public Loggforer(String navn) {
+        this.filnavn = "logger/" + navn.toLowerCase() + ".txt";
+        try {
+            this.loggFil = new File(filnavn);
+            this.loggFil.createNewFile();
+            } catch(IOException e) {
+            e.printStackTrace();
+        }
+    }
+````
 
+
+For å skrive til fil benyttes loggfor-metoden:
+````java
+public boolean loggfor(String loggforing) {
+        Calendar kalender = Calendar.getInstance();
+        Date dato = kalender.getTime();
+        try {
+            skriveForbindelse = new BufferedWriter(new FileWriter(filnavn, true));
+            skriveForbindelse.write(dato + "," + loggforing + "\n");
+            skriveForbindelse.close();
+            return true;
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+````
+Denne metoden tar inn en streng og henter inn dato og klokkeslett og skriver til fil.
+
+For en klient skal finne tilbake til sin tidligere saldo hvis den har gjort endringer, vil
+den måtte bruke getRollbackSaldo-metoden:
+````java
+public int getRollbackSaldo() {
+        try {
+            leseForbindelse = new BufferedReader(new FileReader(filnavn));
+            String currentLine;
+            String lagretSaldo = "";
+            while ((currentLine = leseForbindelse.readLine()) != null) {
+                if (currentLine.indexOf("SAVE") != -1) lagretSaldo = currentLine;
+            }
+            leseForbindelse.close();
+            return Integer.parseInt(lagretSaldo.split(":")[4].trim());
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+````
+Her vil den finne filen til klienten og finne siste linje der man skrev "SAVE" for å 
+finne den lagrede saldoen og returnerer den.
 
 <a name="diskusjon"></a>
 ## Diskusjon
