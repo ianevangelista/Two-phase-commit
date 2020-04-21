@@ -1,4 +1,15 @@
 # Prosjekt Nettverksprogrammering
+
+Frivillig prosjektoppgave i Nettverksprogrammering.
+
+Av
+- Ian-Angelo Roman Evangelista
+- Nikolai Preben Dokken
+- Kasper Vedal Gundersen
+
+## 
+
+
 ### Innhold
 * [Introduksjon](#introduksjon)
 * [Implementert funksjonalitet](#funksjonalitet)
