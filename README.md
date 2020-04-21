@@ -12,7 +12,7 @@
 * [Eksempler](#eksempler)
 * [Installasjon](#installasjon)
 * [Testing](#testing)
-* [Biblioteker og CI](#biblioteker)
+* [CI](#biblioteker)
 * [API](#api)
 
 
@@ -517,13 +517,13 @@ og teste:
 - Gjennomfør et eller flere av punktene over om igjen.
 
 <a name="biblioteker"></a>
-## Navn på biblioteket og eventuell lenke til continuous integration løsning
+## Continuous integration 
 Lenke til oversikt over prosjektets CI:
 
 https://gitlab.stud.idi.ntnu.no/nikolard/NettproggProsjekt/pipelines
 
 <a name="api"></a>
-## Eventuell lenke til API dokumentasjon
+## Lenker til API dokumentasjon
 
 Lenke til prosjektets JavaDoc(må være koblet til NTNU nettverk for å kunne se):
 
