@@ -17,8 +17,9 @@
 
 <a name="biblioteker"></a>
 ## Navn på biblioteket og eventuell lenke til continuous integration løsning
-Insert CI link her
+Lenke til oversikt over prosjektets CI:
 
+https://gitlab.stud.idi.ntnu.no/nikolard/NettproggProsjekt/pipelines
 <a name="introduksjon"></a>
 ## Introduksjon
 I dette prosjektet lager vi en two-phase commit løsning.
