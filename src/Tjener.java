@@ -1,4 +1,5 @@
 //Two Phase Commit Protocol TJENER
+import javax.lang.model.type.ArrayType;
 import java.io.*;
 import java.net.*;
 import java.util.*;
@@ -14,12 +15,10 @@ import java.util.*;
 public class Tjener {
     boolean lukket = false, inputFraAlle = false;
     List<KlientTraad> traadListe;
-    List<String> data;
     int belop;
 
     Tjener() {
         traadListe = new ArrayList<KlientTraad>();
-        data = new ArrayList<String>();
         belop = -5;
     }
     /**
@@ -47,33 +46,17 @@ public class Tjener {
                 KlientTraad klientTraad = new KlientTraad(tjener, klientSocket);
                 (tjener.traadListe).add(klientTraad);
                 System.out.println("\nAntall klienter er oppdatert til: " + (tjener.traadListe).size());
-
-                (tjener.data).add("NOT_SENT");
+                klientTraad.data = "NOT_SENT";
                 klientTraad.start();
-            } catch (IOException e) { }
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         try {
-
             tjenerSocket.close();
         } catch (Exception e1) { }
     } // end main
 } // end class Server
 
-/*
-Coordinator                                          Cohorts
-                            QUERY TO COMMIT
-                -------------------------------->
-                              VOTE YES/NO           prepare/abort
-                <-------------------------------
-commit/abort                 COMMIT/ROLLBACK
-                -------------------------------->
-                              ACKNOWLEDGMENT        commit/abort
-                <--------------------------------
-end
-
- Two Phases :
- 1.Prepare and Vote Phase
- 2. Commit or Abort Phase
-
- "Either All Commit Or All RollBack."
- */

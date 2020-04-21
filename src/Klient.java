@@ -73,6 +73,7 @@ public class Klient implements Runnable {
             System.out.println("Hva er navnet ditt?");
             klientIdentitet = inputLinje.readLine();
             os.println(klientIdentitet);
+            System.out.println("\nVelkommen " + klientIdentitet + " til denne 2-fase applikasjonen.");
             System.out.println("Hva er din saldo? (For eksempels skyld)");
             boolean ugyldigSaldo = true;
             while(ugyldigSaldo){
@@ -89,7 +90,6 @@ public class Klient implements Runnable {
             }
             logg = new Loggforer(klientIdentitet);
             logg.loggfor(klientIdentitet + " er tilkoblet. Saldo er: " + saldo + "kr.");
-            System.out.println("Velkommen " + klientIdentitet + " til denne 2-fase applikasjonen.");
 
             while ((responseLinje = is.readLine()) != null && !lukket) {
                 System.out.println("\n"+responseLinje);
@@ -99,7 +99,7 @@ public class Klient implements Runnable {
                     belop = Integer.parseInt(responseLinje.split(":")[2]);
                     logg.loggfor("Fikk VOTE_REQUEST om å trekke " + belop + "kr.");
                     if (saldo >= belop) {
-                        System.out.println("Du har nok på konto. Sender klarsignal til tjener. Om alle er klare gjennomføres COMMIT.");
+                        System.out.println("Du har nok på konto. Sender klarsignal til tjener.\n Om alle er klare gjennomføres COMMIT.");
                         os.println("COMMIT");
                         logg.loggfor("SAVE: Lagrer gammel saldo(kr): " + saldo);
                         logg.loggfor("Sender COMMIT til tjener.");
@@ -122,7 +122,7 @@ public class Klient implements Runnable {
                 if (responseLinje.equalsIgnoreCase("GLOBAL_COMMIT")) {
                     logg.loggfor("Fikk klarsignal(GLOBAL_COMMIT) fra tjener.");
                     logg.loggfor("Utførte transaksjon: [Opprinnelig beløp: " + (saldo+belop) + ", Transaksjonsbeløp: " + belop + ", Nytt beløp: " + saldo + "]");
-                    System.out.println("Fikk GLOBAL_COMMIT: commiter, og sender ACKNOWLEDGE til tjener.");
+                    System.out.println("Fikk GLOBAL_COMMIT: commiter, og sender ACKNOWLEDGE\n til tjener.");
                     os.println("ACKNOWLEDGEMENT");
                     logg.loggfor("Sendte ACKNOWLEDGE til tjener.");
                     break;
@@ -135,6 +135,14 @@ public class Klient implements Runnable {
         }
         catch (IOException e) {
             System.err.println("IOException:  " + e);
+            System.out.println("Avbyter two-phase-commit, prøv igjen.");
+            logg.loggfor("En feil oppsto, avbryter...");
+            if (gjordeEndringer) {
+                saldo = logg.getRollbackSaldo();
+                logg.loggfor("Rollback. Saldo er nå " + saldo + "kr");
+            }
         }
+        logg.loggfor("Klienten er nå frakoblet.\n");
+        System.exit(0);
     }
 } //end klient

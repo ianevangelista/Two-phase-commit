@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * KlienTraad fungerer som en trådklasse knyttet til en klient eller en deltaker i two-phase commit.
@@ -18,6 +19,7 @@ public class KlientTraad extends Thread {
     Socket klientSocket = null;
     String klientIdentitet;
     Tjener tjener;
+    String data;
 
     public KlientTraad(Tjener tjener, Socket klientSocket) {
         this.klientSocket = klientSocket;
@@ -43,7 +45,7 @@ public class KlientTraad extends Thread {
 
             while (true) {
                 linje = is.readLine();
-                if (linje == null) linje="";
+                if (linje == null) break;
                 if (linje.equalsIgnoreCase("ABORT")) {
                     System.out.println("\nFra '" + klientIdentitet
                             + "' : ABORT\n\nSiden det ble skrevet ABORT, vil vi ikke vente paa flere input fra andre klienter.");
@@ -51,7 +53,6 @@ public class KlientTraad extends Thread {
 
                     while(tjener.traadListe.size() > 0) {
                         ((tjener.traadListe).get(0)).os.println("GLOBAL_ABORT");
-                        tjener.data.remove(tjener.traadListe.indexOf(tjener.traadListe.get(0)));
                         tjener.traadListe.remove(0);
                     }
                     break;
@@ -59,9 +60,9 @@ public class KlientTraad extends Thread {
                 if (linje.equalsIgnoreCase("COMMIT")) {
                     System.out.println("\nFra '" + klientIdentitet + "' : COMMIT");
                     if ((tjener.traadListe).contains(this)) {
-                        (tjener.data).set((tjener.traadListe).indexOf(this), "COMMIT");
-                        for (int j = 0; j < (tjener.data).size(); j++) {
-                            if (!(((tjener.data).get(j)).equalsIgnoreCase("NOT_SENT"))) {
+                        this.data = "COMMIT";
+                        for (int j = 0; j < (tjener.traadListe).size(); j++) {
+                            if (!(tjener.traadListe.get(j).data.equalsIgnoreCase("NOT_SENT"))) {
                                 tjener.inputFraAlle = true;
                                 continue;
                             } else {
@@ -76,7 +77,7 @@ public class KlientTraad extends Thread {
                             for(int i = 0; i < tjener.traadListe.size(); i++) {
                                 ((tjener.traadListe).get(i)).os.println("GLOBAL_COMMIT");
                             }
-                            tjener.data.clear();
+                            //break;
                         }
                     } // if traadListe.contains
                 }
@@ -86,8 +87,6 @@ public class KlientTraad extends Thread {
                     // Dersom alle har sendt acknowledge og koblet fra
                     if (tjener.traadListe.size() == 0) {
                         System.out.println("MOTTAT ACK FRA ALLE KLIENTER, TWO PHASE COMMIT ER NAA OVER");
-                        tjener.data = new ArrayList<String>();
-                        tjener.traadListe = new ArrayList<KlientTraad>();
                         break;
                     } else {
                         System.out.println("\nVenter paa acknowledgement fra andre klienter.");
@@ -100,6 +99,7 @@ public class KlientTraad extends Thread {
             klientSocket.close();
         } catch (IOException e) {
             e.printStackTrace();
+            if ((tjener.traadListe).contains(this)) tjener.traadListe.remove(tjener.traadListe.indexOf(this));
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
