@@ -281,11 +281,13 @@ Sylvi derimot var den som initialiserte aborten og derfor ble ikke hennes saldo 
 Dette er loggen til Erna og Sylvi etter at transaksjonen ble avbrutt:
 
 **Erna Solberg** 
+
 ![Image](https://i.imgur.com/5Z6ibaX.png "Loggen til Erna etter abort") 
 
 
 **Sylvi Listhaug**
-![Image](https://i.imgur.com/VA9Gygb.png "Loggen til Sylvi etter abort")|
+
+![Image](https://i.imgur.com/VA9Gygb.png "Loggen til Sylvi etter abort")
 
 
 
