@@ -1,6 +1,5 @@
 # Prosjekt Nettverksprogrammering
 ### Innhold
-* [Biblioteker og CI](#biblioteker)
 * [Introduksjon](#introduksjon)
 * [Implementert funksjonalitet](#funksjonalitet)
     * [Tjener](#funksjonalitet_tjener)
@@ -13,15 +12,11 @@
 * [Eksempler](#eksempler)
 * [Installasjon](#installasjon)
 * [Testing](#testing)
+* [Biblioteker og CI](#biblioteker)
 * [API](#api)
 
 
 
-<a name="biblioteker"></a>
-## Navn på biblioteket og eventuell lenke til continuous integration løsning
-Lenke til oversikt over prosjektets CI:
-
-https://gitlab.stud.idi.ntnu.no/nikolard/NettproggProsjekt/pipelines
 <a name="introduksjon"></a>
 ## Introduksjon
 
@@ -521,7 +516,11 @@ og teste:
 ### Gjenbrukbar tjener, der man utfører en eller flere av de øvrige punktene flere ganger
 - Gjennomfør et eller flere av punktene over om igjen.
 
+<a name="biblioteker"></a>
+## Navn på biblioteket og eventuell lenke til continuous integration løsning
+Lenke til oversikt over prosjektets CI:
 
+https://gitlab.stud.idi.ntnu.no/nikolard/NettproggProsjekt/pipelines
 
 <a name="api"></a>
 ## Eventuell lenke til API dokumentasjon
