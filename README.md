@@ -25,12 +25,14 @@ https://gitlab.stud.idi.ntnu.no/nikolard/NettproggProsjekt/pipelines
 <a name="introduksjon"></a>
 ## Introduksjon
 
-I dette prosjektet lager vi en two-phase commit løsning.
-Denne fungerer ved at alle tilkoblede klienter må "stemme" over valg som gjøres.
-I dette prosjektet bruker vi tjenerens navn som et eksempel.
-Navet endres og alle tilkoblede parter må være enige om å beholde det nye navnet.
-Dersom én er uenig ruller vi tilbake til det gamle tjenernavnet (rollback).
-Alle parter må stemme før et valg er avgjort.
+I dette prosjektet implementer vi en two-phase commit løsning.
+Denne fungerer ved at alle tilkoblede klienter har en egen saldo 
+og tjeneren spør alle klienter om det er greit å trekke et beløp fra hver klient.
+Kliente må "stemme" om de kan gjennomføre beløpstrekket eller ikke. 
+Saldoen til hver enkelt klient endres hvis alle kan gjennomføre trekket. Hvis ikke vil 
+en klient som har gjort endringer, rulle tilbake til sin gamle saldo.
+Alle parter må stemme før et valg er avgjort, men hvis en stemmer for at man ikke kan gjennomføre
+tranaksjonen, vil hele two-phase commit avbrytes.
 
 <a name="funksjonalitet"></a>
 ## Implementert funksjonalitet
