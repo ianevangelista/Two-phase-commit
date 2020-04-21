@@ -135,6 +135,14 @@ public class Klient implements Runnable {
         }
         catch (IOException e) {
             System.err.println("IOException:  " + e);
+            System.out.println("Avbyter two-phase-commit, prøv igjen.");
+            logg.loggfor("En feil oppsto, avbryter...");
+            if (gjordeEndringer) {
+                saldo = logg.getRollbackSaldo();
+                logg.loggfor("Rollback. Saldo er nå " + saldo + "kr");
+            }
         }
+        logg.loggfor("Klienten er nå frakoblet.\n");
+        System.exit(0);
     }
 } //end klient

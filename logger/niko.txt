@@ -7,3 +7,83 @@ Tue Apr 21 10:48:13 CEST 2020,Utførte transaksjon: [Opprinnelig beløp: 10, Tra
 Tue Apr 21 10:48:13 CEST 2020,Sendte ACKNOWLEDGE til tjener.
 Tue Apr 21 10:48:13 CEST 2020,Klienten er nå frakoblet.
 
+Tue Apr 21 10:56:50 CEST 2020,niko er tilkoblet. Saldo er: 10kr.
+Tue Apr 21 10:57:19 CEST 2020,Fikk VOTE_REQUEST om å trekke 5kr.
+Tue Apr 21 10:57:19 CEST 2020,SAVE: Lagrer gammel saldo(kr): 10
+Tue Apr 21 10:57:19 CEST 2020,Sender COMMIT til tjener.
+Tue Apr 21 10:59:39 CEST 2020,Klienten er nå frakoblet.
+
+Tue Apr 21 11:03:20 CEST 2020,niko er tilkoblet. Saldo er: 10kr.
+Tue Apr 21 11:05:04 CEST 2020,Fikk VOTE_REQUEST om å trekke 5kr.
+Tue Apr 21 11:05:04 CEST 2020,SAVE: Lagrer gammel saldo(kr): 10
+Tue Apr 21 11:05:04 CEST 2020,Sender COMMIT til tjener.
+Tue Apr 21 11:12:43 CEST 2020,niko er tilkoblet. Saldo er: 10kr.
+Tue Apr 21 11:12:50 CEST 2020,Fikk VOTE_REQUEST om å trekke 5kr.
+Tue Apr 21 11:12:50 CEST 2020,SAVE: Lagrer gammel saldo(kr): 10
+Tue Apr 21 11:12:50 CEST 2020,Sender COMMIT til tjener.
+Tue Apr 21 11:12:50 CEST 2020,En feil oppsto, avbryter...
+Tue Apr 21 11:12:50 CEST 2020,Rollback. Saldo er nå 10kr
+Tue Apr 21 11:12:50 CEST 2020,Klienten er nå frakoblet.
+
+Tue Apr 21 11:20:56 CEST 2020,niko er tilkoblet. Saldo er: 10kr.
+Tue Apr 21 11:26:11 CEST 2020,niko er tilkoblet. Saldo er: 10kr.
+Tue Apr 21 11:26:34 CEST 2020,Fikk VOTE_REQUEST om å trekke 5kr.
+Tue Apr 21 11:26:34 CEST 2020,SAVE: Lagrer gammel saldo(kr): 10
+Tue Apr 21 11:26:34 CEST 2020,Sender COMMIT til tjener.
+Tue Apr 21 11:28:19 CEST 2020,Klienten er nå frakoblet.
+
+Tue Apr 21 11:36:05 CEST 2020,niko er tilkoblet. Saldo er: 10kr.
+Tue Apr 21 11:36:20 CEST 2020,Fikk VOTE_REQUEST om å trekke 5kr.
+Tue Apr 21 11:36:20 CEST 2020,SAVE: Lagrer gammel saldo(kr): 10
+Tue Apr 21 11:36:20 CEST 2020,Sender COMMIT til tjener.
+Tue Apr 21 12:10:56 CEST 2020,niko er tilkoblet. Saldo er: 10kr.
+Tue Apr 21 12:11:19 CEST 2020,Fikk VOTE_REQUEST om å trekke 5kr.
+Tue Apr 21 12:11:19 CEST 2020,SAVE: Lagrer gammel saldo(kr): 10
+Tue Apr 21 12:11:19 CEST 2020,Sender COMMIT til tjener.
+Tue Apr 21 12:30:57 CEST 2020,niko er tilkoblet. Saldo er: 10kr.
+Tue Apr 21 12:31:22 CEST 2020,Fikk VOTE_REQUEST om å trekke 5kr.
+Tue Apr 21 12:31:22 CEST 2020,SAVE: Lagrer gammel saldo(kr): 10
+Tue Apr 21 12:31:22 CEST 2020,Sender COMMIT til tjener.
+Tue Apr 21 12:31:22 CEST 2020,Fikk klarsignal(GLOBAL_COMMIT) fra tjener.
+Tue Apr 21 12:31:22 CEST 2020,Utførte transaksjon: [Opprinnelig beløp: 10, Transaksjonsbeløp: 5, Nytt beløp: 5]
+Tue Apr 21 12:31:22 CEST 2020,Sendte ACKNOWLEDGE til tjener.
+Tue Apr 21 12:31:22 CEST 2020,Klienten er nå frakoblet.
+
+Tue Apr 21 12:35:08 CEST 2020,niko er tilkoblet. Saldo er: 190kr.
+Tue Apr 21 12:35:32 CEST 2020,Fikk VOTE_REQUEST om å trekke 5kr.
+Tue Apr 21 12:35:32 CEST 2020,SAVE: Lagrer gammel saldo(kr): 190
+Tue Apr 21 12:35:32 CEST 2020,Sender COMMIT til tjener.
+Tue Apr 21 12:37:16 CEST 2020,niko er tilkoblet. Saldo er: 103kr.
+Tue Apr 21 12:39:28 CEST 2020,Fikk VOTE_REQUEST om å trekke 5kr.
+Tue Apr 21 12:39:28 CEST 2020,SAVE: Lagrer gammel saldo(kr): 103
+Tue Apr 21 12:39:28 CEST 2020,Sender COMMIT til tjener.
+Tue Apr 21 12:44:39 CEST 2020,niko er tilkoblet. Saldo er: 10kr.
+Tue Apr 21 12:44:41 CEST 2020,Fikk VOTE_REQUEST om å trekke 5kr.
+Tue Apr 21 12:44:41 CEST 2020,SAVE: Lagrer gammel saldo(kr): 10
+Tue Apr 21 12:44:41 CEST 2020,Sender COMMIT til tjener.
+Tue Apr 21 12:45:44 CEST 2020,Klienten er nå frakoblet.
+
+Tue Apr 21 12:47:23 CEST 2020,niko er tilkoblet. Saldo er: 10kr.
+Tue Apr 21 12:47:49 CEST 2020,Fikk VOTE_REQUEST om å trekke 5kr.
+Tue Apr 21 12:47:49 CEST 2020,SAVE: Lagrer gammel saldo(kr): 10
+Tue Apr 21 12:47:49 CEST 2020,Sender COMMIT til tjener.
+Tue Apr 21 12:58:39 CEST 2020,niko er tilkoblet. Saldo er: 10kr.
+Tue Apr 21 12:58:51 CEST 2020,Fikk VOTE_REQUEST om å trekke 5kr.
+Tue Apr 21 12:58:51 CEST 2020,SAVE: Lagrer gammel saldo(kr): 10
+Tue Apr 21 12:58:51 CEST 2020,Sender COMMIT til tjener.
+Tue Apr 21 13:02:12 CEST 2020,Klienten er nå frakoblet.
+
+Tue Apr 21 13:04:48 CEST 2020,niko er tilkoblet. Saldo er: 10kr.
+Tue Apr 21 13:05:17 CEST 2020,Fikk VOTE_REQUEST om å trekke 5kr.
+Tue Apr 21 13:05:17 CEST 2020,SAVE: Lagrer gammel saldo(kr): 10
+Tue Apr 21 13:05:17 CEST 2020,Sender COMMIT til tjener.
+Tue Apr 21 13:33:42 CEST 2020,Klienten er nå frakoblet.
+
+Tue Apr 21 14:09:09 CEST 2020,niko er tilkoblet. Saldo er: 10kr.
+Tue Apr 21 14:09:18 CEST 2020,Fikk VOTE_REQUEST om å trekke 5kr.
+Tue Apr 21 14:09:18 CEST 2020,SAVE: Lagrer gammel saldo(kr): 10
+Tue Apr 21 14:09:18 CEST 2020,Sender COMMIT til tjener.
+Tue Apr 21 14:10:42 CEST 2020,niko er tilkoblet. Saldo er: 10kr.
+Tue Apr 21 14:10:48 CEST 2020,Fikk VOTE_REQUEST om å trekke 5kr.
+Tue Apr 21 14:10:48 CEST 2020,SAVE: Lagrer gammel saldo(kr): 10
+Tue Apr 21 14:10:48 CEST 2020,Sender COMMIT til tjener.
