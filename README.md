@@ -445,17 +445,16 @@ Dette er loggen til Erna og Sylvi etter at transaksjonen ble avbrutt:
 
 <a name="installasjon"></a>
 ## Installasjonsinstruksjoner
-### Tjener
-For å installere tjeneren på en linux server:
-1. Clone prosjektet til din linux maskin
-2. Kjør *apt-get install default-jdk* for å installere java
-3. Kjør *javac Tjener.java*
-4. Kjør *java Tjener*
+I denne seksjonen finnes det to valg. Enten kan KlientMotServer.jar kjøres, eller så kan man kjøre Tjener og Klient lokalt.
+Jar filen kobles til tjeneren som hostes på en NTNU vm(man må altså være koblet til NTNU sin VPN).
+For å kjøre denne kjører man "java -jar KlientMotServer.jar" i prosjektmappen.
 
-### Klient
-For å kjøre klienten trenger du java installert
-på din maskin. Deretter kan du feks. følge trinn 3-4
-over i samme mappe som filen(og med Klient i stedet for Tjener), eller bruke en IDEA for å kjøre koden. 
+For å kjøre tjener og klient lokalt kjører man følgende kommandoer i prosjekt-mappen. (Koden kan også kjøres i en IDEA)
+
+1. javac src/*.java
+2. java src/Tjener
+3. java src/Klient
+
 
 <a name="testing"></a>
 ## Hvordan man kan teste løsningen?
