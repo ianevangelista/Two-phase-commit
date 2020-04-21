@@ -191,15 +191,10 @@ Saldoen som blir oppgitt er for å simulere transaksjonen i denne applikasjonen.
 
 Det ser slik ut hos klient 1:
 
-![Image description](https://i.imgur.com/NjhpKg9.png)
-
-Om man kobler til en klient til vil både den første klienten og tjeneren få beskjed:
+![Image description](https://media.giphy.com/media/VgO01PgxtM4Tjq2n1h/giphy.gif)
 
 
-| Server | Klient 1|
-| --- | --- |
-|![alt text](https://i.imgur.com/d2GpKzC.png "Bilde vel")|![Image description](https://i.imgur.com/zCPrrR3.png "Enda et bilde")|
-   
+
 Vi har nå kommet til første del av *Two-phase commit*-protokollen, der klientene skal stemme om de er klare til å commite. 
 Herfår man en velkomstmelding, og et spørsmål om de vil godkjenne at det trekkes 5 fra saldoen sin. 
 Her har vi gjort slik at stemmingen gjøres ved at klientene kun trykker på enter, og så gjør systemet resten. 
@@ -212,9 +207,8 @@ På denne måten må klienten ha "råd" for at det skal stemmes **ja** for commi
 Dersom en av klientene har over 5 i saldo og derfor "stemmer" for å commite vil kun tjeneren se denne beskjeden:
 
 
-| Server | Klient |
-| --- | --- |
-|![Image description](https://media.giphy.com/media/W3U1apPvHton0F833t/giphy.gif "Tjener får commit")|![Image description](https://i.imgur.com/5yu1MAV.png)|
+![Image description](https://media.giphy.com/media/W3U1apPvHton0F833t/giphy.gif "Tjener får commit")
+
 
 Hvis de andre klienten også har råd og dermed også "stemmer" for commit, har alle klientene stemt for commit, og transaksjonen er klar til å gjennomføres. 
 Tjeneren sender så en beskjed om *global commit* til alle klientene. Når klientene får denne beskjeden om betyr det at de selv skal commite hver for seg.
@@ -224,14 +218,13 @@ Slik ser det ut for henholdsvis tjener og klient 1:
 
 | Server | Klient |
 | --- | --- |
-|![Image description](https://media.giphy.com/media/h2CIotR7wSUlcaGoqN/giphy.gif "Tjeneren fullfører transaksjonen")|![Image description](https://i.imgur.com/uTgNbvd.png)|
+|![Image description](https://media.giphy.com/media/h2CIotR7wSUlcaGoqN/giphy.gif "Tjeneren fullfører transaksjonen")|![Image description](https://media.giphy.com/media/UTLcpVz402Gwpbyq4C/giphy.gif)|
 
 I *Two-phase commit*-protokollen skal klienten commite og deretter sende en bekreftelse(acknowledgement) tilbake til tjeneren, når den får beskjed om global commit. 
 I vår simulasjon av en transaksjon simuleres denne commiten ved at klienten trykker enter. Når dette gjøres er commiten gjennomført og det sendtes en acknowledgement-beskjed til tjeneren.
 På samme måte som i første fase av protokollen, så må alle klientene sende em slikt bekreftelsesbeskjed til tjeneren for at transaksjonen er fullført. 
 Dette skal forhåpentligvis ikke skje, men om en klient fjernes eller på en eller annen måte aldri får gjennomført commiten, så vil tjeneren vente en bestemt tid, før den gir beskjed til alle klientene om **abort**.
 
-/// Her skal fullføringen av transaksjonen være
 
 
 **Rollback**  
