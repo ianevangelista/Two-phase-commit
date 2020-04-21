@@ -507,6 +507,14 @@ og teste:
 
 <a name="api"></a>
 ## Eventuell lenke til API dokumentasjon
+
+Lenke til prosjektets JavaDoc(må være koblet til NTNU nettverk for å kunne se):
+
+[JavaDoc](http://folk.ntnu.no/nikolard/JavaDoc/allclasses.html)
+
+Lenke til API brukt i prosjektet:
+
+
 [Socket](https://docs.oracle.com/javase/7/docs/api/java/net/Socket.html)
 
 [Thread](https://docs.oracle.com/javase/7/docs/api/java/lang/Thread.html)
