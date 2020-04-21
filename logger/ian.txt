@@ -1,0 +1,9 @@
+Tue Apr 21 10:48:05 CEST 2020,ian er tilkoblet. Saldo er: 10kr.
+Tue Apr 21 10:48:06 CEST 2020,Fikk VOTE_REQUEST om å trekke 5kr.
+Tue Apr 21 10:48:06 CEST 2020,SAVE: Lagrer gammel saldo(kr): 10
+Tue Apr 21 10:48:06 CEST 2020,Sender COMMIT til tjener.
+Tue Apr 21 10:48:13 CEST 2020,Fikk klarsignal(GLOBAL_COMMIT) fra tjener.
+Tue Apr 21 10:48:13 CEST 2020,Utførte transaksjon: [Opprinnelig beløp: 10, Transaksjonsbeløp: 5, Nytt beløp: 5]
+Tue Apr 21 10:48:13 CEST 2020,Sendte ACKNOWLEDGE til tjener.
+Tue Apr 21 10:48:13 CEST 2020,Klienten er nå frakoblet.
+

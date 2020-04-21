@@ -122,7 +122,7 @@ public class Klient implements Runnable {
                 if (responseLinje.equalsIgnoreCase("GLOBAL_COMMIT")) {
                     logg.loggfor("Fikk klarsignal(GLOBAL_COMMIT) fra tjener.");
                     logg.loggfor("Utførte transaksjon: [Opprinnelig beløp: " + (saldo+belop) + ", Transaksjonsbeløp: " + belop + ", Nytt beløp: " + saldo + "]");
-                    System.out.println("Fikk GLOBAL_COMMIT: sender ACKNOWLEDGE til tjener.");
+                    System.out.println("Fikk GLOBAL_COMMIT: commiter, og sender ACKNOWLEDGE til tjener.");
                     os.println("ACKNOWLEDGEMENT");
                     logg.loggfor("Sendte ACKNOWLEDGE til tjener.");
                     break;
