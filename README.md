@@ -5,6 +5,8 @@
 * [Implementert funksjonalitet](#funksjonalitet)
     * [Tjener](#funksjonalitet_tjener)
     * [Klient](#funksjonalitet_klient)
+    * [KlientTraad](#funksjonalitet_klientTraad)
+    * [Loggforer](#funksjonalitet_loggforer)
 * [Diskusjon](#diskusjon)
 * [Teknologier](#teknologier)
 * [Forbedringer](#forbedringer)
@@ -17,24 +19,31 @@
 
 <a name="biblioteker"></a>
 ## Navn på biblioteket og eventuell lenke til continuous integration løsning
-Insert CI link her
+Lenke til oversikt over prosjektets CI:
 
+https://gitlab.stud.idi.ntnu.no/nikolard/NettproggProsjekt/pipelines
 <a name="introduksjon"></a>
 ## Introduksjon
-I dette prosjektet lager vi en two-phase commit løsning.
-Denne fungerer ved at alle tilkoblede klienter må "stemme" over valg som gjøres.
-I dette prosjektet bruker vi tjenerens navn som et eksempel.
-Navet endres og alle tilkoblede parter må være enige om å beholde det nye navnet.
-Dersom én er uenig ruller vi tilbake til det gamle tjenernavnet (rollback).
-Alle parter må stemme før et valg er avgjort.
+
+I dette prosjektet implementer vi en two-phase commit løsning.
+Denne fungerer ved at alle tilkoblede klienter har en egen saldo 
+og tjeneren spør alle klienter om det er greit å trekke et beløp fra hver klient.
+Kliente må "stemme" om de kan gjennomføre beløpstrekket eller ikke. 
+Saldoen til hver enkelt klient endres hvis alle kan gjennomføre trekket. Hvis ikke vil 
+en klient som har gjort endringer, rulle tilbake til sin gamle saldo.
+Alle parter må stemme før et valg er avgjort, men hvis en stemmer for at man ikke kan gjennomføre
+tranaksjonen, vil hele two-phase commit avbrytes.
 
 <a name="funksjonalitet"></a>
 ## Implementert funksjonalitet
+### Klassediagram
+![Image description](https://i.imgur.com/Vf09gVQ.png "Klassediagram") 
+
 Siden prosjektet er inndelt i tjener og klient,
 to deler i et distibuert system, ser vi også på
 funksjonaliteten for disse hver for seg.
 
-<a name="funksjonalitet_tjeneer"></a>
+<a name="funksjonalitet_tjener"></a>
 ### Tjener
 På tjenerside har vi først og fremst implementert
 tråder slik at hver tilkobling til tjener kjører på
@@ -103,6 +112,147 @@ try {
     System.err.println("IOException:  " + e);
 }
 ```
+
+<a name="funksjonalitet_klientTraad"></a>
+### KlientTraad
+KlientTraad fungerer som bindeleddet mellom tjener og klient. For hver klient så opprettes
+det en egen KlientTraad. Det her man både skriver til klient og leser responsen fra klient.
+Denne kjører i loop så lenge ingen aborter eller hvis two-phase er gjennomført. Hvis en 
+av de to nevnte forekommer, vil alle forbindelser lukkes.
+
+
+Under ser man hva som skal skje hvis responsen fra en klient er ABORT:
+```java
+if (linje.equalsIgnoreCase("ABORT")) {                                                                             
+    System.out.println("\nFra '" + klientIdentitet                                                                 
+            + "' : ABORT\n\nSiden det ble skrevet ABORT, vil vi ikke vente paa flere input fra andre klienter.");  
+    System.out.println("\nAborted...");                                                                            
+                                                                                                                   
+    while(tjener.traadListe.size() > 0) {                                                                          
+        ((tjener.traadListe).get(0)).os.println("GLOBAL_ABORT");                                                   
+        tjener.data.remove(tjener.traadListe.indexOf(tjener.traadListe.get(0)));                                   
+        tjener.traadListe.remove(0);                                                                               
+    }                                                                                                              
+    break;                                                                                                         
+}                                                                                                                  
+```
+Her vil den printe ut hvem som skrev ABORT og at man avslutter two-phase.
+Alle trådene klientene mottar en GLOBAL_ABORT-melding og klientene og dataene fjernes fra listen fra listen.
+Deretter avsluttes two-phase commit.
+
+Under ser man hva som skal skje hvis responsen fra en klient er COMMIT:
+```java
+if (linje.equalsIgnoreCase("COMMIT")) {                                               
+    System.out.println("\nFra '" + klientIdentitet + "' : COMMIT");                   
+    if ((tjener.traadListe).contains(this)) {                                         
+        (tjener.data).set((tjener.traadListe).indexOf(this), "COMMIT");               
+        for (int j = 0; j < (tjener.data).size(); j++) {                              
+            if (!(((tjener.data).get(j)).equalsIgnoreCase("NOT_SENT"))) {             
+                tjener.inputFraAlle = true;                                           
+                continue;                                                             
+            } else {                                                                  
+                tjener.inputFraAlle = false;                                          
+                System.out.println("\nVenter paa input fra andre klienter.");         
+                break;                                                                
+            }                                                                         
+        }                                                                             
+                                                                                      
+        if (tjener.inputFraAlle) {                                                    
+            System.out.println("\n\nSending GLOBAL_COMMIT to all....");               
+            for(int i = 0; i < tjener.traadListe.size(); i++) {                       
+                ((tjener.traadListe).get(i)).os.println("GLOBAL_COMMIT");             
+            }                                                                         
+            tjener.data.clear();                                                      
+        }                                                                             
+    } // if traadListe.contains                                                       
+}                                                                                     
+```
+Her vil den printe ut hvem som skrev COMMIT og sjekke om objektet faktisk finnes i listen av tråder.
+Deretter vil man i sette klientens tilhørende element i data-listen fra "NOT_SENT" til "COMMIT".
+Så sjekkes det om alle klienter er klare til å committe. Hvis alle er klare så sendes det
+en GLOBAL_COMMIT til alle klienter.
+
+
+Under ser man hva som skjer når responsen er ACKNOWLEDGEMENT fra en klient.
+```java
+if (linje.equalsIgnoreCase("ACKNOWLEDGEMENT")) {                                         
+    tjener.traadListe.remove(tjener.traadListe.indexOf(this));                           
+                                                                                         
+    // Dersom alle har sendt acknowledge og koblet fra                                   
+    if (tjener.traadListe.size() == 0) {                                                 
+        System.out.println("MOTTAT ACK FRA ALLE KLIENTER, TWO PHASE COMMIT ER NAA OVER");
+        tjener.data = new ArrayList<String>();                                           
+        tjener.traadListe = new ArrayList<KlientTraad>();                                
+        break;                                                                           
+    } else {                                                                             
+        System.out.println("\nVenter paa acknowledgement fra andre klienter.");          
+        break;                                                                           
+    }                                                                                    
+}                                                                                        
+```
+
+Her fjernes klieneten som sendte ACKNOWLEGDEMENT fra klientlisten til tjeneren. 
+Hvis alle har blitt fjernet vil alle ha sendt ACKNOWLEGDEMENT og two-phase commit er
+gjennomført. Hvis ikke vil man fortsette å vente.
+
+<a name="funksjonalitet_loggforer"></a>
+### Loggforer
+Denne klassen brukes når en klient skal loggføre handlingene sine.
+Det opprettes en egen dedikert loggfører for hver klient. Hver logg får sin
+egen fil i sitt oppgitte navn. Filen legges i mappen logger:
+````java
+public Loggforer(String navn) {
+        this.filnavn = "logger/" + navn.toLowerCase() + ".txt";
+        try {
+            this.loggFil = new File(filnavn);
+            this.loggFil.createNewFile();
+            } catch(IOException e) {
+            e.printStackTrace();
+        }
+    }
+````
+
+
+For å skrive til fil benyttes loggfor-metoden:
+````java
+public boolean loggfor(String loggforing) {
+        Calendar kalender = Calendar.getInstance();
+        Date dato = kalender.getTime();
+        try {
+            skriveForbindelse = new BufferedWriter(new FileWriter(filnavn, true));
+            skriveForbindelse.write(dato + "," + loggforing + "\n");
+            skriveForbindelse.close();
+            return true;
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+````
+Denne metoden tar inn en streng og henter inn dato og klokkeslett og skriver til fil.
+
+For en klient skal finne tilbake til sin tidligere saldo hvis den har gjort endringer, vil
+den måtte bruke getRollbackSaldo-metoden:
+````java
+public int getRollbackSaldo() {
+        try {
+            leseForbindelse = new BufferedReader(new FileReader(filnavn));
+            String currentLine;
+            String lagretSaldo = "";
+            while ((currentLine = leseForbindelse.readLine()) != null) {
+                if (currentLine.indexOf("SAVE") != -1) lagretSaldo = currentLine;
+            }
+            leseForbindelse.close();
+            return Integer.parseInt(lagretSaldo.split(":")[4].trim());
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+````
+Her vil den finne filen til klienten og finne siste linje der man skrev "SAVE" for å 
+finne den lagrede saldoen og returnerer den.
+
 <a name="diskusjon"></a>
 ## Diskusjon
 Først og fremst har vi valgt å programmere løsningen i Java. 
@@ -138,8 +288,18 @@ Det er derfor logisk at vi har et designmønsteret og arkitekturen klient-tjener
 En deltaker i two phase commit vil i klient-tjener modellen være en klient, og koordinatoren vil derfor bli tjeneren. 
 Det er klienten/deltakeren som initierer kommunikasjon med tjeneren som venter på inngående forespørsler.
 ###
-En beskrivelse og diskusjon/argumentasjon (denne delen en veldig viktig ved evaluering) av hvilke teknologi- og arkitektur-/designvalg dere har stått ovenfor (når dere skulle løse oppgaven), hva dere hadde å velge mellom og hvorfor dere har valgt det dere har valgt. Når det gjelder teknologivalg så kan denne delen begrenses til «pensum i faget».
 
+Det er flere fordeler med *Two-phase commit protocol*, men også noen ulemper. Den store fordelen er jo at denne
+atomiske protokollen skal sikre at alle deltagere i en transaksjon enten fullfører eller avbryter transaksjonen.
+I tillegg funker protokollen i mange tilfeller der det skjer en midlertidig feil, som
+for eksempel om prosess, nettverksnode eller kommunikasjon feiler. Like vel er ikke protokollen feilfri, og 
+sliter dersom det er en svikt av både koordinatoren(tjener) og et klient i løpet av commit-fasen.
+
+Dersom kun tjeneren mislykes, og ingen klienter mottar en commit-melding, kan det trygt utledes at ingen forpliktelser hadde skjedd. 
+Hvis imidlertid både tjeneren og en klient mislyktes, er det mulig at det mislykkede klienten var den 
+første som ble varslet, og faktisk hadde commitet. Selv om en ny tjener blir valgt, kan den ikke trygt fortsette
+med operasjonen før den har mottatt en acknowledgement fra alle klientene, 
+og må derfor blokkere til alle klientene svarer.
 <a name="teknologier"></a>
 ## Hvilke teknologier har vi brukt og hvorfor?
 Hva hadde vi å velge mellom, hvorfor valgte vi som vi gjorde?
@@ -191,15 +351,10 @@ Saldoen som blir oppgitt er for å simulere transaksjonen i denne applikasjonen.
 
 Det ser slik ut hos klient 1:
 
-![Image description](https://i.imgur.com/NjhpKg9.png)
-
-Om man kobler til en klient til vil både den første klienten og tjeneren få beskjed:
+![Image description](https://media.giphy.com/media/VgO01PgxtM4Tjq2n1h/giphy.gif)
 
 
-| Server | Klient 1|
-| --- | --- |
-|![alt text](https://i.imgur.com/d2GpKzC.png "Bilde vel")|![Image description](https://i.imgur.com/zCPrrR3.png "Enda et bilde")|
-   
+
 Vi har nå kommet til første del av *Two-phase commit*-protokollen, der klientene skal stemme om de er klare til å commite. 
 Herfår man en velkomstmelding, og et spørsmål om de vil godkjenne at det trekkes 5 fra saldoen sin. 
 Her har vi gjort slik at stemmingen gjøres ved at klientene kun trykker på enter, og så gjør systemet resten. 
@@ -212,9 +367,8 @@ På denne måten må klienten ha "råd" for at det skal stemmes **ja** for commi
 Dersom en av klientene har over 5 i saldo og derfor "stemmer" for å commite vil kun tjeneren se denne beskjeden:
 
 
-| Server | Klient |
-| --- | --- |
-|![Image description](https://media.giphy.com/media/W3U1apPvHton0F833t/giphy.gif "Tjener får commit")|![Image description](https://i.imgur.com/5yu1MAV.png)|
+![Image description](https://media.giphy.com/media/W3U1apPvHton0F833t/giphy.gif "Tjener får commit")
+
 
 Hvis de andre klienten også har råd og dermed også "stemmer" for commit, har alle klientene stemt for commit, og transaksjonen er klar til å gjennomføres. 
 Tjeneren sender så en beskjed om *global commit* til alle klientene. Når klientene får denne beskjeden om betyr det at de selv skal commite hver for seg.
@@ -224,14 +378,13 @@ Slik ser det ut for henholdsvis tjener og klient 1:
 
 | Server | Klient |
 | --- | --- |
-|![Image description](https://media.giphy.com/media/h2CIotR7wSUlcaGoqN/giphy.gif "Tjeneren fullfører transaksjonen")|![Image description](https://i.imgur.com/uTgNbvd.png)|
+|![Image description](https://media.giphy.com/media/h2CIotR7wSUlcaGoqN/giphy.gif "Tjeneren fullfører transaksjonen")|![Image description](https://media.giphy.com/media/UTLcpVz402Gwpbyq4C/giphy.gif)|
 
 I *Two-phase commit*-protokollen skal klienten commite og deretter sende en bekreftelse(acknowledgement) tilbake til tjeneren, når den får beskjed om global commit. 
 I vår simulasjon av en transaksjon simuleres denne commiten ved at klienten trykker enter. Når dette gjøres er commiten gjennomført og det sendtes en acknowledgement-beskjed til tjeneren.
 På samme måte som i første fase av protokollen, så må alle klientene sende em slikt bekreftelsesbeskjed til tjeneren for at transaksjonen er fullført. 
 Dette skal forhåpentligvis ikke skje, men om en klient fjernes eller på en eller annen måte aldri får gjennomført commiten, så vil tjeneren vente en bestemt tid, før den gir beskjed til alle klientene om **abort**.
 
-/// Her skal fullføringen av transaksjonen være
 
 
 **Rollback**  
@@ -244,7 +397,7 @@ Transaksjonen blir dermed ikke utført.
 
 | Server | Klient |
 | --- | --- |
-|![Image description](https://i.imgur.com/cDpZ40d.png)|![Image description](https://i.imgur.com/Dax8u2V.png)|
+|![Image description](https://media.giphy.com/media/h1tvXrcXm6H7PPtqJZ/giphy.gif)|![Image description](https://media.giphy.com/media/j2GFYeYQwCGhHisM9C/giphy.gif)|
 
 Tjeneren vil vanligvis vente på svar fra alle klientene i den første fasen der det skal stemmes. Dersom en klient stemmer for ABORT vil tjeneren initialisere en global abort uansett. 
 Tjeneren vil da ikke vente på svar fra resten av klientene, for i en two-phase commit protocol er det nok at én klient stemmer for abort. 
@@ -266,18 +419,33 @@ I vår applikasjon så loggføres det:
 - Acknowledgement.
 - Klient er frakoblet.
 
-
-Her ser vi loggene fra kjøringen:
-Den første er Erna sin logg etter at transaksjonen ble gjennomført og alt gikk som det skulle:
+*Første kjøring*
 
 
-![Image description](https://i.imgur.com/NiImQFZ.png "Loggen til Erna")
+Her ser vi loggen fra den første kjøringen:
+Dette er Erna sin logg etter at transaksjonen ble gjennomført og alt gikk som det skulle.
+Her ser vi at det logges både når klienten koblet seg til og fra. Samt kommunikasjonen mellom klienten og tjeneren i tillegg til operasjonene klienten gjorde:
 
 
-Dette er loggen til Sylvi etter at transaksjonen ble avbrutt fordi hun ikke hadde råd:
+![Image description](https://i.imgur.com/aEwlaFT.png "Loggen til Erna etter første kjøring")
+
+*Andre kjøring*
 
 
-![Image description](https://i.imgur.com/NPi1Xkm.png "Loggen til Sylvi")|
+Her ser vi både loggen til Erna og Sylvi etter at transaksjonen ble avbrutt. De er ikke helt like, og det er fordi Erna hadde nok penger og derfor sendte hun klar for commit til tjener. Men da Sylvi ikke hadde råd og tjener ble nødt til å sende *global abort* ser vi at Erna ble nødt til å gjøre et *rollback*.
+Sylvi derimot var den som initialiserte aborten og derfor ble ikke hennes saldo lagret og det er derfor ingen behov for rollback fra hennes side. 
+
+Dette er loggen til Erna og Sylvi etter at transaksjonen ble avbrutt:
+
+**Erna Solberg** 
+
+![Image](https://i.imgur.com/5Z6ibaX.png "Loggen til Erna etter abort") 
+
+
+**Sylvi Listhaug**
+
+![Image](https://i.imgur.com/VA9Gygb.png "Loggen til Sylvi etter abort")
+
 
 
 <a name="installasjon"></a>
@@ -357,3 +525,22 @@ og teste:
 
 <a name="api"></a>
 ## Eventuell lenke til API dokumentasjon
+
+Lenke til prosjektets JavaDoc(må være koblet til NTNU nettverk for å kunne se):
+
+[JavaDoc](http://folk.ntnu.no/nikolard/JavaDoc/allclasses.html)
+
+Lenke til API brukt i prosjektet:
+
+
+[Socket](https://docs.oracle.com/javase/7/docs/api/java/net/Socket.html)
+
+[Thread](https://docs.oracle.com/javase/7/docs/api/java/lang/Thread.html)
+
+[FileWriter](https://docs.oracle.com/javase/7/docs/api/java/io/FileWriter.html)
+
+[FileReader](https://docs.oracle.com/javase/7/docs/api/java/io/FileReader.html)
+
+[PrintStream](https://docs.oracle.com/javase/7/docs/api/java/io/PrintStream.html)
+
+[DataInputStream](https://docs.oracle.com/javase/7/docs/api/java/io/DataInputStream.html)
