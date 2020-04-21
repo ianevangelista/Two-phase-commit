@@ -30,7 +30,7 @@ Alle parter må stemme før et valg er avgjort.
 
 <a name="funksjonalitet"></a>
 ## Implementert funksjonalitet
-###Klassediagram
+### Klassediagram
 ![Image description](https://i.imgur.com/TNIkv8b.png "Klassediagram") 
 
 Siden prosjektet er inndelt i tjener og klient,
