@@ -458,7 +458,7 @@ på din maskin. Deretter kan du feks. følge trinn 3-4
 over i samme mappe som filen(og med Klient i stedet for Tjener), eller bruke en IDEA for å kjøre koden. 
 
 <a name="testing"></a>
-## Hvordan man kan teste løsningen
+## Hvordan man kan teste løsningen?
 Det finnes flere måter å teste koden og løsningen på. Her er et par scenarier som du kan prøve
 og teste:
 - Opprette en tjener og en klient
