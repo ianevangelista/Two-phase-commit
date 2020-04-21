@@ -3,7 +3,7 @@
 * [Biblioteker og CI](#biblioteker)
 * [Introduksjon](#introduksjon)
 * [Implementert funksjonalitet](#funksjonalitet)
-    * [Server](#funksjonalitet_server)
+    * [Tjener](#funksjonalitet_tjener)
     * [Klient](#funksjonalitet_klient)
 * [Diskusjon](#diskusjon)
 * [Teknologier](#teknologier)
@@ -23,23 +23,23 @@ Insert CI link her
 ## Introduksjon
 I dette prosjektet lager vi en two-phase commit løsning.
 Denne fungerer ved at alle tilkoblede klienter må "stemme" over valg som gjøres.
-I dette prosjektet bruker vi serverens navn som et eksempel.
+I dette prosjektet bruker vi tjenerens navn som et eksempel.
 Navet endres og alle tilkoblede parter må være enige om å beholde det nye navnet.
-Dersom én er uenig ruller vi tilbake til det gamle servernavnet (rollback).
+Dersom én er uenig ruller vi tilbake til det gamle tjenernavnet (rollback).
 Alle parter må stemme før et valg er avgjort.
 
 <a name="funksjonalitet"></a>
 ## Implementert funksjonalitet
-Siden prosjektet er inndelt i server og klient,
+Siden prosjektet er inndelt i tjener og klient,
 to deler i et distibuert system, ser vi også på
 funksjonaliteten for disse hver for seg.
 
-<a name="funksjonalitet_server"></a>
-### Server
-På serversiden har vi først og fremst implementert
-tråder slik at hver tilkobling til server kjører på
+<a name="funksjonalitet_tjeneer"></a>
+### Tjener
+På tjenerside har vi først og fremst implementert
+tråder slik at hver tilkobling til tjener kjører på
 en egen tråd. Dermed sikrer vi at klienter ikke
-begrenses av andre klienters tilkobling til serveren.
+begrenses av andre klienters tilkobling til tjeneren.
 
 Videre bruker vi sockets for å lytte etter tilkoblinger
 fra klient. I Java bruker vi ServerSocket for å lytte på
@@ -53,7 +53,7 @@ try {
     System.out.println(e);
 }
 ```
-Serveren kjører så i loop og oppretter egne tråder
+Tjeneren kjører så i loop og oppretter egne tråder
 for hver klient som kobler seg til, gitt at serverSocket
 aksepterer forbindelsen uten å kaste exceptions:
 ```java
@@ -72,7 +72,7 @@ while (!tjener.lukket) {
 ### Klient
 I klient klassen opprettes også en socket på port 1111. 
 Deretter oppretter vi lese og skrive forbindelse til
-serveren ved hjelp av PrintStream(os) og 
+tjeneren ved hjelp av PrintStream(os) og 
 DataInputStream(is) i form av output- og inputstream:
 ```java
 int port=1111;
@@ -86,8 +86,8 @@ try {
     System.out.println("Exception occurred : " + e.getMessage());
 }
 ```
-Ved nye hendelser fra server sørger en run-metode
-i klient for å plukke opp meldinger fra server i en loop
+Ved nye hendelser fra tjener sørger en run-metode
+i klient for å plukke opp meldinger fra tjener i en loop
 som kjøres så lenge ikke alle tilkoblede klienter har 
 stemt:
 ```java
@@ -144,7 +144,7 @@ En beskrivelse og diskusjon/argumentasjon (denne delen en veldig viktig ved eval
 ## Hvilke teknologier har vi brukt og hvorfor?
 Hva hadde vi å velge mellom, hvorfor valgte vi som vi gjorde?
 
-**Socets**
+**Sockets**
 
 Den typen socket som bruker TCP kalles en strømmingssocket eller en tilkoblingsorientert socket. Med TCP kan man koble flere klienter opp mot samme
 TCP-tjener. For å gjøre dette må man opprette en barnprosess for hver enkelt klient og deretter opprette en 
@@ -172,10 +172,14 @@ PrintStream og DataInputStream pakker inn outputStream og inputStream fra Socket
 
 <a name="forbedringer"></a>
 ## Fremtidig arbeid med oversikt over mangler og mulige forbedringer
+Det finnes flere ting som kan implementeres for å få en mer fullverdig implementasjon av
+two-phase commit:
+- GLOBAL_ABORT hvis en av klientene aldri svarer med at den er klar med COMMIT
+- GLOBAL_ABORT hvis en av klientene feiler eller termineres før ACKNOWLEDGEMENT
 
 <a name="eksempler"></a>
 ## Eksempler som viser bruken av løsningen
-Det første skjer når serveren starter er at man får tilbakemelding om at "Serveren er startet...". Deretter får man beskjed hver gang en klient kobler seg til.
+Det første skjer når tjeneren starter er at man får tilbakemelding om at "Serveren er startet...". Deretter får man beskjed hver gang en klient kobler seg til.
 
 
 ![Tjeneren start](https://media.giphy.com/media/H3NkJDdphWTUph0NYQ/giphy.gif)
@@ -278,8 +282,8 @@ Dette er loggen til Sylvi etter at transaksjonen ble avbrutt fordi hun ikke hadd
 
 <a name="installasjon"></a>
 ## Installasjonsinstruksjoner
-### Server
-For å installere serveren på en linux server:
+### Tjener
+For å installere tjeneren på en linux server:
 1. Clone prosjektet til din linux maskin
 2. Kjør *apt-get install default-jdk* for å installere java
 3. Kjør *javac Tjener.java*
@@ -292,6 +296,64 @@ over i samme mappe som filen(og med Klient i stedet for Tjener), eller bruke en 
 
 <a name="testing"></a>
 ## Hvordan man kan teste løsningen
+Det finnes flere måter å teste koden og løsningen på. Her er et par scenarier som du kan prøve
+og teste:
+- Opprette en tjener og en klient
+- Opprette en tjener og en klient der en feil forekommer
+- Opprette en tjener og to klienter der ingen feil forekommer
+- Opprette en tjener og to klienter der en feil forekommer
+- Gjenbrukbar tjener, der man utfører en eller flere av de øvrige punktene flere ganger
+### Opprette en tjener og en klient
+- Her opprettes en tjener og en klient.
+- Klienten skriver inn navnet og saldo større enn beløpet som skal trekkes (5kr).
+- Klienten trykker enter for å si at den er klart til å "committe".
+- Klienten vil motta GLOBAL_COMMIT.
+- Klienten trykker enter for å si at den har "committed" og "acknowledeger" til tjeneren.
+- Klienten mottar en melding om at two phase er gjennomført.
+- Alt av handlinger loggføres i en logg i navnet til klienten.
+- Forbindelsen termineres.
+
+### Opprette en tjener og en klient der en feil forekommer
+- Her opprettes en tjener og en klient.
+- Klienten skriver inn navnet og saldo mindre enn beløpet som skal trekkes (5kr).
+- Klienten trykker enter for å si at den er klar til å "committe".
+- Klienten vil motta GLOBAL_ABORT fordi saldo er mindre en beløpet som skal trekkes.
+- Klienten vil aborte.
+- Klienten mottar en melding om at two phase er gjennomført.
+- Alt av handlinger loggføres i en logg i navnet til klienten.
+- Forbindelsen termineres.
+
+### Opprette en tjener og to klienter der ingen en feil forekommer
+- Her opprettes en tjener og to klienter.
+- Klient_1 skriver inn navn og saldo større enn beløpet som skal trekkes (5kr).
+- Klient_1 trykker enter for å si at den er klart til å "committe".
+- Klient_2 skriver inn navn og saldo større enn beløpet som skal trekkes (5kr).
+- Klient_2 trykker enter for å si at den er klart til å "committe".
+- Klient_1 vil motta GLOBAL_COMMIT.
+- Klient_2 vil motta GLOBAL_COMMIT.
+- Klient_1 responderer at den har "committed" og "acknowledeger" til tjeneren.
+- Klient_2 responderer at den har "committed" og "acknowledeger" til tjeneren.
+- Begge klientene mottar en melding om at two phase er gjennomført.
+- Alt av handlinger loggføres i en logg i navnet til klienten.
+- Forbindelsen termineres.
+
+### Opprette en tjener og to klienter der en feil forekommer
+- Her opprettes en tjener og to klienter.
+- Klient_1 skriver inn navn og saldo større enn beløpet som skal trekkes (5kr).
+- Klient_1 trykker enter for å si at den er klart til å "committe".
+- Klient_2 skriver inn navn og saldo mindre enn beløpet som skal trekkes (5kr).
+- Klient_2 trykker enter for å si at den er klart til å "committe".
+- Klient_1 vil motta GLOBAL_ABORT.
+- Klient_2 vil motta GLOBAL_ABORT.
+- Klient_1 vil rulle tilbake (rollback) og hente sin lagrede saldo.
+- Begge klientene mottar en melding om at two phase er gjennomført.
+- Alt av handlinger loggføres i en logg i navnet til klienten.
+- Forbindelsen termineres.
+
+### Gjenbrukbar tjener, der man utfører en eller flere av de øvrige punktene flere ganger
+- Gjennomfør et eller flere av punktene over om igjen.
+
+
 
 <a name="api"></a>
 ## Eventuell lenke til API dokumentasjon
