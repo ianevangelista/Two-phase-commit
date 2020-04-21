@@ -77,14 +77,13 @@ public class KlientTraad extends Thread {
                                 ((tjener.traadListe).get(i)).os.println("GLOBAL_COMMIT");
                             }
                             tjener.data.clear();
-                            //break;
                         }
                     } // if traadListe.contains
                 }
                 if (linje.equalsIgnoreCase("ACKNOWLEDGEMENT")) {
                     tjener.traadListe.remove(tjener.traadListe.indexOf(this));
 
-                    // Dersom alle har sendt acknoweledge og koblet fra
+                    // Dersom alle har sendt acknowledge og koblet fra
                     if (tjener.traadListe.size() == 0) {
                         System.out.println("MOTTAT ACK FRA ALLE KLIENTER, TWO PHASE COMMIT ER NAA OVER");
                         tjener.data = new ArrayList<String>();

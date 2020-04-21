@@ -37,7 +37,7 @@ Siden prosjektet er inndelt i tjener og klient,
 to deler i et distibuert system, ser vi også på
 funksjonaliteten for disse hver for seg.
 
-<a name="funksjonalitet_tjeneer"></a>
+<a name="funksjonalitet_tjener"></a>
 ### Tjener
 På tjenerside har vi først og fremst implementert
 tråder slik at hver tilkobling til tjener kjører på
@@ -106,6 +106,10 @@ try {
     System.err.println("IOException:  " + e);
 }
 ```
+### KlientTraad
+### Loggforer
+
+
 <a name="diskusjon"></a>
 ## Diskusjon
 Først og fremst har vi valgt å programmere løsningen i Java. 
