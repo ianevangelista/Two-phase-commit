@@ -5,6 +5,8 @@
 * [Implementert funksjonalitet](#funksjonalitet)
     * [Tjener](#funksjonalitet_tjener)
     * [Klient](#funksjonalitet_klient)
+    * [KlientTraad](#funksjonalitet_klientTraad)
+    * [Loggforer](#funksjonalitet_loggforer)
 * [Diskusjon](#diskusjon)
 * [Teknologier](#teknologier)
 * [Forbedringer](#forbedringer)
@@ -109,6 +111,8 @@ try {
     System.err.println("IOException:  " + e);
 }
 ```
+
+<a name="funksjonalitet_klientTraad"></a>
 ### KlientTraad
 KlientTraad fungerer som bindeleddet mellom tjener og klient. For hver klient så opprettes
 det en egen KlientTraad. Det her man både skriver til klient og leser responsen fra klient.
@@ -190,6 +194,7 @@ Her fjernes klieneten som sendte ACKNOWLEGDEMENT fra klientlisten til tjeneren.
 Hvis alle har blitt fjernet vil alle ha sendt ACKNOWLEGDEMENT og two-phase commit er
 gjennomført. Hvis ikke vil man fortsette å vente.
 
+<a name="funksjonalitet_loggforer"></a>
 ### Loggforer
 Denne klassen brukes når en klient skal loggføre handlingene sine.
 Det opprettes en egen dedikert loggfører for hver klient. Hver logg får sin
