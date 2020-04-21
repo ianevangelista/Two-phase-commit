@@ -136,7 +136,7 @@ Når det kommer til arkitektur/design-valg har vi som tidligere nevnt, en tjener
 loggforer-klasse. TCP opererer på klient-tjener-arkitekturen og forbindelsen må gå begge veier. 
 Det er derfor logisk at vi har et designmønsteret og arkitekturen klient-tjener på grunn av bruken av TCP. 
 En deltaker i two phase commit vil i klient-tjener modellen være en klient, og koordinatoren vil derfor bli tjeneren. 
-
+Det er klienten/deltakeren som initierer kommunikasjon med tjeneren som venter på inngående forespørsler.
 ###
 En beskrivelse og diskusjon/argumentasjon (denne delen en veldig viktig ved evaluering) av hvilke teknologi- og arkitektur-/designvalg dere har stått ovenfor (når dere skulle løse oppgaven), hva dere hadde å velge mellom og hvorfor dere har valgt det dere har valgt. Når det gjelder teknologivalg så kan denne delen begrenses til «pensum i faget».
 
