@@ -33,9 +33,9 @@ public class Tjener {
         int port_number = 1111;
         Tjener tjener = new Tjener();
         try {
-            // tjenerSocket = new ServerSocket(port_number); // Localhost
-            tjenerSocket = new ServerSocket(); // server
-            tjenerSocket.bind(new InetSocketAddress("129.241.96.153", 1111)); // server
+            tjenerSocket = new ServerSocket(port_number); // Localhost
+            // tjenerSocket = new ServerSocket(); // server
+            // tjenerSocket.bind(new InetSocketAddress("129.241.96.153", 1111)); // server
             System.out.println("Serveren er startet...");
         } catch (IOException e) {
             System.out.println(e);
