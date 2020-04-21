@@ -1,5 +1,4 @@
 //Two Phase Commit Protocol TJENER
-import javax.lang.model.type.ArrayType;
 import java.io.*;
 import java.net.*;
 import java.util.*;
@@ -59,4 +58,3 @@ public class Tjener {
         } catch (Exception e1) { }
     } // end main
 } // end class Server
-

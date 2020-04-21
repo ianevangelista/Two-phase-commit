@@ -1,4 +1,15 @@
 # Prosjekt Nettverksprogrammering
+
+Frivillig prosjektoppgave i Nettverksprogrammering.
+
+Av
+- Ian-Angelo Roman Evangelista
+- Nikolai Preben Dokken
+- Kasper Vedal Gundersen
+
+## 
+
+
 ### Innhold
 * [Introduksjon](#introduksjon)
 * [Implementert funksjonalitet](#funksjonalitet)
@@ -12,7 +23,7 @@
 * [Eksempler](#eksempler)
 * [Installasjon](#installasjon)
 * [Testing](#testing)
-* [Biblioteker og CI](#biblioteker)
+* [CI](#biblioteker)
 * [API](#api)
 
 
@@ -32,7 +43,7 @@ tranaksjonen, vil hele two-phase commit avbrytes.
 <a name="funksjonalitet"></a>
 ## Implementert funksjonalitet
 ### Klassediagram
-![Image description](https://i.imgur.com/Vf09gVQ.png "Klassediagram") 
+![Image description](https://i.imgur.com/1UyJrre.png "Klassediagram") 
 
 Siden prosjektet er inndelt i tjener og klient,
 to deler i et distibuert system, ser vi også på
@@ -47,15 +58,23 @@ begrenses av andre klienters tilkobling til tjeneren.
 
 Videre bruker vi sockets for å lytte etter tilkoblinger
 fra klient. I Java bruker vi ServerSocket for å lytte på
-port 1111 ettr klienter:
+port 1111 etter klienter. Vi har implementert løsning for å kunne kjøre applikasjonen fra
+både server som er hostet på NTNUs VM og lokalt via Localhost.
+Her er den lokale varianten kommentert ut:
 ```java
-int port_nummer = 1111;
-ServerSocket tjenerSocket = null;
-try {
-    tjenerSocket = new ServerSocket(port_nummer);
-} catch(IOException e) {
-    System.out.println(e);
-}
+Socket klientSocket = null;
+        ServerSocket tjenerSocket = null;
+        int port_number = 1111;
+        Tjener tjener = new Tjener();
+        try {
+            // tjenerSocket = new ServerSocket(port_number); // Localhost
+            tjenerSocket = new ServerSocket(); // server
+            tjenerSocket.bind(new InetSocketAddress("129.241.96.153", 1111)); // server
+            System.out.println("Serveren er startet...");
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+
 ```
 Tjeneren kjører så i loop og oppretter egne tråder
 for hver klient som kobler seg til, gitt at serverSocket
@@ -80,32 +99,93 @@ tjeneren ved hjelp av PrintStream(os) og
 DataInputStream(is) i form av output- og inputstream:
 ```java
 int port=1111;
-String host="localhost";
-try {
-    klientSocket = new Socket(host, port);
-    inputLinje = new BufferedReader(new InputStreamReader(System.in));
-    os = new PrintStream(klientSocket.getOutputStream());
-    is = new DataInputStream(klientSocket.getInputStream());
-} catch (Exception e) {
-    System.out.println("Exception occurred : " + e.getMessage());
-}
+        // String host = "localhost"; // localhost
+        try {
+            InetAddress host= InetAddress.getByName("129.241.96.153"); // server
+            klientSocket = new Socket(host, port);
+            inputLinje = new BufferedReader(new InputStreamReader(System.in));
+            os = new PrintStream(klientSocket.getOutputStream());
+            is = new DataInputStream(klientSocket.getInputStream());
+        } catch (Exception e) {
+            System.out.println("Exception occurred : " + e.getMessage());
+        }
+
 ```
 Ved nye hendelser fra tjener sørger en run-metode
 i klient for å plukke opp meldinger fra tjener i en loop
 som kjøres så lenge ikke alle tilkoblede klienter har 
-stemt:
+stemt. Det er tre ulike meldinger tjeneren kan sende til klienten, som blir forklart
+mer nøyaktig under:
 ```java
 try {
     while ((responseLinje = is.readLine()) != null) {
         System.out.println("\n"+responseLinje);
-        if (responseLinje.equalsIgnoreCase("GLOBAL_COMMIT") || responseLinje.equalsIgnoreCase("GLOBAL_ABORT")) {
-            break;
+        if (responseLinje.indexOf("VOTE_REQUEST") != -1) {
+                  // Se eksempelet under
+            
+        }
+        if (responseLinje.equalsIgnoreCase("GLOBAL_ABORT")) {
+                  // Se eksempelet under
+            
+        }
+        if (responseLinje.equalsIgnoreCase("GLOBAL_COMMIT")) {
+                  // Se eksmepelet under
+            
         }
     }
     lukket=true;
 } catch (IOException e) {
     System.err.println("IOException:  " + e);
 }
+```
+Det første som blir sendt er den første delen av *Two-phase commit protocol*
+som er VOTE_REQUEST. Det som skjer da er at klienten får spørsmål om den godtar at det trekkes penger fra saldoen.
+Om man godtar dette så regner systemet ut om man har råd til transaksjonen og det blir sendt enten COMMIT eller ABORT tilbake til Tjeneren.
+```java
+   if (responseLinje.indexOf("VOTE_REQUEST") != -1) {
+                    System.out.println("Trykk enter om du vil fortsette. ");
+                    inputLinje.readLine();
+                    belop = Integer.parseInt(responseLinje.split(":")[2]);
+                    logg.loggfor("Fikk VOTE_REQUEST om å trekke " + belop + "kr.");
+                    if (saldo >= belop) {
+                        System.out.println("Du har nok på konto. Sender klarsignal til tjener. \nOm alle er klare gjennomføres COMMIT.");
+                        os.println("COMMIT");
+                        logg.loggfor("SAVE: Lagrer gammel saldo(kr): " + saldo);
+                        logg.loggfor("Sender COMMIT til tjener.");
+                        saldo -= belop;
+                        gjordeEndringer = true;
+                    } else {
+                        System.out.println("Saldoen din er for lav. Sender ABORT til tjener");
+                        os.println("ABORT");
+                        logg.loggfor("Sender ABORT til tjener, har ikke raad.");
+                    }
+                }
+```
+Om en eneste klient ikke har råd vil Tjeneren sende en GLOBAL_ABORT
+tilbake til alle klientene. Dersom klienten har stemt for COMMIT, vil den gjøre et *rollback*, hvis ikke avbrytes transaksjonen og det loggføres.
+```java
+if (responseLinje.equalsIgnoreCase("GLOBAL_ABORT")) {
+                    logg.loggfor("Fikk beskjed om ABORT fra tjener");
+                    if (gjordeEndringer) {
+                        saldo = logg.getRollbackSaldo();
+                        logg.loggfor("Rollback. Saldo er nå " + saldo + "kr");
+                    }
+                    break;
+                }
+```
+
+Om alle klientene har råd sender Tjener GLOBAL_COMMIT. 
+Klientene loggfører transaksjonen og utfører commiten. Deretter sendes det en bekreftelsesmelding(ACKNOWLEDGEMENT)
+tilbake til Tjeneren. Her gjør vi en antagelse om at når klienten commiter, før den sender bekreftelsen:
+```java
+  if (responseLinje.equalsIgnoreCase("GLOBAL_COMMIT")) {
+                    logg.loggfor("Fikk klarsignal(GLOBAL_COMMIT) fra tjener.");
+                    logg.loggfor("Utførte transaksjon: [Opprinnelig beløp: " + (saldo+belop) + ", Transaksjonsbeløp: " + belop + ", Nytt beløp: " + saldo + "]");
+                    System.out.println("Fikk GLOBAL_COMMIT: commiter, og sender ACKNOWLEDGE \ntil tjener.");
+                    os.println("ACKNOWLEDGEMENT");
+                    logg.loggfor("Sendte ACKNOWLEDGE til tjener.");
+                    break;
+                }
 ```
 
 <a name="funksjonalitet_klientTraad"></a>
@@ -445,20 +525,19 @@ Dette er loggen til Erna og Sylvi etter at transaksjonen ble avbrutt:
 
 <a name="installasjon"></a>
 ## Installasjonsinstruksjoner
-### Tjener
-For å installere tjeneren på en linux server:
-1. Clone prosjektet til din linux maskin
-2. Kjør *apt-get install default-jdk* for å installere java
-3. Kjør *javac Tjener.java*
-4. Kjør *java Tjener*
+I denne seksjonen finnes det to valg. Enten kan KlientMotServer.jar kjøres, eller så kan man kjøre Tjener og Klient lokalt.
+Jar filen kobles til tjeneren som hostes på en NTNU vm(man må altså være koblet til NTNU sin VPN).
+For å kjøre denne kjører man "java -jar KlientMotServer.jar" i prosjektmappen.
 
-### Klient
-For å kjøre klienten trenger du java installert
-på din maskin. Deretter kan du feks. følge trinn 3-4
-over i samme mappe som filen(og med Klient i stedet for Tjener), eller bruke en IDEA for å kjøre koden. 
+For å kjøre tjener og klient lokalt kjører man følgende kommandoer i prosjekt-mappen. (Koden kan også kjøres i en IDEA)
+
+1. javac src/*.java
+2. java src/Tjener
+3. java src/Klient
+
 
 <a name="testing"></a>
-## Hvordan man kan teste løsningen
+## Hvordan man kan teste løsningen?
 Det finnes flere måter å teste koden og løsningen på. Her er et par scenarier som du kan prøve
 og teste:
 - Opprette en tjener og en klient
@@ -517,13 +596,13 @@ og teste:
 - Gjennomfør et eller flere av punktene over om igjen.
 
 <a name="biblioteker"></a>
-## Navn på biblioteket og eventuell lenke til continuous integration løsning
+## Continuous integration 
 Lenke til oversikt over prosjektets CI:
 
 https://gitlab.stud.idi.ntnu.no/nikolard/NettproggProsjekt/pipelines
 
 <a name="api"></a>
-## Eventuell lenke til API dokumentasjon
+## Lenker til API dokumentasjon
 
 Lenke til prosjektets JavaDoc(må være koblet til NTNU nettverk for å kunne se):
 
