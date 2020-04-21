@@ -25,7 +25,6 @@ https://gitlab.stud.idi.ntnu.no/nikolard/NettproggProsjekt/pipelines
 <a name="introduksjon"></a>
 ## Introduksjon
 
-![Ian](https://i1.wp.com/www.brianreiser1.com/wp-content/uploads/2018/12/two-face.jpg?fit=1600%2C1202&ssl=1)
 I dette prosjektet lager vi en two-phase commit løsning.
 Denne fungerer ved at alle tilkoblede klienter må "stemme" over valg som gjøres.
 I dette prosjektet bruker vi tjenerens navn som et eksempel.
@@ -287,8 +286,18 @@ Det er derfor logisk at vi har et designmønsteret og arkitekturen klient-tjener
 En deltaker i two phase commit vil i klient-tjener modellen være en klient, og koordinatoren vil derfor bli tjeneren. 
 Det er klienten/deltakeren som initierer kommunikasjon med tjeneren som venter på inngående forespørsler.
 ###
-En beskrivelse og diskusjon/argumentasjon (denne delen en veldig viktig ved evaluering) av hvilke teknologi- og arkitektur-/designvalg dere har stått ovenfor (når dere skulle løse oppgaven), hva dere hadde å velge mellom og hvorfor dere har valgt det dere har valgt. Når det gjelder teknologivalg så kan denne delen begrenses til «pensum i faget».
 
+Det er flere fordeler med *Two-phase commit protocol*, men også noen ulemper. Den store fordelen er jo at denne
+atomiske protokollen skal sikre at alle deltagere i en transaksjon enten fullfører eller avbryter transaksjonen.
+I tillegg funker protokollen i mange tilfeller der det skjer en midlertidig feil, som
+for eksempel om prosess, nettverksnode eller kommunikasjon feiler. Like vel er ikke protokollen feilfri, og 
+sliter dersom det er en svikt av både koordinatoren(tjener) og et klient i løpet av commit-fasen.
+
+Dersom kun tjeneren mislykes, og ingen klienter mottar en commit-melding, kan det trygt utledes at ingen forpliktelser hadde skjedd. 
+Hvis imidlertid både tjeneren og en klient mislyktes, er det mulig at det mislykkede klienten var den 
+første som ble varslet, og faktisk hadde commitet. Selv om en ny tjener blir valgt, kan den ikke trygt fortsette
+med operasjonen før den har mottatt en acknowledgement fra alle klientene, 
+og må derfor blokkere til alle klientene svarer.
 <a name="teknologier"></a>
 ## Hvilke teknologier har vi brukt og hvorfor?
 Hva hadde vi å velge mellom, hvorfor valgte vi som vi gjorde?
