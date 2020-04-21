@@ -60,22 +60,3 @@ public class Tjener {
     } // end main
 } // end class Server
 
-/*
-Coordinator                                          Cohorts
-                            QUERY TO COMMIT
-                -------------------------------->
-                              VOTE YES/NO           prepare/abort
-                <-------------------------------
-commit/abort                 COMMIT/ROLLBACK
-                -------------------------------->
-                              ACKNOWLEDGMENT        commit/abort
-                <--------------------------------
-end
-
- Two Phases :
- 1.Prepare and Vote Phase
- 2. Commit or Abort Phase
-
- "Either All Commit Or All RollBack."
- */
-

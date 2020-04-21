@@ -99,9 +99,6 @@ public class KlientTraad extends Thread {
             klientSocket.close();
         } catch (IOException e) {
             e.printStackTrace();
-            // for (int i = 0; i < tjener.traadListe.size(); i++) {
-               //  tjener.traadListe.get(i).os.print("GLOBAL_ABORT");
-            // }
             if ((tjener.traadListe).contains(this)) tjener.traadListe.remove(tjener.traadListe.indexOf(this));
         } catch (NullPointerException e) {
             e.printStackTrace();
