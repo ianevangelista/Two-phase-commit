@@ -31,7 +31,7 @@ Alle parter må stemme før et valg er avgjort.
 <a name="funksjonalitet"></a>
 ## Implementert funksjonalitet
 ### Klassediagram
-![Image description](https://i.imgur.com/TNIkv8b.png "Klassediagram") 
+![Image description](https://i.imgur.com/Vf09gVQ.png "Klassediagram") 
 
 Siden prosjektet er inndelt i tjener og klient,
 to deler i et distibuert system, ser vi også på
@@ -280,9 +280,12 @@ Sylvi derimot var den som initialiserte aborten og derfor ble ikke hennes saldo 
 
 Dette er loggen til Erna og Sylvi etter at transaksjonen ble avbrutt:
 
-| Erna Solberg | Sylvi Listhaug |
-| --- | --- |
-|![Image](https://i.imgur.com/5Z6ibaX.png "Loggen til Erna etter abort") | ![Image](https://i.imgur.com/VA9Gygb.png "Loggen til Sylvi etter abort")|
+**Erna Solberg** 
+![Image](https://i.imgur.com/5Z6ibaX.png "Loggen til Erna etter abort") 
+
+
+**Sylvi Listhaug**
+![Image](https://i.imgur.com/VA9Gygb.png "Loggen til Sylvi etter abort")|
 
 
 
