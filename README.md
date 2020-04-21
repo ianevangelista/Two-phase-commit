@@ -109,7 +109,8 @@ try {
 ### KlientTraad
 KlientTraad fungerer som bindeleddet mellom tjener og klient. For hver klient så opprettes
 det en egen KlientTraad. Det her man både skriver til klient og leser responsen fra klient.
-Denne kjører i loop så lenge ingen aborter eller hvis two-phase er gjennomført.
+Denne kjører i loop så lenge ingen aborter eller hvis two-phase er gjennomført. Hvis en 
+av de to nevnte forekommer, vil alle forbindelser lukkes.
 
 
 Under ser man hva som skal skje hvis responsen fra en klient er ABORT:
@@ -162,6 +163,29 @@ Her vil den printe ut hvem som skrev COMMIT og sjekke om objektet faktisk finnes
 Deretter vil man i sette klientens tilhørende element i data-listen fra "NOT_SENT" til "COMMIT".
 Så sjekkes det om alle klienter er klare til å committe. Hvis alle er klare så sendes det
 en GLOBAL_COMMIT til alle klienter.
+
+
+Under ser man hva som skjer når responsen er ACKNOWLEDGEMENT fra en klient.
+```java
+if (linje.equalsIgnoreCase("ACKNOWLEDGEMENT")) {                                         
+    tjener.traadListe.remove(tjener.traadListe.indexOf(this));                           
+                                                                                         
+    // Dersom alle har sendt acknowledge og koblet fra                                   
+    if (tjener.traadListe.size() == 0) {                                                 
+        System.out.println("MOTTAT ACK FRA ALLE KLIENTER, TWO PHASE COMMIT ER NAA OVER");
+        tjener.data = new ArrayList<String>();                                           
+        tjener.traadListe = new ArrayList<KlientTraad>();                                
+        break;                                                                           
+    } else {                                                                             
+        System.out.println("\nVenter paa acknowledgement fra andre klienter.");          
+        break;                                                                           
+    }                                                                                    
+}                                                                                        
+```
+
+Her fjernes klieneten som sendte ACKNOWLEGDEMENT fra klientlisten til tjeneren. 
+Hvis alle har blitt fjernet vil alle ha sendt ACKNOWLEGDEMENT og two-phase commit er
+gjennomført. Hvis ikke vil man fortsette å vente.
 
 ### Loggforer
 
