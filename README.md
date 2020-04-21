@@ -32,7 +32,7 @@ tranaksjonen, vil hele two-phase commit avbrytes.
 <a name="funksjonalitet"></a>
 ## Implementert funksjonalitet
 ### Klassediagram
-![Image description](https://i.imgur.com/Vf09gVQ.png "Klassediagram") 
+![Image description](https://i.imgur.com/1UyJrre.png "Klassediagram") 
 
 Siden prosjektet er inndelt i tjener og klient,
 to deler i et distibuert system, ser vi også på
