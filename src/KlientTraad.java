@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * KlienTraad fungerer som en trådklasse knyttet til en klient eller en deltaker i two-phase commit.
@@ -72,7 +73,6 @@ public class KlientTraad extends Thread {
                         }
 
                         if (tjener.inputFraAlle) {
-                            tjener.timer.stopTimer();
                             System.out.println("\n\nSending GLOBAL_COMMIT to all....");
                             for(int i = 0; i < tjener.traadListe.size(); i++) {
                                 ((tjener.traadListe).get(i)).os.println("GLOBAL_COMMIT");
@@ -87,7 +87,6 @@ public class KlientTraad extends Thread {
                     // Dersom alle har sendt acknoweledge og koblet fra
                     if (tjener.traadListe.size() == 0) {
                         System.out.println("MOTTAT ACK FRA ALLE KLIENTER, TWO PHASE COMMIT ER NAA OVER");
-                        tjener.traadListe = new ArrayList<KlientTraad>();
                         break;
                     } else {
                         System.out.println("\nVenter paa acknowledgement fra andre klienter.");
@@ -95,7 +94,6 @@ public class KlientTraad extends Thread {
                     }
                 }
             } // while
-            tjener.traadListe = new ArrayList<KlientTraad>();
             is.close();
             os.close();
             klientSocket.close();
@@ -104,7 +102,7 @@ public class KlientTraad extends Thread {
             // for (int i = 0; i < tjener.traadListe.size(); i++) {
                //  tjener.traadListe.get(i).os.print("GLOBAL_ABORT");
             // }
-            tjener.traadListe.remove(tjener.traadListe.indexOf(this));
+            if ((tjener.traadListe).contains(this)) tjener.traadListe.remove(tjener.traadListe.indexOf(this));
         } catch (NullPointerException e) {
             e.printStackTrace();
         }

@@ -26,3 +26,9 @@ Tue Apr 21 13:38:54 CEST 2020,SAVE: Lagrer gammel saldo(kr): 110
 Tue Apr 21 13:38:54 CEST 2020,Sender COMMIT til tjener.
 Tue Apr 21 13:39:42 CEST 2020,Klienten er nå frakoblet.
 
+Tue Apr 21 15:26:53 CEST 2020,nikolai er tilkoblet. Saldo er: 10kr.
+Tue Apr 21 15:26:59 CEST 2020,Fikk VOTE_REQUEST om å trekke 5kr.
+Tue Apr 21 15:26:59 CEST 2020,SAVE: Lagrer gammel saldo(kr): 10
+Tue Apr 21 15:26:59 CEST 2020,Sender COMMIT til tjener.
+Tue Apr 21 15:28:10 CEST 2020,Klienten er nå frakoblet.
+
