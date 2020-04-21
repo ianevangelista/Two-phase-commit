@@ -507,3 +507,14 @@ og teste:
 
 <a name="api"></a>
 ## Eventuell lenke til API dokumentasjon
+[Socket](https://docs.oracle.com/javase/7/docs/api/java/net/Socket.html)
+
+[Thread](https://docs.oracle.com/javase/7/docs/api/java/lang/Thread.html)
+
+[FileWriter](https://docs.oracle.com/javase/7/docs/api/java/io/FileWriter.html)
+
+[FileReader](https://docs.oracle.com/javase/7/docs/api/java/io/FileReader.html)
+
+[PrintStream](https://docs.oracle.com/javase/7/docs/api/java/io/PrintStream.html)
+
+[DataInputStream](https://docs.oracle.com/javase/7/docs/api/java/io/DataInputStream.html)
